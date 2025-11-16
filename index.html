@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ball Sort Puzzle</title>
+    <title>Ball Sort Puzzle - 50 Levels</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* All the existing CSS styles remain unchanged */
         * {
             margin: 0;
             padding: 0;
@@ -19,25 +20,25 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 20px;
             color: white;
             overflow-x: hidden;
         }
         
         .container {
+            max-width: 1400px;
             width: 100%;
-            max-width: 500px;
             text-align: center;
         }
         
         header {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             text-align: center;
         }
         
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
+            font-size: 2.8rem;
+            margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             background: linear-gradient(45deg, #FFD700, #FFA500, #FF6347);
             -webkit-background-clip: text;
@@ -45,14 +46,20 @@
             background-clip: text;
         }
         
+        .subtitle {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
         .game-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: rgba(255, 255, 255, 0.15);
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            padding: 12px 20px;
+            border-radius: 15px;
+            margin-bottom: 15px;
             backdrop-filter: blur(10px);
             flex-wrap: wrap;
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -60,73 +67,53 @@
         }
         
         .level-info {
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .moves {
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
         
         .difficulty {
-            font-size: 0.8rem;
-            padding: 5px 10px;
+            font-size: 0.9rem;
+            padding: 6px 12px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.2);
             font-weight: bold;
         }
         
-        .stats {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin: 10px 0;
-            flex-wrap: wrap;
-        }
-        
-        .stat-item {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-        
         .game-board {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-bottom: 15px;
-            min-height: 180px;
-            padding: 12px;
+            margin-bottom: 20px;
+            min-height: 220px;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 15px;
             backdrop-filter: blur(5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
         .tube {
-            width: 50px;
-            height: 160px;
+            width: 65px;
+            height: 200px;
             background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
             border-radius: 8px 8px 4px 4px;
             position: relative;
             display: flex;
             flex-direction: column-reverse;
             align-items: center;
-            padding: 4px;
+            padding: 5px;
             cursor: pointer;
             transition: all 0.3s;
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -139,20 +126,20 @@
             top: -4px;
             left: -4px;
             right: -4px;
-            height: 10px;
+            height: 12px;
             background: rgba(255, 255, 255, 0.4);
             border-radius: 8px 8px 0 0;
             z-index: -1;
         }
         
         .tube:hover {
-            transform: translateY(-4px);
+            transform: translateY(-6px);
             background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.2));
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
         }
         
         .tube.selected {
-            transform: translateY(-8px);
+            transform: translateY(-10px);
             background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0.3));
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.6);
@@ -169,8 +156,8 @@
         }
         
         .ball {
-            width: 38px;
-            height: 38px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             margin: 2px 0;
             transition: all 0.3s ease;
@@ -182,7 +169,7 @@
             justify-content: center;
             font-weight: bold;
             color: rgba(0, 0, 0, 0.7);
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             position: relative;
             z-index: 1;
         }
@@ -201,15 +188,15 @@
         
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 20px;
             flex-wrap: wrap;
         }
         
         button {
-            padding: 8px 16px;
-            font-size: 0.85rem;
+            padding: 10px 20px;
+            font-size: 0.9rem;
             background: linear-gradient(45deg, #FF5722, #FF9800);
             border: none;
             border-radius: 50px;
@@ -220,16 +207,16 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
         }
         
         button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-4px);
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
         }
         
         button:active {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
         
         button:disabled {
@@ -237,6 +224,34 @@
             cursor: not-allowed;
             transform: none;
             background: linear-gradient(45deg, #9E9E9E, #757575);
+        }
+        
+        .instructions {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+            text-align: left;
+            max-width: 600px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .instructions h3 {
+            margin-bottom: 12px;
+            text-align: center;
+            font-size: 1.3rem;
+            color: #FFD700;
+        }
+        
+        .instructions p {
+            margin-bottom: 8px;
+            line-height: 1.5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
         }
         
         .win-message {
@@ -263,10 +278,10 @@
         
         .win-content {
             background: linear-gradient(135deg, #1a2a6c, #b21f1f);
-            padding: 25px;
+            padding: 30px;
             border-radius: 15px;
             text-align: center;
-            max-width: 350px;
+            max-width: 400px;
             width: 90%;
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -280,8 +295,8 @@
         }
         
         .win-content h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            font-size: 2.2rem;
+            margin-bottom: 12px;
             background: linear-gradient(45deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -289,27 +304,27 @@
         }
         
         .win-content p {
-            margin-bottom: 15px;
-            font-size: 1rem;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
         }
         
         .tube-capacity {
             position: absolute;
-            bottom: -18px;
+            bottom: -20px;
             left: 0;
             right: 0;
             text-align: center;
-            font-size: 0.6rem;
+            font-size: 0.7rem;
             color: rgba(255, 255, 255, 0.8);
             font-weight: bold;
         }
         
         .level-progress {
             width: 100%;
-            height: 8px;
+            height: 10px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            margin: 10px 0;
+            margin: 12px 0;
             overflow: hidden;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
@@ -324,23 +339,23 @@
         
         .level-navigation {
             display: flex;
-            justify-content: center;
+            justify-content: space-between;
             align-items: center;
-            margin: 12px 0;
+            margin: 15px 0;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 12px;
         }
         
         .level-pages {
             display: flex;
-            gap: 5px;
+            gap: 6px;
             flex-wrap: wrap;
             justify-content: center;
         }
         
         .page-btn {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 6px;
             display: flex;
             align-items: center;
@@ -351,7 +366,7 @@
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
         
@@ -367,8 +382,8 @@
         }
         
         .level-btn {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -379,7 +394,7 @@
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
         }
         
@@ -408,6 +423,26 @@
             opacity: 0.5;
         }
         
+        .stats {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 12px 0;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
         .confetti {
             position: fixed;
             width: 8px;
@@ -419,13 +454,13 @@
         
         .save-indicator {
             position: fixed;
-            top: 15px;
-            right: 15px;
+            top: 20px;
+            right: 20px;
             background: rgba(76, 175, 80, 0.9);
             color: white;
-            padding: 6px 12px;
+            padding: 8px 15px;
             border-radius: 20px;
-            font-size: 0.7rem;
+            font-size: 0.8rem;
             display: flex;
             align-items: center;
             gap: 5px;
@@ -442,12 +477,12 @@
         
         .sound-control {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
+            bottom: 20px;
+            right: 20px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -465,24 +500,24 @@
         }
         
         .sound-control i {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: white;
         }
         
-        @media (max-width: 380px) {
+        @media (max-width: 768px) {
             .tube {
-                width: 45px;
-                height: 150px;
+                width: 55px;
+                height: 180px;
             }
             
             .ball {
-                width: 35px;
-                height: 35px;
-                font-size: 0.65rem;
+                width: 40px;
+                height: 40px;
+                font-size: 0.7rem;
             }
             
             h1 {
-                font-size: 1.6rem;
+                font-size: 2rem;
             }
             
             .game-board {
@@ -494,21 +529,28 @@
             }
             
             button {
-                padding: 7px 14px;
+                padding: 8px 15px;
                 font-size: 0.8rem;
             }
             
             .level-btn, .page-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 0.65rem;
+                width: 30px;
+                height: 30px;
+                font-size: 0.7rem;
+            }
+            
+            .save-indicator {
+                top: 10px;
+                right: 10px;
+                font-size: 0.7rem;
+                padding: 6px 12px;
             }
             
             .sound-control {
                 bottom: 10px;
                 right: 10px;
-                width: 38px;
-                height: 38px;
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
@@ -517,6 +559,7 @@
     <div class="container">
         <header>
             <h1><i class="fas fa-palette"></i> Ball Sort Puzzle</h1>
+            <div class="subtitle">50 Levels - Progress Auto-Saved</div>
         </header>
         
         <div class="game-info">
@@ -573,8 +616,17 @@
                 Next <i class="fas fa-arrow-right"></i>
             </button>
             <button id="reset-progress-btn">
-                <i class="fas fa-trash"></i> Reset
+                <i class="fas fa-trash"></i> Reset Progress
             </button>
+        </div>
+        
+        <div class="instructions">
+            <h3><i class="fas fa-gamepad"></i> How to Play</h3>
+            <p><i class="fas fa-mouse-pointer"></i> Click on a tube to select the top ball</p>
+            <p><i class="fas fa-exchange-alt"></i> Click on another tube to move the selected ball there</p>
+            <p><i class="fas fa-vial"></i> Move to empty tube OR on top of same color</p>
+            <p><i class="fas fa-flag-checkered"></i> Complete when all tubes contain single color balls</p>
+            <p><i class="fas fa-save"></i> <strong>Progress automatically saved - Close and return anytime!</strong></p>
         </div>
     </div>
     
@@ -980,7 +1032,7 @@
                 for (let i = tube.length; i < tubeCapacity; i++) {
                     const emptySpace = document.createElement('div');
                     emptySpace.className = 'empty-space';
-                    emptySpace.style.height = '38px';
+                    emptySpace.style.height = '45px';
                     emptySpace.style.margin = '2px 0';
                     emptySpace.style.visibility = 'hidden';
                     tubeElement.appendChild(emptySpace);
