@@ -11,6 +11,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -19,25 +20,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 15px;
+            padding: 10px;
             color: white;
             overflow-x: hidden;
+            touch-action: manipulation;
         }
         
         .container {
             width: 100%;
             max-width: 500px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
         }
         
         header {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             text-align: center;
+            flex-shrink: 0;
         }
         
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
+            margin-bottom: 5px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
             background: linear-gradient(45deg, #FFD700, #FFA500, #FF6347);
             -webkit-background-clip: text;
@@ -50,139 +56,229 @@
             justify-content: space-between;
             align-items: center;
             background: rgba(255, 255, 255, 0.15);
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            margin-bottom: 8px;
             backdrop-filter: blur(10px);
             flex-wrap: wrap;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            flex-shrink: 0;
         }
         
         .level-info {
-            font-size: 1rem;
+            font-size: clamp(0.85rem, 3.5vw, 1rem);
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .moves {
-            font-size: 1rem;
+            font-size: clamp(0.85rem, 3.5vw, 1rem);
             font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .difficulty {
-            font-size: 0.8rem;
-            padding: 5px 10px;
-            border-radius: 20px;
+            font-size: clamp(0.7rem, 3vw, 0.8rem);
+            padding: 4px 8px;
+            border-radius: 15px;
             background: rgba(255, 255, 255, 0.2);
             font-weight: bold;
         }
         
-        .stats {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin: 10px 0;
-            flex-wrap: wrap;
+        .level-progress {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            margin: 8px 0;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+            flex-shrink: 0;
         }
         
-        .stat-item {
-            background: rgba(255, 255, 255, 0.15);
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 0.8rem;
+        .level-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A, #CDDC39);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+            box-shadow: 0 0 6px rgba(76, 175, 80, 0.7);
+        }
+        
+        .level-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 8px 0;
+            flex-wrap: wrap;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        
+        .level-pages {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .page-btn {
+            width: clamp(26px, 8vw, 30px);
+            height: clamp(26px, 8vw, 30px);
+            border-radius: 5px;
             display: flex;
             align-items: center;
-            gap: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            font-size: clamp(0.7rem, 3vw, 0.8rem);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .page-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .page-btn.active {
+            background: linear-gradient(45deg, #4CAF50, #8BC34A);
+            border-color: #4CAF50;
+            transform: translateY(-2px);
+        }
+        
+        .level-btn {
+            width: clamp(26px, 8vw, 30px);
+            height: clamp(26px, 8vw, 30px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            font-size: clamp(0.65rem, 2.8vw, 0.7rem);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .level-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+        
+        .level-btn.current {
+            background: linear-gradient(45deg, #FF5722, #FF9800);
+            border-color: #FF5722;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px rgba(255, 87, 34, 0.7);
+        }
+        
+        .level-btn.completed {
+            background: linear-gradient(45deg, #2196F3, #03A9F4);
+            border-color: #2196F3;
+            box-shadow: 0 0 6px rgba(33, 150, 243, 0.7);
+        }
+        
+        .level-btn.locked {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            opacity: 0.5;
         }
         
         .game-board {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: clamp(6px, 2vw, 10px);
             flex-wrap: wrap;
-            margin-bottom: 15px;
-            min-height: 180px;
-            padding: 12px;
+            margin-bottom: 12px;
+            min-height: 150px;
+            padding: 10px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+            border-radius: 10px;
             backdrop-filter: blur(5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            flex: 1;
+            align-content: flex-start;
+            overflow: hidden;
         }
         
         .tube {
-            width: 50px;
-            height: 160px;
+            width: clamp(40px, 12vw, 50px);
+            height: clamp(130px, 35vh, 160px);
             background: linear-gradient(to bottom, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
-            border-radius: 8px 8px 4px 4px;
+            border-radius: 6px 6px 3px 3px;
             position: relative;
             display: flex;
             flex-direction: column-reverse;
             align-items: center;
-            padding: 4px;
+            padding: 3px;
             cursor: pointer;
             transition: all 0.3s;
             border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
         }
         
         .tube::before {
             content: '';
             position: absolute;
-            top: -4px;
-            left: -4px;
-            right: -4px;
-            height: 10px;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            height: 8px;
             background: rgba(255, 255, 255, 0.4);
-            border-radius: 8px 8px 0 0;
+            border-radius: 6px 6px 0 0;
             z-index: -1;
         }
         
         .tube:hover {
-            transform: translateY(-4px);
+            transform: translateY(-3px);
             background: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.2));
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
         
         .tube.selected {
-            transform: translateY(-8px);
+            transform: translateY(-6px);
             background: linear-gradient(to bottom, rgba(255,255,255,0.5), rgba(255,255,255,0.3));
-            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
             border: 2px solid rgba(255, 255, 255, 0.6);
         }
         
         .tube.valid-target {
             border: 2px dashed #4CAF50;
-            box-shadow: 0 0 12px rgba(76, 175, 80, 0.7);
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.7);
         }
         
         .tube.invalid-target {
             border: 2px dashed #f44336;
-            box-shadow: 0 0 12px rgba(244, 67, 54, 0.7);
+            box-shadow: 0 0 10px rgba(244, 67, 54, 0.7);
         }
         
         .ball {
-            width: 38px;
-            height: 38px;
+            width: clamp(30px, 9vw, 38px);
+            height: clamp(30px, 9vw, 38px);
             border-radius: 50%;
-            margin: 2px 0;
+            margin: 1px 0;
             transition: all 0.3s ease;
             box-shadow: 
-                inset 0 -6px 12px rgba(0, 0, 0, 0.3),
-                0 4px 8px rgba(0, 0, 0, 0.2);
+                inset 0 -4px 8px rgba(0, 0, 0, 0.3),
+                0 3px 6px rgba(0, 0, 0, 0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
             color: rgba(0, 0, 0, 0.7);
-            font-size: 0.7rem;
+            font-size: clamp(0.6rem, 2.5vw, 0.7rem);
             position: relative;
             z-index: 1;
         }
@@ -199,33 +295,46 @@
             transform: rotate(-20deg);
         }
         
+        .tube-capacity {
+            position: absolute;
+            bottom: -15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: clamp(0.5rem, 2vw, 0.6rem);
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: bold;
+        }
+        
         .controls {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
-            margin-top: 15px;
+            margin-top: 10px;
             flex-wrap: wrap;
+            flex-shrink: 0;
         }
         
         button {
-            padding: 8px 16px;
-            font-size: 0.85rem;
+            padding: clamp(6px, 2vw, 8px) clamp(12px, 4vw, 16px);
+            font-size: clamp(0.75rem, 3vw, 0.85rem);
             background: linear-gradient(45deg, #FF5722, #FF9800);
             border: none;
-            border-radius: 50px;
+            border-radius: 40px;
             color: white;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+            touch-action: manipulation;
         }
         
         button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
         }
         
         button:active {
@@ -254,6 +363,7 @@
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.5s;
+            padding: 15px;
         }
         
         .win-message.show {
@@ -263,12 +373,12 @@
         
         .win-content {
             background: linear-gradient(135deg, #1a2a6c, #b21f1f);
-            padding: 25px;
-            border-radius: 15px;
+            padding: 20px;
+            border-radius: 12px;
             text-align: center;
-            max-width: 350px;
-            width: 90%;
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+            max-width: 320px;
+            width: 100%;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
             border: 2px solid rgba(255, 255, 255, 0.3);
             animation: pulse 2s infinite;
         }
@@ -280,8 +390,8 @@
         }
         
         .win-content h2 {
-            font-size: 1.8rem;
-            margin-bottom: 10px;
+            font-size: clamp(1.4rem, 5vw, 1.8rem);
+            margin-bottom: 8px;
             background: linear-gradient(45deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -289,129 +399,14 @@
         }
         
         .win-content p {
-            margin-bottom: 15px;
-            font-size: 1rem;
-        }
-        
-        .tube-capacity {
-            position: absolute;
-            bottom: -18px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 0.6rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: bold;
-        }
-        
-        .level-progress {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            margin: 10px 0;
-            overflow: hidden;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        
-        .level-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #4CAF50, #8BC34A, #CDDC39);
-            border-radius: 8px;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 8px rgba(76, 175, 80, 0.7);
-        }
-        
-        .level-navigation {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 12px 0;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        
-        .level-pages {
-            display: flex;
-            gap: 5px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-        
-        .page-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            font-size: 0.8rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        .page-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-2px);
-        }
-        
-        .page-btn.active {
-            background: linear-gradient(45deg, #4CAF50, #8BC34A);
-            border-color: #4CAF50;
-            transform: translateY(-2px);
-        }
-        
-        .level-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: bold;
-            font-size: 0.7rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-        }
-        
-        .level-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
-        }
-        
-        .level-btn.current {
-            background: linear-gradient(45deg, #FF5722, #FF9800);
-            border-color: #FF5722;
-            transform: scale(1.05);
-            box-shadow: 0 0 12px rgba(255, 87, 34, 0.7);
-        }
-        
-        .level-btn.completed {
-            background: linear-gradient(45deg, #2196F3, #03A9F4);
-            border-color: #2196F3;
-            box-shadow: 0 0 8px rgba(33, 150, 243, 0.7);
-        }
-        
-        .level-btn.locked {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.1);
-            cursor: not-allowed;
-            opacity: 0.5;
+            margin-bottom: 12px;
+            font-size: clamp(0.9rem, 3.5vw, 1rem);
         }
         
         .confetti {
             position: fixed;
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
             background: #f00;
             opacity: 0;
             z-index: 99;
@@ -419,16 +414,16 @@
         
         .save-indicator {
             position: fixed;
-            top: 15px;
-            right: 15px;
+            top: 10px;
+            right: 10px;
             background: rgba(76, 175, 80, 0.9);
             color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.7rem;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: clamp(0.6rem, 2.5vw, 0.7rem);
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             opacity: 0;
             transform: translateY(-20px);
             transition: all 0.3s;
@@ -442,12 +437,12 @@
         
         .sound-control {
             position: fixed;
-            bottom: 15px;
-            right: 15px;
+            bottom: 10px;
+            right: 10px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: clamp(35px, 10vw, 40px);
+            height: clamp(35px, 10vw, 40px);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -455,7 +450,7 @@
             z-index: 100;
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
             transition: all 0.3s;
         }
         
@@ -465,50 +460,89 @@
         }
         
         .sound-control i {
-            font-size: 1.1rem;
+            font-size: clamp(1rem, 4vw, 1.1rem);
             color: white;
         }
         
-        @media (max-width: 380px) {
+        /* Extra small devices */
+        @media (max-width: 320px) {
+            .game-board {
+                gap: 4px;
+                padding: 8px;
+            }
+            
             .tube {
-                width: 45px;
-                height: 150px;
+                width: 38px;
+                height: 120px;
             }
             
             .ball {
-                width: 35px;
-                height: 35px;
-                font-size: 0.65rem;
-            }
-            
-            h1 {
-                font-size: 1.6rem;
-            }
-            
-            .game-board {
-                gap: 8px;
+                width: 28px;
+                height: 28px;
             }
             
             .controls {
-                gap: 8px;
+                gap: 6px;
             }
             
             button {
-                padding: 7px 14px;
-                font-size: 0.8rem;
+                padding: 5px 10px;
+            }
+        }
+        
+        /* Tall screens (common on modern phones) */
+        @media (max-height: 700px) and (orientation: portrait) {
+            .game-board {
+                min-height: 120px;
             }
             
-            .level-btn, .page-btn {
-                width: 28px;
-                height: 28px;
-                font-size: 0.65rem;
+            .tube {
+                height: clamp(100px, 30vh, 140px);
+            }
+        }
+        
+        /* Landscape orientation */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .container {
+                max-width: none;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: flex-start;
             }
             
-            .sound-control {
-                bottom: 10px;
-                right: 10px;
-                width: 38px;
-                height: 38px;
+            header {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .game-info {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+            
+            .level-progress {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .level-navigation {
+                width: 100%;
+                margin: 5px 0;
+            }
+            
+            .game-board {
+                flex: 1;
+                margin-bottom: 5px;
+                min-height: 120px;
+            }
+            
+            .controls {
+                width: 100%;
+                margin-top: 5px;
+            }
+            
+            .tube {
+                height: 100px;
             }
         }
     </style>
@@ -535,21 +569,6 @@
         
         <div class="level-progress">
             <div class="level-progress-bar" id="level-progress-bar" style="width: 2%;"></div>
-        </div>
-        
-        <div class="stats">
-            <div class="stat-item">
-                <i class="fas fa-check-circle"></i>
-                Completed: <span id="completed-levels">0</span>/50
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-trophy"></i>
-                Best Moves: <span id="best-moves">-</span>
-            </div>
-            <div class="stat-item">
-                <i class="fas fa-vial"></i>
-                Colors: <span id="color-count">3</span> | Tubes: <span id="tube-count">4</span>
-            </div>
         </div>
         
         <div class="level-navigation">
@@ -816,10 +835,6 @@
         const levelProgressBar = document.getElementById('level-progress-bar');
         const levelPages = document.getElementById('level-pages');
         const difficultyDisplay = document.getElementById('difficulty');
-        const completedLevelsDisplay = document.getElementById('completed-levels');
-        const bestMovesDisplay = document.getElementById('best-moves');
-        const tubeCountDisplay = document.getElementById('tube-count');
-        const colorCountDisplay = document.getElementById('color-count');
         const restartBtn = document.getElementById('restart-btn');
         const prevLevelBtn = document.getElementById('prev-level');
         const nextLevelBtn = document.getElementById('next-level');
@@ -947,8 +962,6 @@
             }
             
             difficultyDisplay.innerHTML = `<i class="fas fa-signal"></i> <span>${levels[currentLevel].difficulty}</span>`;
-            tubeCountDisplay.textContent = gameState.length;
-            colorCountDisplay.textContent = levels[currentLevel].colors;
             
             renderGame();
             updateDisplay();
@@ -969,8 +982,8 @@
                     ball.className = 'ball';
                     ball.style.backgroundColor = colorMap[color];
                     ball.style.boxShadow = `
-                        inset 0 -6px 12px rgba(0, 0, 0, 0.3),
-                        0 4px 8px rgba(0, 0, 0, 0.2),
+                        inset 0 -4px 8px rgba(0, 0, 0, 0.3),
+                        0 3px 6px rgba(0, 0, 0, 0.2),
                         0 0 0 2px ${darkenColor(colorMap[color], 20)}
                     `;
                     ball.textContent = color.charAt(0).toUpperCase();
@@ -980,8 +993,8 @@
                 for (let i = tube.length; i < tubeCapacity; i++) {
                     const emptySpace = document.createElement('div');
                     emptySpace.className = 'empty-space';
-                    emptySpace.style.height = '38px';
-                    emptySpace.style.margin = '2px 0';
+                    emptySpace.style.height = 'clamp(30px, 9vw, 38px)';
+                    emptySpace.style.margin = '1px 0';
                     emptySpace.style.visibility = 'hidden';
                     tubeElement.appendChild(emptySpace);
                 }
@@ -1174,8 +1187,8 @@
                 confetti.style.left = Math.random() * 100 + 'vw';
                 confetti.style.top = '-8px';
                 confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.width = Math.random() * 8 + 4 + 'px';
-                confetti.style.height = Math.random() * 8 + 4 + 'px';
+                confetti.style.width = Math.random() * 6 + 4 + 'px';
+                confetti.style.height = Math.random() * 6 + 4 + 'px';
                 confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
                 confetti.style.opacity = '1';
                 document.body.appendChild(confetti);
@@ -1224,9 +1237,6 @@
             
             prevLevelBtn.disabled = currentLevel === 0;
             nextLevelBtn.disabled = currentLevel === levels.length - 1;
-            
-            completedLevelsDisplay.textContent = completedLevels.size;
-            bestMovesDisplay.textContent = bestMoves[currentLevel] !== null ? bestMoves[currentLevel] : '-';
         }
 
         // Check if a level is unlocked
@@ -1257,10 +1267,10 @@
             
             const levelContainer = document.createElement('div');
             levelContainer.style.display = 'flex';
-            levelContainer.style.gap = '8px';
+            levelContainer.style.gap = '6px';
             levelContainer.style.flexWrap = 'wrap';
             levelContainer.style.justifyContent = 'center';
-            levelContainer.style.marginTop = '12px';
+            levelContainer.style.marginTop = '10px';
             
             const startLevel = currentPage * levelsPerPage;
             const endLevel = Math.min(startLevel + levelsPerPage, levels.length);
