@@ -196,6 +196,7 @@
             opacity: 0.5;
         }
         
+        /* ENHANCED GAME BOARD AREA */
         .game-board {
             display: flex;
             justify-content: center;
@@ -211,6 +212,7 @@
             flex: 1;
             align-content: flex-start;
             overflow: hidden;
+            /* Enhanced layout for better space utilization */
             align-items: flex-start;
             max-height: 75vh;
             overflow-y: auto;
@@ -231,6 +233,7 @@
             transition: all 0.3s;
             border: 2px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            /* Added for better spacing */
             margin-bottom: 25px;
         }
         
@@ -469,6 +472,7 @@
             color: white;
         }
         
+        /* Extra small devices */
         @media (max-width: 320px) {
             .game-board {
                 gap: 6px;
@@ -496,6 +500,7 @@
             }
         }
         
+        /* Tall screens (common on modern phones) */
         @media (max-height: 800px) and (orientation: portrait) {
             .game-board {
                 max-height: 70vh;
@@ -516,6 +521,7 @@
             }
         }
         
+        /* Landscape orientation */
         @media (orientation: landscape) and (max-height: 500px) {
             .container {
                 max-width: none;
@@ -565,6 +571,7 @@
             }
         }
         
+        /* For tablets and larger screens */
         @media (min-width: 768px) and (min-height: 1024px) {
             .game-board {
                 max-height: 80vh;
@@ -659,233 +666,18 @@
     </div>
 
     <script>
-        // OPTIMIZED SOUND SYSTEM
+        // Sound effects - using Web Audio API to generate sounds
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioContext = new AudioContext();
+        
+        // Sound settings
         let soundEnabled = true;
-        let audioContext = null;
-        let soundBuffers = {};
-        let isAudioInitialized = false;
-
+        
         // Sound control element
         const soundControl = document.getElementById('sound-control');
-
-        // Initialize audio context on first user interaction
-        function initAudio() {
-            if (isAudioInitialized) return;
-            
-            try {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioContext = new AudioContext();
-                
-                // Create all sound buffers in advance
-                createSoundBuffers().then(() => {
-                    console.log("Audio system initialized");
-                    isAudioInitialized = true;
-                });
-            } catch (e) {
-                console.error("Audio context failed:", e);
-                soundEnabled = false;
-                soundControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
-            }
-        }
-
-        // Create pre-rendered sound buffers for instant playback
-        async function createSoundBuffers() {
-            if (!audioContext) return;
-            
-            // Select sound
-            soundBuffers.select = createBuffer(440, 0.1, 'sine');
-            
-            // Move sound
-            soundBuffers.move = createBuffer(523.25, 0.1, 'sine');
-            
-            // Invalid move sound
-            soundBuffers.invalid = createBuffer(220, 0.15, 'sawtooth');
-            
-            // Button sound
-            soundBuffers.button = createBuffer(349.23, 0.1, 'square');
-            
-            // Toggle sound
-            soundBuffers.toggle = createBuffer(659.25, 0.1, 'sine');
-            
-            // Create win and level complete sounds
-            soundBuffers.win = await createWinBuffer();
-            soundBuffers.levelComplete = await createLevelCompleteBuffer();
-        }
-
-        // Create a single tone buffer
-        function createBuffer(frequency, duration, waveType) {
-            if (!audioContext) return null;
-            
-            const sampleRate = audioContext.sampleRate;
-            const length = sampleRate * duration;
-            const buffer = audioContext.createBuffer(1, length, sampleRate);
-            const data = buffer.getChannelData(0);
-            
-            for (let i = 0; i < length; i++) {
-                const time = i / sampleRate;
-                let value = 0;
-                
-                switch(waveType) {
-                    case 'sine':
-                        value = Math.sin(2 * Math.PI * frequency * time);
-                        break;
-                    case 'square':
-                        value = Math.sin(2 * Math.PI * frequency * time) > 0 ? 0.5 : -0.5;
-                        break;
-                    case 'sawtooth':
-                        value = 2 * (time * frequency % 1) - 1;
-                        break;
-                    case 'triangle':
-                        value = Math.asin(Math.sin(2 * Math.PI * frequency * time)) * (2 / Math.PI);
-                        break;
-                }
-                
-                // Apply envelope
-                const attack = 0.005;
-                const release = 0.05;
-                let envelope = 1;
-                
-                if (time < attack) {
-                    envelope = time / attack;
-                } else if (time > duration - release) {
-                    envelope = (duration - time) / release;
-                }
-                
-                data[i] = value * envelope * 0.3;
-            }
-            
-            return buffer;
-        }
-
-        // Create win sound buffer
-        async function createWinBuffer() {
-            if (!audioContext) return null;
-            
-            const notes = [523.25, 659.25, 783.99, 1046.50];
-            const duration = 0.6;
-            const sampleRate = audioContext.sampleRate;
-            const length = Math.floor(sampleRate * duration);
-            const buffer = audioContext.createBuffer(1, length, sampleRate);
-            const data = buffer.getChannelData(0);
-            
-            // Initialize with zeros
-            for (let i = 0; i < length; i++) {
-                data[i] = 0;
-            }
-            
-            // Add each note
-            notes.forEach((note, index) => {
-                const startTime = index * 0.15;
-                const noteDuration = 0.3;
-                const startSample = Math.floor(startTime * sampleRate);
-                const noteLength = Math.floor(noteDuration * sampleRate);
-                
-                for (let i = 0; i < noteLength; i++) {
-                    const sampleIndex = startSample + i;
-                    if (sampleIndex >= length) break;
-                    
-                    const time = i / sampleRate;
-                    const value = Math.sin(2 * Math.PI * note * time);
-                    
-                    // Envelope for this note
-                    const envelope = Math.min(
-                        time / 0.05,
-                        (noteDuration - time) / 0.1
-                    );
-                    
-                    data[sampleIndex] += value * Math.max(0, envelope) * 0.2;
-                }
-            });
-            
-            return buffer;
-        }
-
-        // Create level complete sound buffer
-        async function createLevelCompleteBuffer() {
-            if (!audioContext) return null;
-            
-            const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
-            const duration = 0.9;
-            const sampleRate = audioContext.sampleRate;
-            const length = Math.floor(sampleRate * duration);
-            const buffer = audioContext.createBuffer(1, length, sampleRate);
-            const data = buffer.getChannelData(0);
-            
-            // Initialize with zeros
-            for (let i = 0; i < length; i++) {
-                data[i] = 0;
-            }
-            
-            // Add each note
-            notes.forEach((note, index) => {
-                const startTime = index * 0.1;
-                const noteDuration = 0.4;
-                const startSample = Math.floor(startTime * sampleRate);
-                const noteLength = Math.floor(noteDuration * sampleRate);
-                
-                for (let i = 0; i < noteLength; i++) {
-                    const sampleIndex = startSample + i;
-                    if (sampleIndex >= length) break;
-                    
-                    const time = i / sampleRate;
-                    // Triangle wave for softer sound
-                    const value = Math.asin(Math.sin(2 * Math.PI * note * time)) * (2 / Math.PI);
-                    
-                    // Envelope for this note
-                    const envelope = Math.min(
-                        time / 0.05,
-                        (noteDuration - time) / 0.15
-                    );
-                    
-                    data[sampleIndex] += value * Math.max(0, envelope) * 0.15;
-                }
-            });
-            
-            return buffer;
-        }
-
-        // Play sound from pre-rendered buffer
-        function playSound(type) {
-            if (!soundEnabled || !isAudioInitialized) return;
-            
-            const buffer = soundBuffers[type];
-            if (!buffer) return;
-            
-            try {
-                if (audioContext.state === 'suspended') {
-                    audioContext.resume();
-                }
-                
-                const source = audioContext.createBufferSource();
-                const gainNode = audioContext.createGain();
-                
-                source.buffer = buffer;
-                source.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                // Set volume
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                
-                // Start immediately
-                source.start(0);
-                
-                // Clean up after playback
-                source.onended = () => {
-                    source.disconnect();
-                    gainNode.disconnect();
-                };
-            } catch (error) {
-                console.warn("Sound playback error:", error);
-            }
-        }
-
+        
         // Toggle sound
         soundControl.addEventListener('click', () => {
-            // Initialize audio on first interaction if needed
-            if (!isAudioInitialized) {
-                initAudio();
-            }
-            
             soundEnabled = !soundEnabled;
             if (soundEnabled) {
                 soundControl.innerHTML = '<i class="fas fa-volume-up"></i>';
@@ -894,12 +686,114 @@
                 soundControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
             }
         });
-
-        // Initialize audio on any user interaction
-        document.addEventListener('click', function initAudioOnInteraction() {
-            initAudio();
-            document.removeEventListener('click', initAudioOnInteraction);
-        }, { once: true });
+        
+        // Sound generation functions
+        function playSound(type) {
+            if (!soundEnabled) return;
+            
+            switch(type) {
+                case 'select':
+                    playTone(440, 0.1, 'sine');
+                    break;
+                case 'move':
+                    playTone(523.25, 0.1, 'sine');
+                    break;
+                case 'invalid':
+                    playTone(220, 0.2, 'sawtooth');
+                    break;
+                case 'win':
+                    playWinSound();
+                    break;
+                case 'button':
+                    playTone(349.23, 0.1, 'square');
+                    break;
+                case 'toggle':
+                    playTone(659.25, 0.1, 'sine');
+                    break;
+                case 'levelComplete':
+                    playLevelCompleteSound();
+                    break;
+            }
+        }
+        
+        function playTone(frequency, duration, waveType) {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = waveType;
+            
+            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+        
+        function playWinSound() {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            let time = audioContext.currentTime;
+            
+            notes.forEach((note, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = note;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0, time);
+                gainNode.gain.linearRampToValueAtTime(0.1, time + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.3);
+                
+                oscillator.start(time);
+                oscillator.stop(time + 0.3);
+                
+                time += 0.15;
+            });
+        }
+        
+        function playLevelCompleteSound() {
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            
+            const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+            let time = audioContext.currentTime;
+            
+            notes.forEach((note, index) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = note;
+                oscillator.type = 'triangle';
+                
+                gainNode.gain.setValueAtTime(0, time);
+                gainNode.gain.linearRampToValueAtTime(0.1, time + 0.05);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
+                
+                oscillator.start(time);
+                oscillator.stop(time + 0.4);
+                
+                time += 0.1;
+            });
+        }
 
         // Game configuration - 50 Levels with dynamic tube logic
         const levels = [
@@ -917,8 +811,10 @@
 
             // Levels 11-20: 4-5 Colors (Easy)
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
+            // LEVEL 12 UPDATED - Added one more empty tube
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [], [], [], []], colors: 5, difficulty: 'Easy' },
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], ['green', 'yellow', 'purple', 'red'], [], []], colors: 5, difficulty: 'Easy' },
+            // LEVEL 14 UPDATED - Removed all orange balls and replaced with other colors
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['green', 'yellow', 'purple'], ['red', 'blue', 'green', 'yellow'], [], []], colors: 5, difficulty: 'Easy' },
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'yellow', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], [], [], []], colors: 5, difficulty: 'Easy' },
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'green', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
