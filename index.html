@@ -196,7 +196,113 @@
             opacity: 0.5;
         }
         
-        /* ENHANCED GAME BOARD AREA */
+        /* New Levels Modal Styles */
+        .levels-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            padding: 15px;
+        }
+        
+        .levels-modal.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .levels-container {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+            border-radius: 15px;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .levels-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .levels-header h2 {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .close-levels {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .close-levels:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
+            gap: 10px;
+            padding: 10px;
+        }
+        
+        .levels-grid .level-btn {
+            width: 45px;
+            height: 45px;
+            font-size: 1rem;
+            margin: 0 auto;
+        }
+        
+        .levels-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 2px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FFD700;
+        }
+        
         .game-board {
             display: flex;
             justify-content: center;
@@ -212,7 +318,6 @@
             flex: 1;
             align-content: flex-start;
             overflow: hidden;
-            /* Enhanced layout for better space utilization */
             align-items: flex-start;
             max-height: 75vh;
             overflow-y: auto;
@@ -233,7 +338,6 @@
             transition: all 0.3s;
             border: 2px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            /* Added for better spacing */
             margin-bottom: 25px;
         }
         
@@ -472,7 +576,6 @@
             color: white;
         }
         
-        /* Extra small devices */
         @media (max-width: 320px) {
             .game-board {
                 gap: 6px;
@@ -498,9 +601,19 @@
             button {
                 padding: 6px 12px;
             }
+            
+            .levels-grid {
+                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+                gap: 8px;
+            }
+            
+            .levels-grid .level-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+            }
         }
         
-        /* Tall screens (common on modern phones) */
         @media (max-height: 800px) and (orientation: portrait) {
             .game-board {
                 max-height: 70vh;
@@ -521,7 +634,6 @@
             }
         }
         
-        /* Landscape orientation */
         @media (orientation: landscape) and (max-height: 500px) {
             .container {
                 max-width: none;
@@ -571,7 +683,6 @@
             }
         }
         
-        /* For tablets and larger screens */
         @media (min-width: 768px) and (min-height: 1024px) {
             .game-board {
                 max-height: 80vh;
@@ -614,6 +725,9 @@
         </div>
         
         <div class="level-navigation">
+            <button id="show-all-levels" class="levels-btn">
+                <i class="fas fa-list-ol"></i> All Levels
+            </button>
             <div class="level-pages" id="level-pages">
                 <!-- Page buttons will be generated by JavaScript -->
             </div>
@@ -636,6 +750,35 @@
             <button id="reset-progress-btn">
                 <i class="fas fa-trash"></i> Reset
             </button>
+        </div>
+    </div>
+    
+    <!-- Levels Modal -->
+    <div class="levels-modal" id="levels-modal">
+        <div class="levels-container">
+            <div class="levels-header">
+                <h2><i class="fas fa-layer-group"></i> All Levels</h2>
+                <button class="close-levels" id="close-levels">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="levels-grid" id="levels-grid">
+                <!-- All levels will be generated here -->
+            </div>
+            <div class="levels-stats">
+                <div class="stat-item">
+                    <div class="stat-value" id="completed-count">0</div>
+                    <div>Completed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="total-count">50</div>
+                    <div>Total</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="progress-percent">0%</div>
+                    <div>Progress</div>
+                </div>
+            </div>
         </div>
     </div>
     
@@ -666,18 +809,233 @@
     </div>
 
     <script>
-        // Sound effects - using Web Audio API to generate sounds
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        const audioContext = new AudioContext();
-        
-        // Sound settings
+        // OPTIMIZED SOUND SYSTEM
         let soundEnabled = true;
-        
+        let audioContext = null;
+        let soundBuffers = {};
+        let isAudioInitialized = false;
+
         // Sound control element
         const soundControl = document.getElementById('sound-control');
-        
+
+        // Initialize audio context on first user interaction
+        function initAudio() {
+            if (isAudioInitialized) return;
+            
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioContext = new AudioContext();
+                
+                // Create all sound buffers in advance
+                createSoundBuffers().then(() => {
+                    console.log("Audio system initialized");
+                    isAudioInitialized = true;
+                });
+            } catch (e) {
+                console.error("Audio context failed:", e);
+                soundEnabled = false;
+                soundControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
+            }
+        }
+
+        // Create pre-rendered sound buffers for instant playback
+        async function createSoundBuffers() {
+            if (!audioContext) return;
+            
+            // Select sound
+            soundBuffers.select = createBuffer(440, 0.1, 'sine');
+            
+            // Move sound
+            soundBuffers.move = createBuffer(523.25, 0.1, 'sine');
+            
+            // Invalid move sound
+            soundBuffers.invalid = createBuffer(220, 0.15, 'sawtooth');
+            
+            // Button sound
+            soundBuffers.button = createBuffer(349.23, 0.1, 'square');
+            
+            // Toggle sound
+            soundBuffers.toggle = createBuffer(659.25, 0.1, 'sine');
+            
+            // Create win and level complete sounds
+            soundBuffers.win = await createWinBuffer();
+            soundBuffers.levelComplete = await createLevelCompleteBuffer();
+        }
+
+        // Create a single tone buffer
+        function createBuffer(frequency, duration, waveType) {
+            if (!audioContext) return null;
+            
+            const sampleRate = audioContext.sampleRate;
+            const length = sampleRate * duration;
+            const buffer = audioContext.createBuffer(1, length, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            for (let i = 0; i < length; i++) {
+                const time = i / sampleRate;
+                let value = 0;
+                
+                switch(waveType) {
+                    case 'sine':
+                        value = Math.sin(2 * Math.PI * frequency * time);
+                        break;
+                    case 'square':
+                        value = Math.sin(2 * Math.PI * frequency * time) > 0 ? 0.5 : -0.5;
+                        break;
+                    case 'sawtooth':
+                        value = 2 * (time * frequency % 1) - 1;
+                        break;
+                    case 'triangle':
+                        value = Math.asin(Math.sin(2 * Math.PI * frequency * time)) * (2 / Math.PI);
+                        break;
+                }
+                
+                // Apply envelope
+                const attack = 0.005;
+                const release = 0.05;
+                let envelope = 1;
+                
+                if (time < attack) {
+                    envelope = time / attack;
+                } else if (time > duration - release) {
+                    envelope = (duration - time) / release;
+                }
+                
+                data[i] = value * envelope * 0.3;
+            }
+            
+            return buffer;
+        }
+
+        // Create win sound buffer
+        async function createWinBuffer() {
+            if (!audioContext) return null;
+            
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            const duration = 0.6;
+            const sampleRate = audioContext.sampleRate;
+            const length = Math.floor(sampleRate * duration);
+            const buffer = audioContext.createBuffer(1, length, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Initialize with zeros
+            for (let i = 0; i < length; i++) {
+                data[i] = 0;
+            }
+            
+            // Add each note
+            notes.forEach((note, index) => {
+                const startTime = index * 0.15;
+                const noteDuration = 0.3;
+                const startSample = Math.floor(startTime * sampleRate);
+                const noteLength = Math.floor(noteDuration * sampleRate);
+                
+                for (let i = 0; i < noteLength; i++) {
+                    const sampleIndex = startSample + i;
+                    if (sampleIndex >= length) break;
+                    
+                    const time = i / sampleRate;
+                    const value = Math.sin(2 * Math.PI * note * time);
+                    
+                    // Envelope for this note
+                    const envelope = Math.min(
+                        time / 0.05,
+                        (noteDuration - time) / 0.1
+                    );
+                    
+                    data[sampleIndex] += value * Math.max(0, envelope) * 0.2;
+                }
+            });
+            
+            return buffer;
+        }
+
+        // Create level complete sound buffer
+        async function createLevelCompleteBuffer() {
+            if (!audioContext) return null;
+            
+            const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
+            const duration = 0.9;
+            const sampleRate = audioContext.sampleRate;
+            const length = Math.floor(sampleRate * duration);
+            const buffer = audioContext.createBuffer(1, length, sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Initialize with zeros
+            for (let i = 0; i < length; i++) {
+                data[i] = 0;
+            }
+            
+            // Add each note
+            notes.forEach((note, index) => {
+                const startTime = index * 0.1;
+                const noteDuration = 0.4;
+                const startSample = Math.floor(startTime * sampleRate);
+                const noteLength = Math.floor(noteDuration * sampleRate);
+                
+                for (let i = 0; i < noteLength; i++) {
+                    const sampleIndex = startSample + i;
+                    if (sampleIndex >= length) break;
+                    
+                    const time = i / sampleRate;
+                    // Triangle wave for softer sound
+                    const value = Math.asin(Math.sin(2 * Math.PI * note * time)) * (2 / Math.PI);
+                    
+                    // Envelope for this note
+                    const envelope = Math.min(
+                        time / 0.05,
+                        (noteDuration - time) / 0.15
+                    );
+                    
+                    data[sampleIndex] += value * Math.max(0, envelope) * 0.15;
+                }
+            });
+            
+            return buffer;
+        }
+
+        // Play sound from pre-rendered buffer
+        function playSound(type) {
+            if (!soundEnabled || !isAudioInitialized) return;
+            
+            const buffer = soundBuffers[type];
+            if (!buffer) return;
+            
+            try {
+                if (audioContext.state === 'suspended') {
+                    audioContext.resume();
+                }
+                
+                const source = audioContext.createBufferSource();
+                const gainNode = audioContext.createGain();
+                
+                source.buffer = buffer;
+                source.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                // Set volume
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                
+                // Start immediately
+                source.start(0);
+                
+                // Clean up after playback
+                source.onended = () => {
+                    source.disconnect();
+                    gainNode.disconnect();
+                };
+            } catch (error) {
+                console.warn("Sound playback error:", error);
+            }
+        }
+
         // Toggle sound
         soundControl.addEventListener('click', () => {
+            // Initialize audio on first interaction if needed
+            if (!isAudioInitialized) {
+                initAudio();
+            }
+            
             soundEnabled = !soundEnabled;
             if (soundEnabled) {
                 soundControl.innerHTML = '<i class="fas fa-volume-up"></i>';
@@ -686,114 +1044,12 @@
                 soundControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
             }
         });
-        
-        // Sound generation functions
-        function playSound(type) {
-            if (!soundEnabled) return;
-            
-            switch(type) {
-                case 'select':
-                    playTone(440, 0.1, 'sine');
-                    break;
-                case 'move':
-                    playTone(523.25, 0.1, 'sine');
-                    break;
-                case 'invalid':
-                    playTone(220, 0.2, 'sawtooth');
-                    break;
-                case 'win':
-                    playWinSound();
-                    break;
-                case 'button':
-                    playTone(349.23, 0.1, 'square');
-                    break;
-                case 'toggle':
-                    playTone(659.25, 0.1, 'sine');
-                    break;
-                case 'levelComplete':
-                    playLevelCompleteSound();
-                    break;
-            }
-        }
-        
-        function playTone(frequency, duration, waveType) {
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            
-            const oscillator = audioContext.createOscillator();
-            const gainNode = audioContext.createGain();
-            
-            oscillator.connect(gainNode);
-            gainNode.connect(audioContext.destination);
-            
-            oscillator.frequency.value = frequency;
-            oscillator.type = waveType;
-            
-            gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
-            
-            oscillator.start(audioContext.currentTime);
-            oscillator.stop(audioContext.currentTime + duration);
-        }
-        
-        function playWinSound() {
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            
-            const notes = [523.25, 659.25, 783.99, 1046.50];
-            let time = audioContext.currentTime;
-            
-            notes.forEach((note, index) => {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = note;
-                oscillator.type = 'sine';
-                
-                gainNode.gain.setValueAtTime(0, time);
-                gainNode.gain.linearRampToValueAtTime(0.1, time + 0.05);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.3);
-                
-                oscillator.start(time);
-                oscillator.stop(time + 0.3);
-                
-                time += 0.15;
-            });
-        }
-        
-        function playLevelCompleteSound() {
-            if (audioContext.state === 'suspended') {
-                audioContext.resume();
-            }
-            
-            const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
-            let time = audioContext.currentTime;
-            
-            notes.forEach((note, index) => {
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = note;
-                oscillator.type = 'triangle';
-                
-                gainNode.gain.setValueAtTime(0, time);
-                gainNode.gain.linearRampToValueAtTime(0.1, time + 0.05);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.4);
-                
-                oscillator.start(time);
-                oscillator.stop(time + 0.4);
-                
-                time += 0.1;
-            });
-        }
+
+        // Initialize audio on any user interaction
+        document.addEventListener('click', function initAudioOnInteraction() {
+            initAudio();
+            document.removeEventListener('click', initAudioOnInteraction);
+        }, { once: true });
 
         // Game configuration - 50 Levels with dynamic tube logic
         const levels = [
@@ -811,10 +1067,8 @@
 
             // Levels 11-20: 4-5 Colors (Easy)
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
-            // LEVEL 12 UPDATED - Added one more empty tube
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [], [], [], []], colors: 5, difficulty: 'Easy' },
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], ['green', 'yellow', 'purple', 'red'], [], []], colors: 5, difficulty: 'Easy' },
-            // LEVEL 14 UPDATED - Removed all orange balls and replaced with other colors
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['green', 'yellow', 'purple'], ['red', 'blue', 'green', 'yellow'], [], []], colors: 5, difficulty: 'Easy' },
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'yellow', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], [], [], []], colors: 5, difficulty: 'Easy' },
             { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'green', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
@@ -893,6 +1147,13 @@
         const nextLevelWinBtn = document.getElementById('next-level-btn');
         const replayBtn = document.getElementById('replay-btn');
         const saveIndicator = document.getElementById('save-indicator');
+        const showAllLevelsBtn = document.getElementById('show-all-levels');
+        const levelsModal = document.getElementById('levels-modal');
+        const closeLevelsBtn = document.getElementById('close-levels');
+        const levelsGrid = document.getElementById('levels-grid');
+        const completedCount = document.getElementById('completed-count');
+        const totalCount = document.getElementById('total-count');
+        const progressPercent = document.getElementById('progress-percent');
 
         // Color mapping
         const colorMap = {
@@ -964,6 +1225,9 @@
                 
                 // Show save indicator
                 showSaveIndicator();
+                
+                // Update stats in levels modal
+                updateLevelStats();
             } catch (error) {
                 console.error('Error saving progress:', error);
             }
@@ -985,9 +1249,97 @@
                 currentLevel = 0;
                 saveProgress();
                 initGame();
+                updateAllLevelsGrid();
                 showSaveIndicator();
                 playSound('button');
             }
+        }
+
+        // Show all levels modal
+        function showAllLevels() {
+            levelsModal.classList.add('show');
+            updateAllLevelsGrid();
+            playSound('button');
+        }
+
+        // Hide all levels modal
+        function hideAllLevels() {
+            levelsModal.classList.remove('show');
+            playSound('button');
+        }
+
+        // Update level statistics
+        function updateLevelStats() {
+            const completed = completedLevels.size;
+            const total = levels.length;
+            const percent = Math.round((completed / total) * 100);
+            
+            completedCount.textContent = completed;
+            totalCount.textContent = total;
+            progressPercent.textContent = `${percent}%`;
+        }
+
+        // Create level button for the grid
+        function createLevelButton(levelIndex) {
+            const levelBtn = document.createElement('div');
+            levelBtn.className = 'level-btn';
+            
+            if (levelIndex === currentLevel) {
+                levelBtn.classList.add('current');
+            } else if (completedLevels.has(levelIndex)) {
+                levelBtn.classList.add('completed');
+            } else if (!isLevelUnlocked(levelIndex)) {
+                levelBtn.classList.add('locked');
+            }
+            
+            levelBtn.textContent = levelIndex + 1;
+            
+            // Show best moves if completed
+            if (completedLevels.has(levelIndex) && bestMoves[levelIndex] !== null) {
+                const movesSpan = document.createElement('span');
+                movesSpan.style.fontSize = '0.6rem';
+                movesSpan.style.position = 'absolute';
+                movesSpan.style.bottom = '-15px';
+                movesSpan.style.left = '0';
+                movesSpan.style.right = '0';
+                movesSpan.style.textAlign = 'center';
+                movesSpan.style.color = '#FFD700';
+                movesSpan.textContent = `★${bestMoves[levelIndex]}`;
+                levelBtn.style.position = 'relative';
+                levelBtn.appendChild(movesSpan);
+            }
+            
+            if (isLevelUnlocked(levelIndex)) {
+                levelBtn.addEventListener('click', () => {
+                    if (levelIndex !== currentLevel) {
+                        currentLevel = levelIndex;
+                        saveProgress();
+                        initGame();
+                        hideAllLevels();
+                        playSound('button');
+                    }
+                });
+            }
+            
+            return levelBtn;
+        }
+
+        // Update all levels grid in modal
+        function updateAllLevelsGrid() {
+            levelsGrid.innerHTML = '';
+            
+            for (let i = 0; i < levels.length; i++) {
+                const levelBtn = createLevelButton(i);
+                levelsGrid.appendChild(levelBtn);
+            }
+            
+            updateLevelStats();
+        }
+
+        // Check if a level is unlocked
+        function isLevelUnlocked(levelIndex) {
+            if (levelIndex === 0) return true;
+            return completedLevels.has(levelIndex - 1);
         }
 
         // Calculate required tubes based on colors
@@ -1307,13 +1659,7 @@
             nextLevelBtn.disabled = currentLevel === levels.length - 1;
         }
 
-        // Check if a level is unlocked
-        function isLevelUnlocked(levelIndex) {
-            if (levelIndex === 0) return true;
-            return completedLevels.has(levelIndex - 1);
-        }
-
-        // Update level pages
+        // Update level pages (pagination)
         function updateLevelPages() {
             levelPages.innerHTML = '';
             const totalPages = Math.ceil(levels.length / levelsPerPage);
@@ -1344,30 +1690,7 @@
             const endLevel = Math.min(startLevel + levelsPerPage, levels.length);
             
             for (let i = startLevel; i < endLevel; i++) {
-                const levelBtn = document.createElement('div');
-                levelBtn.className = 'level-btn';
-                
-                if (i === currentLevel) {
-                    levelBtn.classList.add('current');
-                } else if (completedLevels.has(i)) {
-                    levelBtn.classList.add('completed');
-                } else if (!isLevelUnlocked(i)) {
-                    levelBtn.classList.add('locked');
-                }
-                
-                levelBtn.textContent = i + 1;
-                
-                if (isLevelUnlocked(i)) {
-                    levelBtn.addEventListener('click', () => {
-                        if (i !== currentLevel) {
-                            currentLevel = i;
-                            saveProgress(); // Save when changing level
-                            initGame();
-                            playSound('button');
-                        }
-                    });
-                }
-                
+                const levelBtn = createLevelButton(i);
                 levelContainer.appendChild(levelBtn);
             }
             
@@ -1421,6 +1744,16 @@
             initGame();
             playSound('button');
         });
+        
+        showAllLevelsBtn.addEventListener('click', showAllLevels);
+        closeLevelsBtn.addEventListener('click', hideAllLevels);
+        
+        // Close modal when clicking outside
+        levelsModal.addEventListener('click', (e) => {
+            if (e.target === levelsModal) {
+                hideAllLevels();
+            }
+        });
 
         // Auto-save when changing levels or completing levels
         window.addEventListener('beforeunload', saveProgress);
@@ -1428,6 +1761,7 @@
         // Initialize the game
         loadProgress(); // Load saved progress first
         initGame(); // Then initialize the game
+        updateAllLevelsGrid(); // Prepare the levels grid
     </script>
 </body>
 </html>
