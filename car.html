@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Word Search Puzzle - 10 Levels</title>
+    <title>Word Search Puzzle</title>
     <style>
         * {
             margin: 0;
@@ -33,34 +33,27 @@
             border-radius: 15px;
             padding: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
         }
         
         header {
             text-align: center;
-            margin-bottom: 20px;
-            padding: 0 10px;
+            margin-bottom: 15px;
         }
         
         h1 {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
+            font-size: 1.6rem;
+            margin-bottom: 5px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .mobile-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
         }
         
         .progress-container {
             width: 100%;
             background-color: rgba(255, 255, 255, 0.15);
             border-radius: 8px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             overflow: hidden;
-            height: 8px;
+            height: 6px;
         }
         
         .progress-bar {
@@ -73,11 +66,11 @@
         .game-info {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
             background-color: rgba(255, 255, 255, 0.15);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 0.9rem;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.85rem;
         }
         
         .level-info, .timer, .found-words {
@@ -88,14 +81,14 @@
         .game-area {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
         
         .grid-container {
             position: relative;
             background-color: rgba(255, 255, 255, 0.2);
             padding: 8px;
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
             touch-action: none;
         }
@@ -120,26 +113,25 @@
             user-select: none;
             position: relative;
             z-index: 2;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             aspect-ratio: 1;
-            min-height: 28px;
-            min-width: 28px;
+            min-height: 26px;
+            min-width: 26px;
         }
         
-        /* Responsive font size for grid cells */
         @media (max-width: 480px) {
             .grid-cell {
-                font-size: 0.8rem;
-                min-height: 24px;
-                min-width: 24px;
+                font-size: 0.75rem;
+                min-height: 22px;
+                min-width: 22px;
             }
         }
         
         @media (max-width: 360px) {
             .grid-cell {
                 font-size: 0.7rem;
-                min-height: 22px;
-                min-width: 22px;
+                min-height: 20px;
+                min-width: 20px;
             }
         }
         
@@ -162,31 +154,31 @@
         
         .word-list-container {
             background-color: rgba(255, 255, 255, 0.15);
-            padding: 15px;
-            border-radius: 10px;
+            padding: 12px;
+            border-radius: 8px;
         }
         
         .word-list h2 {
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
         }
         
         .words-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 8px;
-            max-height: 200px;
+            gap: 6px;
+            max-height: 150px;
             overflow-y: auto;
         }
         
         .word-item {
-            padding: 6px;
+            padding: 5px;
             background-color: rgba(255, 255, 255, 0.2);
-            border-radius: 5px;
+            border-radius: 4px;
             text-align: center;
             transition: all 0.3s;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         
         .word-item.found {
@@ -197,29 +189,29 @@
         .controls {
             display: flex;
             justify-content: space-between;
-            margin-top: 15px;
-            gap: 10px;
+            margin-top: 12px;
+            gap: 8px;
         }
         
         button {
-            padding: 12px 20px;
+            padding: 10px 15px;
             border: none;
-            border-radius: 25px;
+            border-radius: 20px;
             background: linear-gradient(to right, #ff416c, #ff4b2b);
             color: white;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
             flex: 1;
-            min-height: 48px;
+            min-height: 42px;
             touch-action: manipulation;
         }
         
         button:hover, button:active {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
         
         button:disabled {
@@ -229,68 +221,16 @@
             box-shadow: none;
         }
         
-        .instructions {
-            margin-top: 20px;
-            background-color: rgba(255, 255, 255, 0.15);
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 0.8rem;
-            display: none; /* Hidden on mobile by default */
-        }
-        
-        .mobile-instructions-toggle {
-            background: rgba(255, 255, 255, 0.2);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-            cursor: pointer;
-            width: 100%;
-        }
-        
-        .instructions.active {
-            display: block;
-        }
-        
-        .instructions h3 {
-            margin-bottom: 8px;
-        }
-        
-        .instructions ul {
-            padding-left: 20px;
-        }
-        
-        .instructions li {
-            margin-bottom: 4px;
-        }
-        
-        .completion-message {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #ffeb3b;
-            display: none;
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-        
         .level-progress {
             display: flex;
             justify-content: space-between;
             margin-top: 8px;
+            margin-bottom: 5px;
         }
         
         .level-dot {
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
             background-color: rgba(255, 255, 255, 0.3);
             transition: all 0.3s;
@@ -306,27 +246,54 @@
             transform: scale(1.2);
         }
         
-        .mobile-controls {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-        }
-        
-        .mobile-action-button {
+        /* Sound toggle - very small in bottom left */
+        .sound-toggle {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
             background: rgba(255, 255, 255, 0.2);
             border: none;
             border-radius: 50%;
-            width: 50px;
-            height: 50px;
+            width: 30px;
+            height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.2rem;
+            font-size: 0.8rem;
             cursor: pointer;
+            z-index: 50;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
-        /* Winning Dialog Styles for Mobile */
+        /* Simple instructions that appear briefly on first load */
+        .quick-tip {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            z-index: 100;
+            max-width: 250px;
+            display: none;
+        }
+        
+        .quick-tip.show {
+            display: block;
+            animation: fadeInOut 5s forwards;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        /* Winning Dialog Styles */
         .winning-dialog {
             position: fixed;
             top: 0;
@@ -352,10 +319,10 @@
         .dialog-content {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
             transform: scale(0.7);
             transition: transform 0.4s ease;
@@ -366,20 +333,20 @@
         }
         
         .dialog-content h2 {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
             color: #ffeb3b;
         }
         
         .dialog-content p {
-            font-size: 1rem;
-            margin-bottom: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 5px;
         }
         
         .dialog-stats {
             display: flex;
             justify-content: space-around;
-            margin: 20px 0;
+            margin: 15px 0;
         }
         
         .stat {
@@ -387,30 +354,30 @@
         }
         
         .stat-value {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: bold;
             color: #ffeb3b;
         }
         
         .stat-label {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             opacity: 0.8;
         }
         
         .dialog-buttons {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 15px;
         }
         
         .dialog-button {
-            padding: 14px;
+            padding: 12px;
             border: none;
-            border-radius: 25px;
+            border-radius: 20px;
             background: rgba(255, 255, 255, 0.2);
             color: white;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
@@ -432,33 +399,14 @@
             }
         }
         
-        /* Touch gesture indicator */
-        .touch-indicator {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10;
-            transform: translate(-50%, -50%);
-            animation: touchPulse 0.5s ease-out;
-            display: none;
-        }
-        
-        @keyframes touchPulse {
-            0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
-        }
-        
         /* Responsive adjustments for tablets */
         @media (min-width: 768px) {
             .container {
-                padding: 25px;
+                padding: 20px;
             }
             
             h1 {
-                font-size: 2.2rem;
+                font-size: 2rem;
             }
             
             .game-area {
@@ -473,37 +421,30 @@
                 flex: 1;
             }
             
-            .instructions {
-                display: block;
-            }
-            
-            .mobile-instructions-toggle {
-                display: none;
-            }
-            
-            .mobile-controls {
-                display: none;
+            .sound-toggle {
+                bottom: 15px;
+                left: 15px;
+                width: 35px;
+                height: 35px;
             }
         }
         
-        /* Hide sound toggle on very small screens */
-        @media (max-width: 320px) {
+        @media (min-width: 1024px) {
             .sound-toggle {
-                display: none;
+                bottom: 20px;
+                left: 20px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="mobile-header">
-            <button class="sound-toggle" id="sound-toggle">🔊</button>
-            <button class="mobile-instructions-toggle" id="instructions-toggle">ℹ️ Show Instructions</button>
-        </div>
-        
         <header>
             <h1>Word Search Puzzle</h1>
-            <p>Find all the hidden words!</p>
+            <p style="font-size: 0.8rem;">Drag to connect letters</p>
         </header>
         
         <div class="progress-container">
@@ -521,7 +462,6 @@
         <div class="game-area">
             <div class="grid-container">
                 <div class="word-grid" id="grid"></div>
-                <div class="touch-indicator" id="touch-indicator"></div>
             </div>
             <div class="word-list-container">
                 <div class="word-list">
@@ -531,42 +471,27 @@
             </div>
         </div>
         
-        <div class="completion-message" id="completion-message">
-            Level Complete! 🎉
-        </div>
-        
         <div class="controls">
-            <button id="prev-level" disabled>← Previous</button>
+            <button id="prev-level" disabled>←</button>
             <button id="reset">Reset</button>
-            <button id="next-level">Next →</button>
-        </div>
-        
-        <div class="mobile-controls">
-            <button class="mobile-action-button" id="mobile-prev">←</button>
-            <button class="mobile-action-button" id="mobile-reset">↻</button>
-            <button class="mobile-action-button" id="mobile-next">→</button>
-        </div>
-        
-        <button class="mobile-instructions-toggle" id="instructions-toggle-bottom">ℹ️ Show Instructions</button>
-        
-        <div class="instructions" id="instructions">
-            <h3>How to Play:</h3>
-            <ul>
-                <li><strong>Touch and drag</strong> to select letters in the grid</li>
-                <li>Words can be found <strong>horizontally, vertically, or diagonally</strong></li>
-                <li>Words can be in <strong>any direction</strong> (forward or backward)</li>
-                <li>Find all words to complete the level</li>
-                <li>Complete all 10 levels to win the game!</li>
-                <li><em>Tip: Use one finger to select letters</em></li>
-            </ul>
+            <button id="next-level" disabled>→</button>
         </div>
     </div>
+
+    <!-- Quick tip for first-time users -->
+    <div class="quick-tip" id="quick-tip">
+        <p>👆 Drag your finger to select words</p>
+        <p style="font-size: 0.8rem; margin-top: 5px;">Words can go in any direction</p>
+    </div>
+
+    <!-- Sound toggle button -->
+    <button class="sound-toggle" id="sound-toggle">🔊</button>
 
     <!-- Winning Dialog -->
     <div class="winning-dialog" id="winning-dialog">
         <div class="dialog-content">
             <h2 id="dialog-title">Level Complete!</h2>
-            <p>Congratulations! You found all the words.</p>
+            <p>Great job! All words found.</p>
             
             <div class="dialog-stats">
                 <div class="stat">
@@ -575,7 +500,7 @@
                 </div>
                 <div class="stat">
                     <div class="stat-value" id="stat-words">0/0</div>
-                    <div class="stat-label">Words Found</div>
+                    <div class="stat-label">Words</div>
                 </div>
                 <div class="stat">
                     <div class="stat-value" id="stat-level">1/10</div>
@@ -647,8 +572,7 @@
         let wordLines = {};
         let soundEnabled = true;
         let levelCompleteTime = 0;
-        let touchStartX = 0;
-        let touchStartY = 0;
+        let hasShownTip = false;
 
         // Audio context for sound effects
         let audioContext;
@@ -708,16 +632,18 @@
             setTimeout(() => playSound(1318.51, 0.5, 'sine'), 600); // E6
         };
 
-        // Show touch feedback
-        function showTouchFeedback(x, y) {
-            const indicator = document.getElementById('touch-indicator');
-            indicator.style.left = x + 'px';
-            indicator.style.top = y + 'px';
-            indicator.style.display = 'block';
-            
-            setTimeout(() => {
-                indicator.style.display = 'none';
-            }, 500);
+        // Show quick tip for first-time users
+        function showQuickTip() {
+            if (!hasShownTip) {
+                const tip = document.getElementById('quick-tip');
+                tip.classList.add('show');
+                hasShownTip = true;
+                
+                // Hide tip after animation
+                setTimeout(() => {
+                    tip.classList.remove('show');
+                }, 5000);
+            }
         }
 
         // Load saved progress from localStorage
@@ -728,6 +654,7 @@
                 completedLevels = progress.completedLevels || [];
                 currentLevel = progress.currentLevel || 0;
                 updateProgressUI();
+                hasShownTip = progress.hasShownTip || false;
             }
         }
 
@@ -735,7 +662,8 @@
         function saveProgress() {
             const progress = {
                 completedLevels: completedLevels,
-                currentLevel: currentLevel
+                currentLevel: currentLevel,
+                hasShownTip: hasShownTip
             };
             localStorage.setItem('wordSearchProgress', JSON.stringify(progress));
         }
@@ -783,8 +711,10 @@
             // Update title for final level completion
             if (currentLevel === gameLevels.length - 1) {
                 titleElement.textContent = "Game Complete! 🏆";
+                document.getElementById('dialog-next').textContent = "Play Again";
             } else {
                 titleElement.textContent = "Level Complete! 🎉";
+                document.getElementById('dialog-next').textContent = "Next Level";
             }
             
             // Show dialog with animation
@@ -813,12 +743,6 @@
         const soundToggle = document.getElementById('sound-toggle');
         const dialogReplayButton = document.getElementById('dialog-replay');
         const dialogNextButton = document.getElementById('dialog-next');
-        const instructionsToggle = document.getElementById('instructions-toggle');
-        const instructionsToggleBottom = document.getElementById('instructions-toggle-bottom');
-        const instructions = document.getElementById('instructions');
-        const mobilePrevButton = document.getElementById('mobile-prev');
-        const mobileResetButton = document.getElementById('mobile-reset');
-        const mobileNextButton = document.getElementById('mobile-next');
 
         // Initialize the game
         function initGame() {
@@ -827,11 +751,8 @@
             setupEventListeners();
             startTimer();
             
-            // Check if mobile device
-            if ('ontouchstart' in window || navigator.maxTouchPoints) {
-                // Add mobile-specific optimizations
-                document.body.classList.add('mobile-device');
-            }
+            // Show quick tip if first time
+            setTimeout(showQuickTip, 1000);
         }
 
         // Load a specific level
@@ -849,11 +770,9 @@
             foundWords = [];
             wordLines = {};
             
-            // Update navigation buttons
+            // Update navigation buttons - only enable next if level is completed
             prevLevelButton.disabled = levelIndex === 0;
-            nextLevelButton.disabled = levelIndex === gameLevels.length - 1;
-            mobilePrevButton.disabled = levelIndex === 0;
-            mobileNextButton.disabled = levelIndex === gameLevels.length - 1;
+            nextLevelButton.disabled = !completedLevels.includes(levelIndex) && levelIndex !== 0;
             
             // Clear any existing word lines
             document.querySelectorAll('.word-line').forEach(line => line.remove());
@@ -969,9 +888,9 @@
             // Adjust grid size for mobile
             const gridContainer = document.querySelector('.grid-container');
             const containerWidth = gridContainer.clientWidth - 16; // Account for padding
-            const cellSize = Math.min(40, Math.floor(containerWidth / level.size) - 2);
+            const cellSize = Math.min(35, Math.floor(containerWidth / level.size) - 2);
             
-            gridElement.style.gap = '2px';
+            gridElement.style.gap = '1px';
             
             for (let i = 0; i < level.size; i++) {
                 for (let j = 0; j < level.size; j++) {
@@ -980,12 +899,14 @@
                     cell.textContent = grid[i][j];
                     cell.dataset.row = i;
                     cell.dataset.col = j;
-                    cell.style.fontSize = cellSize > 30 ? '1rem' : (cellSize > 25 ? '0.9rem' : '0.8rem');
+                    cell.style.fontSize = cellSize > 25 ? '0.85rem' : '0.75rem';
                     
-                    // Add touch events
-                    cell.addEventListener('touchstart', (e) => handleTouchStart(e, i, j));
-                    cell.addEventListener('touchmove', handleTouchMove);
-                    cell.addEventListener('touchend', handleTouchEnd);
+                    // Add touch events for mobile
+                    if ('ontouchstart' in window) {
+                        cell.addEventListener('touchstart', (e) => handleTouchStart(e, i, j));
+                        cell.addEventListener('touchmove', handleTouchMove);
+                        cell.addEventListener('touchend', handleTouchEnd);
+                    }
                     
                     // Add mouse events for desktop
                     cell.addEventListener('mousedown', () => handleMouseDown(i, j));
@@ -1015,13 +936,6 @@
             e.preventDefault();
             isTouchActive = true;
             
-            const touch = e.touches[0];
-            touchStartX = touch.clientX;
-            touchStartY = touch.clientY;
-            
-            // Show touch feedback
-            showTouchFeedback(touch.clientX, touch.clientY);
-            
             // Start selection
             selectedCells = [{ row, col }];
             updateSelectedCells();
@@ -1040,7 +954,7 @@
                 const row = parseInt(element.dataset.row);
                 const col = parseInt(element.dataset.col);
                 
-                handleTouchSelect(row, col);
+                handleSelection(row, col);
             }
         }
 
@@ -1053,8 +967,29 @@
             checkSelectedWord();
         }
 
-        // Handle touch selection
-        function handleTouchSelect(row, col) {
+        // Handle mouse down on a cell
+        function handleMouseDown(row, col) {
+            isTouchActive = true;
+            selectedCells = [{ row, col }];
+            updateSelectedCells();
+            if (soundEnabled) playClickSound();
+        }
+
+        // Handle mouse enter on a cell
+        function handleMouseEnter(row, col) {
+            if (!isTouchActive) return;
+            
+            handleSelection(row, col);
+        }
+
+        // Handle mouse up
+        function handleMouseUp() {
+            isTouchActive = false;
+            checkSelectedWord();
+        }
+
+        // Handle selection logic (common for both touch and mouse)
+        function handleSelection(row, col) {
             const lastCell = selectedCells[selectedCells.length - 1];
             
             // Only add cell if it's adjacent to the last selected cell
@@ -1083,27 +1018,6 @@
                     updateSelectedCells();
                 }
             }
-        }
-
-        // Handle mouse down on a cell
-        function handleMouseDown(row, col) {
-            isTouchActive = true;
-            selectedCells = [{ row, col }];
-            updateSelectedCells();
-            if (soundEnabled) playClickSound();
-        }
-
-        // Handle mouse enter on a cell
-        function handleMouseEnter(row, col) {
-            if (!isTouchActive) return;
-            
-            handleTouchSelect(row, col);
-        }
-
-        // Handle mouse up
-        function handleMouseUp() {
-            isTouchActive = false;
-            checkSelectedWord();
         }
 
         // Update the visual state of selected cells
@@ -1153,7 +1067,7 @@
             const line = document.createElement('div');
             line.className = 'word-line';
             line.style.width = `${length}px`;
-            line.style.height = '4px';
+            line.style.height = '3px';
             line.style.left = `${startX}px`;
             line.style.top = `${startY}px`;
             line.style.transform = `rotate(${angle}deg)`;
@@ -1236,6 +1150,11 @@
                         completedLevels.push(currentLevel);
                         saveProgress();
                         updateProgressUI();
+                        
+                        // Enable next level button
+                        if (currentLevel < gameLevels.length - 1) {
+                            nextLevelButton.disabled = false;
+                        }
                     }
                     
                     // Show winning dialog after a short delay
@@ -1269,19 +1188,20 @@
         function setupEventListeners() {
             // Navigation buttons
             prevLevelButton.addEventListener('click', () => {
-                if (currentLevel > 0) {
-                    hideWinningDialog();
-                    loadLevel(currentLevel - 1);
-                    startTimer();
-                }
+                hideWinningDialog();
+                loadLevel(currentLevel - 1);
+                startTimer();
             });
             
             nextLevelButton.addEventListener('click', () => {
+                hideWinningDialog();
                 if (currentLevel < gameLevels.length - 1) {
-                    hideWinningDialog();
                     loadLevel(currentLevel + 1);
-                    startTimer();
+                } else {
+                    // If last level, go back to first
+                    loadLevel(0);
                 }
+                startTimer();
             });
             
             resetButton.addEventListener('click', () => {
@@ -1290,50 +1210,13 @@
                 startTimer();
             });
             
-            // Mobile navigation buttons
-            mobilePrevButton.addEventListener('click', () => {
-                if (currentLevel > 0) {
-                    hideWinningDialog();
-                    loadLevel(currentLevel - 1);
-                    startTimer();
-                }
-            });
-            
-            mobileResetButton.addEventListener('click', () => {
-                hideWinningDialog();
-                loadLevel(currentLevel);
-                startTimer();
-            });
-            
-            mobileNextButton.addEventListener('click', () => {
-                if (currentLevel < gameLevels.length - 1) {
-                    hideWinningDialog();
-                    loadLevel(currentLevel + 1);
-                    startTimer();
-                }
-            });
-            
+            // Sound toggle
             soundToggle.addEventListener('click', () => {
                 soundEnabled = !soundEnabled;
                 soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
                 
                 // Play a test sound when enabling
                 if (soundEnabled) playClickSound();
-            });
-            
-            // Instructions toggle
-            instructionsToggle.addEventListener('click', () => {
-                instructions.classList.toggle('active');
-                instructionsToggle.textContent = instructions.classList.contains('active') 
-                    ? 'ℹ️ Hide Instructions' 
-                    : 'ℹ️ Show Instructions';
-            });
-            
-            instructionsToggleBottom.addEventListener('click', () => {
-                instructions.classList.toggle('active');
-                instructionsToggleBottom.textContent = instructions.classList.contains('active') 
-                    ? 'ℹ️ Hide Instructions' 
-                    : 'ℹ️ Show Instructions';
             });
             
             // Dialog button event listeners
@@ -1347,8 +1230,11 @@
                 hideWinningDialog();
                 if (currentLevel < gameLevels.length - 1) {
                     loadLevel(currentLevel + 1);
-                    startTimer();
+                } else {
+                    // If last level, go back to first
+                    loadLevel(0);
                 }
+                startTimer();
             });
             
             // Prevent default touch behaviors
