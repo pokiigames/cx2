@@ -156,6 +156,16 @@
             font-weight: 800;
         }
         
+        /* Red blink animation for wrong words */
+        @keyframes blinkRed {
+            0%, 100% { background-color: rgba(255, 255, 255, 0.9); }
+            50% { background-color: #FF6B6B; }
+        }
+        
+        .grid-cell.blink-red {
+            animation: blinkRed 0.3s ease 2;
+        }
+        
         /* Word lines with different colors */
         .word-line {
             position: absolute;
@@ -471,7 +481,7 @@
         <div class="level-progress" id="level-progress"></div>
         
         <div class="game-info">
-            <div class="level-info">Level: <span id="level">1</span>/10</div>
+            <div class="level-info">Level: <span id="level">1</span>/20</div>
             <div class="timer">Time: <span id="time">00:00</span></div>
             <div class="found-words">Found: <span id="found">0</span>/<span id="total">3</span></div>
         </div>
@@ -520,7 +530,7 @@
                     <div class="stat-label">Words</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value" id="stat-level">1/10</div>
+                    <div class="stat-value" id="stat-level">1/20</div>
                     <div class="stat-label">Level</div>
                 </div>
             </div>
@@ -538,7 +548,9 @@
             '#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', '#118AB2',
             '#EF476F', '#FFD166', '#06D6A0', '#073B4C', '#7209B7',
             '#F72585', '#3A0CA3', '#4361EE', '#4CC9F0', '#FF006E',
-            '#8338EC', '#3A86FF', '#FB5607', '#FFBE0B', '#8338EC'
+            '#8338EC', '#3A86FF', '#FB5607', '#FFBE0B', '#8338EC',
+            '#FF9E00', '#32CD32', '#8A2BE2', '#FF1493', '#00CED1',
+            '#FFD700', '#7CFC00', '#DC143C', '#00BFFF', '#FF8C00'
         ];
 
         // Game levels with progressive difficulty - ALL USING 10x10 GRIDS
@@ -585,13 +597,64 @@
             },
             {
                 size: 10,
-                words: ["ARCHITECTURE", "FOUNDATION", "STRUCTURE", "BUILDING", "COLUMN", "FACADE"],
+                words: ["MARVEL", "FOUNDATION", "STRUCTURE", "BUILDING", "COLUMN", "FACADE"],
                 description: "Level 9: Architectural Marvels"
             },
             {
                 size: 10,
                 words: ["BIODIVERSITY", "ECOSYSTEM", "HABITAT", "SPECIES", "CONSERVATION", "WILDLIFE"],
                 description: "Level 10: Nature's Balance"
+            },
+            // NEW LEVELS 11-20
+            {
+                size: 10,
+                words: ["PYTHON", "JAVASCRIPT", "HTML", "CSS", "REACT", "NODEJS"],
+                description: "Level 11: Programming Languages"
+            },
+            {
+                size: 10,
+                words: ["FOOTBALL", "BASKETBALL", "TENNIS", "CRICKET", "HOCKEY", "BASEBALL"],
+                description: "Level 12: Sports World"
+            },
+            {
+                size: 10,
+                words: ["CHOCOLATE", "VANILLA", "STRAWBERRY", "CARAMEL", "PISTACHIO", "COFFEE"],
+                description: "Level 13: Ice Cream Flavors"
+            },
+            {
+                size: 10,
+                words: ["EINSTEIN", "NEWTON", "CURIE", "TESLA", "EDISON", "GALILEO"],
+                description: "Level 14: Famous Scientists"
+            },
+            {
+                size: 10,
+                words: ["LONDON", "PARIS", "TOKYO", "NEWYORK", "DUBAI", "SYDNEY"],
+                description: "Level 15: World Cities"
+            },
+            {
+                size: 10,
+                words: ["PHOTOGRAPHY", "PAINTING", "SCULPTURE", "MUSIC", "DANCE", "THEATER"],
+                description: "Level 16: Art Forms"
+            },
+            {
+                size: 10,
+                words: ["EVEREST", "KILIMANJARO", "FUJI", "ALPS", "ANDES", "ROCKIES"],
+                description: "Level 17: Mountain Ranges"
+            },
+            {
+                size: 10,
+                words: ["AMAZON", "NILE", "YANGTZE", "MISSISSIPPI", "DANUBE", "GANGES"],
+                description: "Level 18: World Rivers"
+            },
+            {
+                size: 10,
+                words: ["SUPERMAN", "BATMAN", "WONDERWOMAN", "SPIDERMAN", "IRONMAN", "HULK"],
+                description: "Level 19: Superheroes"
+            },
+            {
+                size: 10,
+                words: ["CHESS", "MONOPOLY", "SCRABBLE", "SUDOKU", "PUZZLE", "CARDS"],
+                description: "Level 20: Games & Puzzles"
             }
         ];
 
@@ -1040,6 +1103,7 @@
         function updateSelectedCells() {
             document.querySelectorAll('.grid-cell').forEach(cell => {
                 cell.classList.remove('selected');
+                cell.classList.remove('blink-red'); // Remove any previous red blink
             });
             
             selectedCells.forEach(cell => {
@@ -1096,6 +1160,20 @@
                 if (cellElement) {
                     cellElement.style.backgroundColor = wordColorMap[word] || wordColors[0];
                     cellElement.style.boxShadow = `0 0 5px ${wordColorMap[word] || wordColors[0]}`;
+                }
+            });
+        }
+
+        // Blink red on wrong word selection
+        function blinkWrongWord() {
+            selectedCells.forEach(cell => {
+                const cellElement = document.querySelector(`.grid-cell[data-row="${cell.row}"][data-col="${cell.col}"]`);
+                if (cellElement) {
+                    cellElement.classList.add('blink-red');
+                    // Remove the animation class after animation completes
+                    setTimeout(() => {
+                        cellElement.classList.remove('blink-red');
+                    }, 600); // 2 blinks * 0.3s each = 0.6s
                 }
             });
         }
@@ -1165,6 +1243,8 @@
                 }
             } else if (foundWord === null) {
                 if (soundEnabled) playErrorSound();
+                // No line drawing for wrong words - just blink red
+                blinkWrongWord();
             }
             
             selectedCells = [];
