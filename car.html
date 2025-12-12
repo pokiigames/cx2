@@ -24,6 +24,281 @@
             padding: 10px;
             overflow-x: hidden;
         }
+
+        /* Home Page Styles */
+        .home-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100vh;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .game-title {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff, #ff9a00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 219, 222, 0.3);
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px rgba(0, 219, 222, 0.3); }
+            100% { text-shadow: 0 0 30px rgba(252, 0, 255, 0.5); }
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: #aaa;
+            max-width: 500px;
+        }
+
+        .home-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 40px;
+        }
+
+        .home-button {
+            padding: 18px 30px;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 20px rgba(0, 219, 222, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .home-button:hover, .home-button:active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 219, 222, 0.5);
+        }
+
+        .home-button::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .home-button:hover::after {
+            left: 100%;
+        }
+
+        .sound-toggle-home {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 219, 222, 0.2);
+            border: 2px solid rgba(0, 219, 222, 0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00dbde;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 50;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .sound-toggle-home:hover {
+            transform: scale(1.1);
+            background: rgba(0, 219, 222, 0.3);
+        }
+
+        .level-selection {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(26, 26, 46, 0.95), rgba(22, 33, 62, 0.95));
+            z-index: 100;
+            overflow-y: auto;
+            padding: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .level-selection.active {
+            display: block;
+        }
+
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .level-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #00dbde, #fc00ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .level-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .level-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #00dbde;
+        }
+
+        .level-card.completed {
+            background: rgba(0, 219, 222, 0.2);
+            border-color: #00dbde;
+        }
+
+        .level-card.current {
+            border-color: #ffeb3b;
+            background: rgba(255, 235, 59, 0.1);
+        }
+
+        .level-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+            filter: grayscale(0.5);
+        }
+
+        .level-card.locked:hover {
+            transform: none;
+            background: rgba(255, 255, 255, 0.1);
+            border-color: transparent;
+        }
+
+        .lock-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.5);
+            z-index: 2;
+        }
+
+        .level-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00dbde;
+            margin-bottom: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .level-card.locked .level-number {
+            color: #888;
+        }
+
+        .level-status {
+            font-size: 0.8rem;
+            color: #aaa;
+            position: relative;
+            z-index: 1;
+        }
+
+        .level-card.locked .level-status {
+            color: #666;
+        }
+
+        .level-progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+            position: relative;
+            z-index: 1;
+        }
+
+        .level-progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #00dbde, #fc00ff);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .close-levels {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #00dbde;
+            font-size: 2rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s;
+        }
+
+        .close-levels:hover {
+            background: rgba(0, 219, 222, 0.1);
+            transform: rotate(90deg);
+        }
+
+        /* Game Page Styles - Hidden initially */
+        .game-page {
+            display: none;
+            width: 100%;
+        }
+
+        .game-page.active {
+            display: block;
+        }
         
         .container {
             width: 100%;
@@ -136,6 +411,16 @@
                 min-height: 22px;
                 min-width: 22px;
             }
+            .game-title {
+                font-size: 2.2rem;
+            }
+            .subtitle {
+                font-size: 1rem;
+            }
+            .home-button {
+                padding: 15px 25px;
+                font-size: 1.1rem;
+            }
         }
         
         @media (max-width: 360px) {
@@ -143,6 +428,13 @@
                 font-size: 0.7rem;
                 min-height: 20px;
                 min-width: 20px;
+            }
+            .game-title {
+                font-size: 1.8rem;
+            }
+            .home-button {
+                padding: 14px 22px;
+                font-size: 1rem;
             }
         }
         
@@ -275,8 +567,12 @@
             box-shadow: 0 0 10px #ffeb3b;
         }
         
-        /* Sound toggle */
-        .sound-toggle {
+        .level-dot.locked {
+            opacity: 0.3;
+        }
+        
+        /* Sound toggle in game */
+        .sound-toggle-game {
             position: fixed;
             bottom: 10px;
             left: 10px;
@@ -426,6 +722,26 @@
             border: none;
         }
         
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 219, 222, 0.1);
+            border: 1px solid rgba(0, 219, 222, 0.3);
+            color: #00dbde;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            z-index: 10;
+        }
+        
+        .back-button:hover {
+            background: rgba(0, 219, 222, 0.2);
+            transform: translateY(-2px);
+        }
+        
         /* Responsive adjustments */
         @media (min-width: 768px) {
             .container {
@@ -448,7 +764,7 @@
                 flex: 1;
             }
             
-            .sound-toggle {
+            .sound-toggle-game {
                 bottom: 15px;
                 left: 15px;
                 width: 35px;
@@ -457,7 +773,7 @@
         }
         
         @media (min-width: 1024px) {
-            .sound-toggle {
+            .sound-toggle-game {
                 bottom: 20px;
                 left: 20px;
                 width: 40px;
@@ -468,76 +784,108 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Word Search Puzzle</h1>
-            <p style="font-size: 0.8rem; color: #aaa;">Drag to connect letters • Different color for each word</p>
-        </header>
+    <!-- Home Page -->
+    <div class="home-page" id="home-page">
+        <h1 class="game-title">Word Search Puzzle</h1>
+        <p class="subtitle">Find hidden words in the grid. Drag to connect letters. Each word has a unique color!</p>
         
-        <div class="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+        <div class="home-buttons">
+            <button class="home-button" id="play-button">🎮 Play Now</button>
+            <button class="home-button" id="levels-button">📊 Select Level</button>
         </div>
         
-        <div class="level-progress" id="level-progress"></div>
-        
-        <div class="game-info">
-            <div class="level-info">Level: <span id="level">1</span>/20</div>
-            <div class="timer">Time: <span id="time">00:00</span></div>
-            <div class="found-words">Found: <span id="found">0</span>/<span id="total">3</span></div>
+        <div class="sound-toggle-home" id="sound-toggle-home">🔊</div>
+    </div>
+
+    <!-- Level Selection Modal -->
+    <div class="level-selection" id="level-selection">
+        <div class="level-header">
+            <h2>Select Level</h2>
+            <p>Complete levels sequentially to unlock new ones</p>
         </div>
         
-        <div class="game-area">
-            <div class="grid-container">
-                <div class="word-grid" id="grid"></div>
-            </div>
-            <div class="word-list-container">
-                <div class="word-list">
-                    <h2>Words to Find</h2>
-                    <div class="words-container" id="word-list"></div>
-                </div>
-            </div>
-        </div>
+        <button class="close-levels" id="close-levels">×</button>
         
-        <div class="controls">
-            <button id="prev-level" disabled>←</button>
-            <button id="reset">Reset</button>
-            <button id="next-level" disabled>→</button>
+        <div class="level-grid" id="level-grid">
+            <!-- Levels will be generated here -->
         </div>
     </div>
 
-    <!-- Quick tip -->
-    <div class="quick-tip" id="quick-tip">
-        <p>👆 Drag to select words</p>
-        <p style="font-size: 0.8rem; margin-top: 5px; color: #00dbde;">Each word has a different color!</p>
-    </div>
-
-    <!-- Sound toggle -->
-    <button class="sound-toggle" id="sound-toggle">🔊</button>
-
-    <!-- Winning Dialog -->
-    <div class="winning-dialog" id="winning-dialog">
-        <div class="dialog-content">
-            <h2 id="dialog-title">Level Complete!</h2>
-            <p>Great job! All words found.</p>
+    <!-- Game Page -->
+    <div class="game-page" id="game-page">
+        <button class="back-button" id="back-button">← Back</button>
+        
+        <div class="container">
+            <header>
+                <h1>Word Search Puzzle</h1>
+                <p style="font-size: 0.8rem; color: #aaa;" id="level-description">Level 1: Easy Start</p>
+            </header>
             
-            <div class="dialog-stats">
-                <div class="stat">
-                    <div class="stat-value" id="stat-time">00:00</div>
-                    <div class="stat-label">Time</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+            
+            <div class="level-progress" id="level-progress"></div>
+            
+            <div class="game-info">
+                <div class="level-info">Level: <span id="level">1</span>/20</div>
+                <div class="timer">Time: <span id="time">00:00</span></div>
+                <div class="found-words">Found: <span id="found">0</span>/<span id="total">3</span></div>
+            </div>
+            
+            <div class="game-area">
+                <div class="grid-container">
+                    <div class="word-grid" id="grid"></div>
                 </div>
-                <div class="stat">
-                    <div class="stat-value" id="stat-words">0/0</div>
-                    <div class="stat-label">Words</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-value" id="stat-level">1/20</div>
-                    <div class="stat-label">Level</div>
+                <div class="word-list-container">
+                    <div class="word-list">
+                        <h2>Words to Find</h2>
+                        <div class="words-container" id="word-list"></div>
+                    </div>
                 </div>
             </div>
             
-            <div class="dialog-buttons">
-                <button class="dialog-button" id="dialog-replay">Play Again</button>
-                <button class="dialog-button primary" id="dialog-next">Next Level</button>
+            <div class="controls">
+                <button id="prev-level" disabled>←</button>
+                <button id="reset">Reset</button>
+                <button id="next-level" disabled>→</button>
+            </div>
+        </div>
+
+        <!-- Quick tip -->
+        <div class="quick-tip" id="quick-tip">
+            <p>👆 Drag to select words</p>
+            <p style="font-size: 0.8rem; margin-top: 5px; color: #00dbde;">Each word has a different color!</p>
+        </div>
+
+        <!-- Sound toggle in game -->
+        <button class="sound-toggle-game" id="sound-toggle-game">🔊</button>
+
+        <!-- Winning Dialog -->
+        <div class="winning-dialog" id="winning-dialog">
+            <div class="dialog-content">
+                <h2 id="dialog-title">Level Complete!</h2>
+                <p>Great job! All words found.</p>
+                
+                <div class="dialog-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="stat-time">00:00</div>
+                        <div class="stat-label">Time</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="stat-words">0/0</div>
+                        <div class="stat-label">Words</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="stat-level">1/20</div>
+                        <div class="stat-label">Level</div>
+                    </div>
+                </div>
+                
+                <div class="dialog-buttons">
+                    <button class="dialog-button" id="dialog-replay">Play Again</button>
+                    <button class="dialog-button primary" id="dialog-next">Next Level</button>
+                </div>
             </div>
         </div>
     </div>
@@ -602,7 +950,7 @@
             },
             {
                 size: 10,
-                words: ["VERSITY", "ECOSYSTEM", "HABITAT", "SPECIES", "CONSERVATION", "WILDLIFE"],
+                words: ["BIODIVERSITY", "ECOSYSTEM", "HABITAT", "SPECIES", "CONSERVATION", "WILDLIFE"],
                 description: "Level 10: Nature's Balance"
             },
             // NEW LEVELS 11-20
@@ -673,6 +1021,32 @@
         let levelCompleteTime = 0;
         let hasShownTip = false;
 
+        // DOM Elements
+        const homePage = document.getElementById('home-page');
+        const gamePage = document.getElementById('game-page');
+        const levelSelection = document.getElementById('level-selection');
+        const playButton = document.getElementById('play-button');
+        const levelsButton = document.getElementById('levels-button');
+        const closeLevelsButton = document.getElementById('close-levels');
+        const levelGrid = document.getElementById('level-grid');
+        const backButton = document.getElementById('back-button');
+        const soundToggleHome = document.getElementById('sound-toggle-home');
+        const soundToggleGame = document.getElementById('sound-toggle-game');
+
+        // Game DOM elements
+        const gridElement = document.getElementById('grid');
+        const wordListElement = document.getElementById('word-list');
+        const levelElement = document.getElementById('level');
+        const timeElement = document.getElementById('time');
+        const foundElement = document.getElementById('found');
+        const totalElement = document.getElementById('total');
+        const levelDescription = document.getElementById('level-description');
+        const prevLevelButton = document.getElementById('prev-level');
+        const nextLevelButton = document.getElementById('next-level');
+        const resetButton = document.getElementById('reset');
+        const dialogReplayButton = document.getElementById('dialog-replay');
+        const dialogNextButton = document.getElementById('dialog-next');
+
         // Audio context for sound effects
         let audioContext;
         try {
@@ -680,7 +1054,8 @@
         } catch (e) {
             console.log("Web Audio API is not supported in this browser");
             soundEnabled = false;
-            document.getElementById('sound-toggle').style.display = 'none';
+            soundToggleHome.style.display = 'none';
+            soundToggleGame.style.display = 'none';
         }
 
         // Sound effects
@@ -731,6 +1106,19 @@
             setTimeout(() => playSound(1318.51, 0.5, 'sine'), 600); // E6
         };
 
+        const playMenuClickSound = () => {
+            playSound(440, 0.1, 'sine'); // A4
+        };
+
+        // Check if a level is unlocked
+        function isLevelUnlocked(levelIndex) {
+            // Level 1 is always unlocked
+            if (levelIndex === 0) return true;
+            
+            // Other levels are unlocked only if previous level is completed
+            return completedLevels.includes(levelIndex - 1);
+        }
+
         // Show quick tip
         function showQuickTip() {
             if (!hasShownTip) {
@@ -751,8 +1139,19 @@
                 const progress = JSON.parse(savedProgress);
                 completedLevels = progress.completedLevels || [];
                 currentLevel = progress.currentLevel || 0;
+                soundEnabled = progress.soundEnabled !== undefined ? progress.soundEnabled : true;
+                updateSoundButton();
                 updateProgressUI();
                 hasShownTip = progress.hasShownTip || false;
+                
+                // Ensure Level 1 is always available by marking it as unlocked
+                if (!completedLevels.includes(0)) {
+                    // Level 1 is always unlocked but not necessarily completed
+                }
+            } else {
+                // New player - Level 1 is unlocked by default
+                completedLevels = [];
+                currentLevel = 0;
             }
         }
 
@@ -761,6 +1160,7 @@
             const progress = {
                 completedLevels: completedLevels,
                 currentLevel: currentLevel,
+                soundEnabled: soundEnabled,
                 hasShownTip: hasShownTip
             };
             localStorage.setItem('wordSearchProgress', JSON.stringify(progress));
@@ -782,10 +1182,19 @@
                     dot.classList.add('completed');
                 } else if (i === currentLevel) {
                     dot.classList.add('current');
+                } else if (!isLevelUnlocked(i)) {
+                    dot.classList.add('locked');
                 }
                 
                 levelProgress.appendChild(dot);
             }
+        }
+
+        // Update sound button
+        function updateSoundButton() {
+            const icon = soundEnabled ? '🔊' : '🔇';
+            soundToggleHome.textContent = icon;
+            soundToggleGame.textContent = icon;
         }
 
         // Show winning dialog
@@ -823,32 +1232,104 @@
             dialog.classList.remove('active');
         }
 
-        // DOM elements
-        const gridElement = document.getElementById('grid');
-        const wordListElement = document.getElementById('word-list');
-        const levelElement = document.getElementById('level');
-        const timeElement = document.getElementById('time');
-        const foundElement = document.getElementById('found');
-        const totalElement = document.getElementById('total');
-        const prevLevelButton = document.getElementById('prev-level');
-        const nextLevelButton = document.getElementById('next-level');
-        const resetButton = document.getElementById('reset');
-        const soundToggle = document.getElementById('sound-toggle');
-        const dialogReplayButton = document.getElementById('dialog-replay');
-        const dialogNextButton = document.getElementById('dialog-next');
+        // Show level selection
+        function showLevelSelection() {
+            levelSelection.classList.add('active');
+            renderLevelGrid();
+            if (soundEnabled) playMenuClickSound();
+        }
 
-        // Initialize game
-        function initGame() {
-            loadProgress();
+        // Hide level selection
+        function hideLevelSelection() {
+            levelSelection.classList.remove('active');
+            if (soundEnabled) playMenuClickSound();
+        }
+
+        // Render level grid
+        function renderLevelGrid() {
+            levelGrid.innerHTML = '';
+            
+            gameLevels.forEach((level, index) => {
+                const isUnlocked = isLevelUnlocked(index);
+                const isCompleted = completedLevels.includes(index);
+                
+                const levelCard = document.createElement('div');
+                levelCard.className = 'level-card';
+                
+                if (!isUnlocked) {
+                    levelCard.classList.add('locked');
+                } else if (isCompleted) {
+                    levelCard.classList.add('completed');
+                }
+                
+                if (index === currentLevel) {
+                    levelCard.classList.add('current');
+                }
+                
+                levelCard.innerHTML = `
+                    <div class="level-number">${index + 1}</div>
+                    <div class="level-status">${level.words.length} words</div>
+                    <div class="level-progress-bar">
+                        <div class="level-progress-fill" style="width: ${isCompleted ? '100%' : '0%'}"></div>
+                    </div>
+                    ${!isUnlocked ? '<div class="lock-icon">🔒</div>' : ''}
+                `;
+                
+                if (isUnlocked) {
+                    levelCard.addEventListener('click', () => {
+                        currentLevel = index;
+                        hideLevelSelection();
+                        startGame();
+                        if (soundEnabled) playMenuClickSound();
+                    });
+                } else {
+                    levelCard.addEventListener('click', () => {
+                        if (soundEnabled) playErrorSound();
+                        // Show message about locked level
+                        alert(`Complete Level ${index} to unlock this level!`);
+                    });
+                }
+                
+                levelGrid.appendChild(levelCard);
+            });
+        }
+
+        // Start game
+        function startGame() {
+            homePage.style.display = 'none';
+            gamePage.classList.add('active');
             loadLevel(currentLevel);
-            setupEventListeners();
             startTimer();
             
             setTimeout(showQuickTip, 1000);
         }
 
+        // Back to home
+        function backToHome() {
+            clearInterval(timerInterval);
+            gamePage.classList.remove('active');
+            homePage.style.display = 'flex';
+            hideWinningDialog();
+            if (soundEnabled) playMenuClickSound();
+        }
+
+        // Initialize game
+        function initGame() {
+            loadProgress();
+            setupEventListeners();
+        }
+
         // Load a level
         function loadLevel(levelIndex) {
+            // Check if level is unlocked
+            if (!isLevelUnlocked(levelIndex)) {
+                alert("This level is locked! Complete previous levels to unlock.");
+                if (levelIndex > 0) {
+                    currentLevel = levelIndex - 1;
+                }
+                return;
+            }
+            
             currentLevel = levelIndex;
             const level = gameLevels[levelIndex];
             
@@ -856,9 +1337,7 @@
             levelElement.textContent = levelIndex + 1;
             totalElement.textContent = level.words.length;
             foundElement.textContent = '0';
-            
-            // Update header
-            document.querySelector('p').textContent = level.description;
+            levelDescription.textContent = level.description;
             
             // Reset game state
             selectedCells = [];
@@ -872,8 +1351,8 @@
             });
             
             // Update navigation buttons
-            prevLevelButton.disabled = levelIndex === 0;
-            nextLevelButton.disabled = !completedLevels.includes(levelIndex) && levelIndex !== 0;
+            prevLevelButton.disabled = levelIndex === 0 || !isLevelUnlocked(levelIndex - 1);
+            nextLevelButton.disabled = levelIndex === gameLevels.length - 1 || !isLevelUnlocked(levelIndex + 1);
             
             // Clear existing word lines
             document.querySelectorAll('.word-line').forEach(line => line.remove());
@@ -1234,6 +1713,7 @@
                         saveProgress();
                         updateProgressUI();
                         
+                        // Unlock next level if exists
                         if (currentLevel < gameLevels.length - 1) {
                             nextLevelButton.disabled = false;
                         }
@@ -1266,12 +1746,36 @@
             }, 1000);
         }
 
+        // Toggle sound
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            updateSoundButton();
+            saveProgress();
+            if (soundEnabled) playMenuClickSound();
+        }
+
         // Setup event listeners
         function setupEventListeners() {
+            // Home page buttons
+            playButton.addEventListener('click', () => {
+                startGame();
+                if (soundEnabled) playMenuClickSound();
+            });
+            
+            levelsButton.addEventListener('click', showLevelSelection);
+            
+            soundToggleHome.addEventListener('click', toggleSound);
+            soundToggleGame.addEventListener('click', toggleSound);
+            
+            closeLevelsButton.addEventListener('click', hideLevelSelection);
+            backButton.addEventListener('click', backToHome);
+            
+            // Game control buttons
             prevLevelButton.addEventListener('click', () => {
                 hideWinningDialog();
                 loadLevel(currentLevel - 1);
                 startTimer();
+                if (soundEnabled) playMenuClickSound();
             });
             
             nextLevelButton.addEventListener('click', () => {
@@ -1282,24 +1786,21 @@
                     loadLevel(0);
                 }
                 startTimer();
+                if (soundEnabled) playMenuClickSound();
             });
             
             resetButton.addEventListener('click', () => {
                 hideWinningDialog();
                 loadLevel(currentLevel);
                 startTimer();
-            });
-            
-            soundToggle.addEventListener('click', () => {
-                soundEnabled = !soundEnabled;
-                soundToggle.textContent = soundEnabled ? '🔊' : '🔇';
-                if (soundEnabled) playClickSound();
+                if (soundEnabled) playMenuClickSound();
             });
             
             dialogReplayButton.addEventListener('click', () => {
                 hideWinningDialog();
                 loadLevel(currentLevel);
                 startTimer();
+                if (soundEnabled) playMenuClickSound();
             });
             
             dialogNextButton.addEventListener('click', () => {
@@ -1310,6 +1811,7 @@
                     loadLevel(0);
                 }
                 startTimer();
+                if (soundEnabled) playMenuClickSound();
             });
             
             document.addEventListener('touchmove', (e) => {
