@@ -6,6 +6,7 @@
     <title>Ball Sort Puzzle</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* COMMON STYLES */
         * {
             margin: 0;
             padding: 0;
@@ -17,13 +18,381 @@
         body {
             background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
             min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+        
+        /* HOME PAGE STYLES */
+        .homepage {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 10px;
+            min-height: 100vh;
+        }
+        
+        .home-container {
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 20px;
+        }
+        
+        /* Header and Logo */
+        .header {
+            margin-bottom: 30px;
+            text-align: center;
+            position: relative;
+            padding-top: 10px;
+        }
+        
+        .logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 4rem;
+            color: #FFD700;
+            margin-bottom: 10px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        h1 {
+            font-size: clamp(2.5rem, 7vw, 3.5rem);
+            margin-bottom: 5px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(45deg, #FFD700, #FFA500, #FF6347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+        }
+        
+        .tagline {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        /* Main Play Button */
+        .play-button-container {
+            margin: 30px 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .play-button {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF5722, #FF9800);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), inset 0 -5px 15px rgba(0, 0, 0, 0.2);
+            border: 5px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .play-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4), inset 0 -5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .play-button:active {
+            transform: scale(0.98);
+        }
+        
+        .play-button i {
+            font-size: 5rem;
             color: white;
-            overflow-x: hidden;
-            touch-action: manipulation;
+            margin-left: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .play-button-text {
+            position: absolute;
+            bottom: -30px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Game Stats */
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #FFD700;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Level Navigation Section */
+        .level-section {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #FFD700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .level-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .level-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.2);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .level-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .level-btn.current {
+            background: linear-gradient(135deg, #FF5722, #FF9800);
+            border-color: #FF5722;
+            transform: scale(1.1);
+            box-shadow: 0 0 15px rgba(255, 87, 34, 0.7);
+        }
+        
+        .level-btn.completed {
+            background: linear-gradient(135deg, #2196F3, #03A9F4);
+            border-color: #2196F3;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+        }
+        
+        .level-btn.locked {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.1);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        
+        .level-btn.locked i {
+            font-size: 1.5rem;
+        }
+        
+        .level-btn .best-moves {
+            position: absolute;
+            bottom: -18px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.7rem;
+            color: #FFD700;
+            font-weight: bold;
+        }
+        
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .action-btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+            background: linear-gradient(135deg, #2196F3, #03A9F4);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 160px;
+            justify-content: center;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .action-btn.reset {
+            background: linear-gradient(135deg, #f44336, #E53935);
+        }
+        
+        .action-btn.help {
+            background: linear-gradient(135deg, #4CAF50, #43A047);
+        }
+        
+        /* Footer Controls */
+        .footer-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-top: auto;
+            padding-top: 20px;
+        }
+        
+        .back-button {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+        
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(-5px);
+        }
+        
+        .back-button i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .sound-control {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .sound-control:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(1.05);
+        }
+        
+        .sound-control i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        /* Instructions */
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: left;
+        }
+        
+        .instructions h3 {
+            color: #FFD700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        /* GAME PAGE STYLES */
+        .gamepage {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            min-height: 100vh;
         }
         
         .container {
@@ -39,16 +408,6 @@
             margin-bottom: 10px;
             text-align: center;
             flex-shrink: 0;
-        }
-        
-        h1 {
-            font-size: clamp(1.4rem, 5vw, 1.8rem);
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(45deg, #FFD700, #FFA500, #FF6347);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
         
         .game-info {
@@ -109,7 +468,7 @@
             box-shadow: 0 0 6px rgba(76, 175, 80, 0.7);
         }
         
-        .level-navigation {
+        .level-navigation-game {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -154,7 +513,7 @@
             transform: translateY(-2px);
         }
         
-        .level-btn {
+        .level-btn-game {
             width: clamp(26px, 8vw, 30px);
             height: clamp(26px, 8vw, 30px);
             border-radius: 50%;
@@ -171,25 +530,25 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
         
-        .level-btn:hover {
+        .level-btn-game:hover {
             background: rgba(255, 255, 255, 0.3);
             transform: scale(1.05);
         }
         
-        .level-btn.current {
+        .level-btn-game.current {
             background: linear-gradient(45deg, #FF5722, #FF9800);
             border-color: #FF5722;
             transform: scale(1.05);
             box-shadow: 0 0 10px rgba(255, 87, 34, 0.7);
         }
         
-        .level-btn.completed {
+        .level-btn-game.completed {
             background: linear-gradient(45deg, #2196F3, #03A9F4);
             border-color: #2196F3;
             box-shadow: 0 0 6px rgba(33, 150, 243, 0.7);
         }
         
-        .level-btn.locked {
+        .level-btn-game.locked {
             background: rgba(255, 255, 255, 0.1);
             border-color: rgba(255, 255, 255, 0.1);
             cursor: not-allowed;
@@ -277,7 +636,7 @@
             padding: 10px;
         }
         
-        .levels-grid .level-btn {
+        .levels-grid .level-btn-game {
             width: 45px;
             height: 45px;
             font-size: 1rem;
@@ -547,7 +906,7 @@
             transform: translateY(0);
         }
         
-        .sound-control {
+        .sound-control-game {
             position: fixed;
             bottom: 10px;
             right: 10px;
@@ -566,256 +925,478 @@
             transition: all 0.3s;
         }
         
-        .sound-control:hover {
+        .sound-control-game:hover {
             transform: scale(1.1);
             background: rgba(255, 255, 255, 0.3);
         }
         
-        .sound-control i {
+        .sound-control-game i {
             font-size: clamp(1rem, 4vw, 1.1rem);
             color: white;
         }
         
-        @media (max-width: 320px) {
-            .game-board {
-                gap: 6px;
-                padding: 12px;
-                max-height: 70vh;
+        .back-button-game {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: clamp(35px, 10vw, 40px);
+            height: clamp(35px, 10vw, 40px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+        
+        .back-button-game:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .back-button-game i {
+            font-size: clamp(1rem, 4vw, 1.1rem);
+            color: white;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .home-container {
+                padding: 15px;
             }
             
-            .tube {
-                width: 42px;
-                height: 140px;
-                margin-bottom: 22px;
+            .play-button {
+                width: 170px;
+                height: 170px;
             }
             
-            .ball {
-                width: 32px;
-                height: 32px;
+            .play-button i {
+                font-size: 4rem;
             }
             
-            .controls {
-                gap: 8px;
+            .game-stats {
+                flex-direction: column;
+                gap: 15px;
             }
             
-            button {
-                padding: 6px 12px;
+            .level-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1rem;
             }
             
-            .levels-grid {
-                grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-                gap: 8px;
+            .action-btn {
+                min-width: 140px;
+                padding: 10px 20px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .play-button {
+                width: 150px;
+                height: 150px;
             }
             
-            .levels-grid .level-btn {
-                width: 40px;
-                height: 40px;
+            .play-button i {
+                font-size: 3.5rem;
+            }
+            
+            .level-navigation {
+                gap: 10px;
+            }
+            
+            .level-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 0.9rem;
+            }
+            
+            .action-buttons {
+                gap: 10px;
+            }
+            
+            .action-btn {
+                min-width: 120px;
+                padding: 8px 16px;
                 font-size: 0.9rem;
             }
         }
         
-        @media (max-height: 800px) and (orientation: portrait) {
-            .game-board {
-                max-height: 70vh;
+        @media (max-height: 700px) {
+            .header {
+                margin-bottom: 15px;
             }
             
-            .tube {
-                height: clamp(130px, 35vh, 170px);
-            }
-        }
-        
-        @media (max-height: 600px) and (orientation: portrait) {
-            .game-board {
-                max-height: 65vh;
+            .play-button-container {
+                margin: 15px 0;
             }
             
-            .tube {
-                height: clamp(110px, 30vh, 150px);
-            }
-        }
-        
-        @media (orientation: landscape) and (max-height: 500px) {
-            .container {
-                max-width: none;
-                flex-direction: row;
-                flex-wrap: wrap;
-                align-items: flex-start;
+            .level-section {
+                margin-bottom: 15px;
+                padding: 15px;
             }
             
-            header {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-            
-            .game-info {
-                width: 100%;
-                margin-bottom: 5px;
-            }
-            
-            .level-progress {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            .level-navigation {
-                width: 100%;
-                margin: 5px 0;
-            }
-            
-            .game-board {
-                flex: 1;
-                margin-bottom: 5px;
-                min-height: 140px;
-                max-height: 80vh;
-                flex-wrap: wrap;
-                align-content: flex-start;
-                overflow-y: auto;
-            }
-            
-            .controls {
-                width: 100%;
-                margin-top: 5px;
-            }
-            
-            .tube {
-                height: 110px;
-                margin-bottom: 20px;
-            }
-        }
-        
-        @media (min-width: 768px) and (min-height: 1024px) {
-            .game-board {
-                max-height: 80vh;
-            }
-            
-            .tube {
-                height: 220px;
-                width: 65px;
-            }
-            
-            .ball {
-                width: 50px;
-                height: 50px;
+            .instructions {
+                margin-top: 15px;
+                padding: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-palette"></i> Ball Sort Puzzle</h1>
-        </header>
-        
-        <div class="game-info">
-            <div class="level-info">
-                <i class="fas fa-layer-group"></i>
-                Level: <span id="level">1</span> / <span id="total-levels">50</span>
+    <!-- HOME PAGE -->
+    <div class="homepage" id="homepage">
+        <div class="home-container">
+            <!-- Header with Logo -->
+            <div class="header">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h1>Ball Sort Puzzle</h1>
+                    <p class="tagline">Sort the colors, solve the puzzle!</p>
+                </div>
             </div>
-            <div class="moves">
-                <i class="fas fa-shoe-prints"></i>
-                Moves: <span id="move-count">0</span>
+            
+            <!-- Main Play Button -->
+            <div class="play-button-container">
+                <div class="play-button" id="play-button">
+                    <i class="fas fa-play"></i>
+                    <div class="play-button-text">PLAY NOW</div>
+                </div>
             </div>
-            <div class="difficulty" id="difficulty">
-                <i class="fas fa-signal"></i> <span>Beginner</span>
-            </div>
-        </div>
-        
-        <div class="level-progress">
-            <div class="level-progress-bar" id="level-progress-bar" style="width: 2%;"></div>
-        </div>
-        
-        <div class="level-navigation">
-            <button id="show-all-levels" class="levels-btn">
-                <i class="fas fa-list-ol"></i> All Levels
-            </button>
-           
-        </div>
-        
-        <div class="game-board" id="game-board">
-            <!-- Tubes will be generated by JavaScript -->
-        </div>
-        
-        <div class="controls">
-            <button id="restart-btn">
-                <i class="fas fa-redo"></i> Restart
-            </button>
-            <button id="prev-level" disabled>
-                <i class="fas fa-arrow-left"></i> Prev
-            </button>
-            <button id="next-level">
-                Next <i class="fas fa-arrow-right"></i>
-            </button>
-            <button id="reset-progress-btn">
-                <i class="fas fa-trash"></i> Reset
-            </button>
-        </div>
-    </div>
-    
-    <!-- Levels Modal -->
-    <div class="levels-modal" id="levels-modal">
-        <div class="levels-container">
-            <div class="levels-header">
-                <h2><i class="fas fa-layer-group"></i> All Levels</h2>
-                <button class="close-levels" id="close-levels">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="levels-grid" id="levels-grid">
-                <!-- All levels will be generated here -->
-            </div>
-            <div class="levels-stats">
+            
+            <!-- Game Stats -->
+            <div class="game-stats">
                 <div class="stat-item">
-                    <div class="stat-value" id="completed-count">0</div>
-                    <div>Completed</div>
+                    <div class="stat-value" id="completed-levels">0</div>
+                    <div class="stat-label">Levels Completed</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-value" id="total-count">50</div>
-                    <div>Total</div>
+                    <div class="stat-value" id="total-levels">50</div>
+                    <div class="stat-label">Total Levels</div>
                 </div>
                 <div class="stat-item">
                     <div class="stat-value" id="progress-percent">0%</div>
-                    <div>Progress</div>
+                    <div class="stat-label">Progress</div>
+                </div>
+            </div>
+            
+            <!-- Level Navigation -->
+            <div class="level-section">
+                <h2 class="section-title"><i class="fas fa-layer-group"></i> Continue Playing</h2>
+                <div class="level-navigation" id="level-navigation">
+                    <!-- Level buttons will be generated by JavaScript -->
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="action-btn" id="all-levels-btn">
+                    <i class="fas fa-list-ol"></i> All Levels
+                </button>
+                <button class="action-btn reset" id="reset-btn">
+                    <i class="fas fa-trash-alt"></i> Reset Progress
+                </button>
+                <button class="action-btn help" id="help-btn">
+                    <i class="fas fa-question-circle"></i> How to Play
+                </button>
+            </div>
+            
+            <!-- Instructions -->
+            <div class="instructions" id="instructions" style="display: none;">
+                <h3><i class="fas fa-graduation-cap"></i> How to Play</h3>
+                <ul>
+                    <li>Tap a tube to select the top ball</li>
+                    <li>Tap another tube to move the ball there</li>
+                    <li>You can only move a ball to an empty tube or on top of the same color</li>
+                    <li>Complete the level when each tube contains balls of only one color</li>
+                    <li>Empty tubes can be used for temporary storage</li>
+                </ul>
+                <p>Try to solve each level in the minimum number of moves!</p>
+            </div>
+            
+            <!-- Footer Controls -->
+            <div class="footer-controls">
+                <div class="back-button" id="home-back-button" style="visibility: hidden;">
+                    <i class="fas fa-arrow-left"></i>
+                </div>
+                <div class="sound-control" id="sound-control">
+                    <i class="fas fa-volume-up"></i>
                 </div>
             </div>
         </div>
     </div>
     
-    <div class="win-message" id="win-message">
-        <div class="win-content">
-            <h2 id="win-title"><i class="fas fa-trophy"></i> Level Complete!</h2>
-            <p>You solved level <span id="win-level">1</span> in <span id="win-moves">0</span> moves!</p>
-            <p id="new-best" style="display:none; color: #4CAF50; font-weight: bold;">
-                <i class="fas fa-crown"></i> New Best Score!
-            </p>
-            <div class="controls">
-                <button id="next-level-btn">
-                    Next Level <i class="fas fa-arrow-right"></i>
+    <!-- GAME PAGE -->
+    <div class="gamepage" id="gamepage">
+        <div class="container">
+            <header>
+                <h1><i class="fas fa-palette"></i> Ball Sort Puzzle</h1>
+            </header>
+            
+            <div class="game-info">
+                <div class="level-info">
+                    <i class="fas fa-layer-group"></i>
+                    Level: <span id="level">1</span> / <span id="total-levels-game">50</span>
+                </div>
+                <div class="moves">
+                    <i class="fas fa-shoe-prints"></i>
+                    Moves: <span id="move-count">0</span>
+                </div>
+                <div class="difficulty" id="difficulty">
+                    <i class="fas fa-signal"></i> <span>Beginner</span>
+                </div>
+            </div>
+            
+            <div class="level-progress">
+                <div class="level-progress-bar" id="level-progress-bar" style="width: 2%;"></div>
+            </div>
+            
+            <div class="level-navigation-game">
+                <button id="show-all-levels" class="levels-btn">
+                    <i class="fas fa-list-ol"></i> All Levels
                 </button>
-                <button id="replay-btn">
-                    <i class="fas fa-redo"></i> Play Again
+            </div>
+            
+            <div class="game-board" id="game-board">
+                <!-- Tubes will be generated by JavaScript -->
+            </div>
+            
+            <div class="controls">
+                <button id="restart-btn">
+                    <i class="fas fa-redo"></i> Restart
+                </button>
+                <button id="prev-level" disabled>
+                    <i class="fas fa-arrow-left"></i> Prev
+                </button>
+                <button id="next-level">
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+                <button id="reset-progress-btn">
+                    <i class="fas fa-trash"></i> Reset
                 </button>
             </div>
         </div>
-    </div>
+        
+        <!-- Levels Modal -->
+        <div class="levels-modal" id="levels-modal">
+            <div class="levels-container">
+                <div class="levels-header">
+                    <h2><i class="fas fa-layer-group"></i> All Levels</h2>
+                    <button class="close-levels" id="close-levels">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="levels-grid" id="levels-grid">
+                    <!-- All levels will be generated here -->
+                </div>
+                <div class="levels-stats">
+                    <div class="stat-item">
+                        <div class="stat-value" id="completed-count">0</div>
+                        <div>Completed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="total-count">50</div>
+                        <div>Total</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value" id="progress-percent-game">0%</div>
+                        <div>Progress</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="win-message" id="win-message">
+            <div class="win-content">
+                <h2 id="win-title"><i class="fas fa-trophy"></i> Level Complete!</h2>
+                <p>You solved level <span id="win-level">1</span> in <span id="win-moves">0</span> moves!</p>
+                <p id="new-best" style="display:none; color: #4CAF50; font-weight: bold;">
+                    <i class="fas fa-crown"></i> New Best Score!
+                </p>
+                <div class="controls">
+                    <button id="next-level-btn">
+                        Next Level <i class="fas fa-arrow-right"></i>
+                    </button>
+                    <button id="replay-btn">
+                        <i class="fas fa-redo"></i> Play Again
+                    </button>
+                </div>
+            </div>
+        </div>
 
-    <div class="save-indicator" id="save-indicator">
-        <i class="fas fa-check"></i> Progress Saved
-    </div>
+        <div class="save-indicator" id="save-indicator">
+            <i class="fas fa-check"></i> Progress Saved
+        </div>
 
-    <div class="sound-control" id="sound-control">
-        <i class="fas fa-volume-up"></i>
+        <div class="sound-control-game" id="sound-control-game">
+            <i class="fas fa-volume-up"></i>
+        </div>
+        
+        <div class="back-button-game" id="back-button-game">
+            <i class="fas fa-arrow-left"></i>
+        </div>
     </div>
 
     <script>
-        // OPTIMIZED SOUND SYSTEM
+        // ============================================
+        // GLOBAL STATE AND CONFIGURATION
+        // ============================================
+        
+        // Sound System
         let soundEnabled = true;
         let audioContext = null;
         let soundBuffers = {};
         let isAudioInitialized = false;
+        
+        // Game configuration - 50 Levels with dynamic tube logic
+        const levels = [
+            // Levels 1-10: 3-4 Colors (Beginner)
+            { tubes: [['red', 'blue', 'green'], ['red', 'blue', 'green'], [], []], colors: 3, difficulty: 'Beginner' },
+            { tubes: [['red', 'blue', 'green'], ['green', 'red', 'blue'], [], []], colors: 3, difficulty: 'Beginner' },
+            { tubes: [['red', 'blue', 'green'], ['blue', 'green', 'red'], [], []], colors: 3, difficulty: 'Beginner' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['red', 'blue', 'green', 'yellow'], [], [], []], colors: 4, difficulty: 'Beginner' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['yellow', 'green', 'blue', 'red'], [], [], []], colors: 4, difficulty: 'Beginner' },
+            { tubes: [['red', 'yellow', 'red', 'yellow'], ['blue', 'green', 'blue', 'green'], [], [], []], colors: 4, difficulty: 'Beginner' },
+            { tubes: [['red', 'red', 'blue', 'blue'], ['green', 'green', 'yellow', 'yellow'], [], [], []], colors: 4, difficulty: 'Beginner' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['red', 'blue'], ['green', 'yellow'], [], []], colors: 4, difficulty: 'Beginner' },
+            { tubes: [['red', 'green', 'blue', 'yellow'], ['blue', 'yellow', 'red', 'green'], [], [], []], colors: 4, difficulty: 'Beginner' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['yellow', 'red', 'blue', 'green'], ['green', 'yellow', 'red', 'blue'], [], []], colors: 4, difficulty: 'Beginner' },
 
-        // Sound control element
+            // Levels 11-20: 4-5 Colors (Easy)
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [], [], [], []], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], ['green', 'yellow', 'purple', 'red'], [], []], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['green', 'yellow', 'purple'], ['red', 'blue', 'green', 'yellow'], [], []], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'yellow', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], [], [], []], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'green', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [],[],[]], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'red'],[], ['blue', 'green', 'yellow', 'orange'], [], [], ['cyan', 'red', 'blue', 'green']], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['orange', 'orange', 'pink', 'pink'], ['red', 'blue', 'green', 'yellow'], [], [], []], colors: 5, difficulty: 'Easy' },
+            { tubes: [['red', 'blue', 'green', 'yellow'],[], ['purple', 'orange', 'cyan', 'pink'], [], ['pink', 'cyan', 'orange', 'purple'],[], ['yellow', 'green', 'blue', 'red'],[], []], colors: 5, difficulty: 'Easy' },
+
+            // Levels 21-30: 5-6 Colors (Medium)
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'yellow', 'blue'], ['red', 'blue', 'green', 'yellow'], ['purple', 'pink', 'green', 'pink'], [], [], []], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['pink', 'cyan', 'orange', 'purple'],[],[], ['red', 'green', 'blue', 'yellow'], ['brown', 'brown', 'red'], [], []], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'red', 'blue', 'green'], ['yellow', 'brown', 'orange', 'cyan'], ['pink', 'green', 'red', 'blue'], [],[],[], []], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['cyan', 'purple', 'orange', 'pink'], [], ['orange', 'green', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['red', 'pink', 'blue', 'yellow'], [], []], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], [],['cyan', 'teal', 'cyan', 'pink'],[], ['brown', 'teal', 'red', 'blue'], ['green', 'brown', 'cyan', 'yellow'], ['purple', 'pink', 'brown', 'teal'], ['red', 'blue', 'green', 'yellow'], []], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], [],['brown', 'teal', 'red', 'blue'], ['green', 'yellow', 'orange', 'orange'],[], ['cyan', 'pink', 'brown', 'teal'],[], ['red', 'blue', 'green', 'yellow'],[]], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'brown'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], [],[],[],[],[]], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple','cyan', 'orange', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'yellow'], ['cyan', 'orange', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'],[],[], ['green', 'yellow', 'orange'],[],[]], colors: 6, difficulty: 'Medium' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['blue', 'green', 'yellow', 'purple'], ['brown', 'teal', 'lime', 'red'], [], ['cyan', 'orange', 'brown'], [],['teal', 'lime', 'red', 'blue'],[], ['green', 'yellow', 'orange', 'purple'], ['purple', 'teal']], colors: 6, difficulty: 'Medium' },
+            { tubes: [['blue', 'blue', 'yellow', 'yellow'], ['green', 'green', 'blue', 'blue'], ['green', 'yellow',  'green'], ['red', 'yellow', 'red'], ['red', 'red']], colors: 6, difficulty: 'Medium' },
+
+            // Levels 31-40: 6-7 Colors (Hard)
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['pink', 'orange', 'teal', 'purple'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['brown', 'lime', 'orange', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow'], [], [], []], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], [], ['yellow', 'green', 'blue', 'red'], ['orange', 'cyan', 'pink', 'blue'], [], ['green', 'yellow', 'red', 'orange'], ['cyan', 'pink', 'blue', 'teal'], [], ['yellow', 'purple', 'orange', 'cyan']], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], [], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], []], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['pink',  'orange', 'purple'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], [], [], ['green', 'yellow', 'purple', 'orange'], ['cyan',  'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'brown'], []], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], []], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow']], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], []], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink']], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], []], colors: 7, difficulty: 'Hard' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red']], colors: 7, difficulty: 'Hard' },
+
+            // Levels 41-50: 7-8 Colors (Expert)
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], []], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple']], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], []], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown']], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], []], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue']], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], []], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange']], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], []], colors: 8, difficulty: 'Expert' },
+            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal']], colors: 8, difficulty: 'Expert' }
+        ];
+        
+        // Game state
+        let currentLevel = 0;
+        let moves = 0;
+        let selectedTube = null;
+        let gameState = [];
+        let tubeCapacity = 4;
+        let completedLevels = new Set();
+        let bestMoves = Array(50).fill(null);
+        let currentPage = 0;
+        const levelsPerPage = 10;
+        
+        // Storage keys
+        const STORAGE_KEYS = {
+            COMPLETED_LEVELS: 'ballSort_completedLevels',
+            BEST_MOVES: 'ballSort_bestMoves',
+            CURRENT_LEVEL: 'ballSort_currentLevel',
+            SOUND_ENABLED: 'ballSort_soundEnabled'
+        };
+        
+        // Color mapping
+        const colorMap = {
+            'red': '#FF5252', 'blue': '#2196F3', 'green': '#4CAF50', 'yellow': '#FFEB3B',
+            'purple': '#9C27B0', 'orange': '#FF9800', 'cyan': '#00BCD4', 'pink': '#E91E63',
+            'brown': '#795548', 'teal': '#009688', 'lime': '#CDDC39'
+        };
+        
+        // ============================================
+        // DOM ELEMENTS - HOMEPAGE
+        // ============================================
+        const homepage = document.getElementById('homepage');
+        const gamepage = document.getElementById('gamepage');
+        const playButton = document.getElementById('play-button');
+        const levelNavigation = document.getElementById('level-navigation');
+        const completedLevelsDisplay = document.getElementById('completed-levels');
+        const totalLevelsDisplay = document.getElementById('total-levels');
+        const progressPercentDisplay = document.getElementById('progress-percent');
+        const allLevelsBtn = document.getElementById('all-levels-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const helpBtn = document.getElementById('help-btn');
+        const instructions = document.getElementById('instructions');
+        const homeBackButton = document.getElementById('home-back-button');
         const soundControl = document.getElementById('sound-control');
-
+        
+        // ============================================
+        // DOM ELEMENTS - GAME PAGE
+        // ============================================
+        const gameBoard = document.getElementById('game-board');
+        const levelDisplay = document.getElementById('level');
+        const totalLevelsGameDisplay = document.getElementById('total-levels-game');
+        const moveCountDisplay = document.getElementById('move-count');
+        const levelProgressBar = document.getElementById('level-progress-bar');
+        const levelPages = document.querySelector('.level-pages');
+        const difficultyDisplay = document.getElementById('difficulty');
+        const restartBtn = document.getElementById('restart-btn');
+        const prevLevelBtn = document.getElementById('prev-level');
+        const nextLevelBtn = document.getElementById('next-level');
+        const resetProgressBtn = document.getElementById('reset-progress-btn');
+        const winMessage = document.getElementById('win-message');
+        const winTitle = document.getElementById('win-title');
+        const winLevel = document.getElementById('win-level');
+        const winMovesElement = document.getElementById('win-moves');
+        const newBest = document.getElementById('new-best');
+        const nextLevelWinBtn = document.getElementById('next-level-btn');
+        const replayBtn = document.getElementById('replay-btn');
+        const saveIndicator = document.getElementById('save-indicator');
+        const showAllLevelsBtn = document.getElementById('show-all-levels');
+        const levelsModal = document.getElementById('levels-modal');
+        const closeLevelsBtn = document.getElementById('close-levels');
+        const levelsGrid = document.getElementById('levels-grid');
+        const completedCount = document.getElementById('completed-count');
+        const totalCount = document.getElementById('total-count');
+        const progressPercentGame = document.getElementById('progress-percent-game');
+        const soundControlGame = document.getElementById('sound-control-game');
+        const backButtonGame = document.getElementById('back-button-game');
+        
+        // ============================================
+        // SOUND SYSTEM
+        // ============================================
+        
         // Initialize audio context on first user interaction
         function initAudio() {
             if (isAudioInitialized) return;
@@ -833,6 +1414,7 @@
                 console.error("Audio context failed:", e);
                 soundEnabled = false;
                 soundControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                soundControlGame.innerHTML = '<i class="fas fa-volume-mute"></i>';
             }
         }
 
@@ -1028,145 +1610,67 @@
         }
 
         // Toggle sound
-        soundControl.addEventListener('click', () => {
-            // Initialize audio on first interaction if needed
-            if (!isAudioInitialized) {
-                initAudio();
-            }
-            
+        function toggleSound() {
             soundEnabled = !soundEnabled;
+            
             if (soundEnabled) {
                 soundControl.innerHTML = '<i class="fas fa-volume-up"></i>';
+                soundControlGame.innerHTML = '<i class="fas fa-volume-up"></i>';
+                localStorage.setItem(STORAGE_KEYS.SOUND_ENABLED, 'true');
                 playSound('toggle');
             } else {
                 soundControl.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                soundControlGame.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                localStorage.setItem(STORAGE_KEYS.SOUND_ENABLED, 'false');
             }
-        });
-
-        // Initialize audio on any user interaction
-        document.addEventListener('click', function initAudioOnInteraction() {
-            initAudio();
-            document.removeEventListener('click', initAudioOnInteraction);
-        }, { once: true });
-
-        // Game configuration - 50 Levels with dynamic tube logic
-        const levels = [
-            // Levels 1-10: 3-4 Colors (Beginner)
-            { tubes: [['red', 'blue', 'green'], ['red', 'blue', 'green'], [], []], colors: 3, difficulty: 'Beginner' },
-            { tubes: [['red', 'blue', 'green'], ['green', 'red', 'blue'], [], []], colors: 3, difficulty: 'Beginner' },
-            { tubes: [['red', 'blue', 'green'], ['blue', 'green', 'red'], [], []], colors: 3, difficulty: 'Beginner' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['red', 'blue', 'green', 'yellow'], [], [], []], colors: 4, difficulty: 'Beginner' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['yellow', 'green', 'blue', 'red'], [], [], []], colors: 4, difficulty: 'Beginner' },
-            { tubes: [['red', 'yellow', 'red', 'yellow'], ['blue', 'green', 'blue', 'green'], [], [], []], colors: 4, difficulty: 'Beginner' },
-            { tubes: [['red', 'red', 'blue', 'blue'], ['green', 'green', 'yellow', 'yellow'], [], [], []], colors: 4, difficulty: 'Beginner' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['red', 'blue'], ['green', 'yellow'], [], []], colors: 4, difficulty: 'Beginner' },
-            { tubes: [['red', 'green', 'blue', 'yellow'], ['blue', 'yellow', 'red', 'green'], [], [], []], colors: 4, difficulty: 'Beginner' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['yellow', 'red', 'blue', 'green'], ['green', 'yellow', 'red', 'blue'], [], []], colors: 4, difficulty: 'Beginner' },
-
-            // Levels 11-20: 4-5 Colors (Easy)
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [], [], [], []], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['yellow', 'purple', 'red', 'blue'], ['green', 'yellow', 'purple', 'red'], [], []], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'blue', 'green'], ['green', 'yellow', 'purple'], ['red', 'blue', 'green', 'yellow'], [], []], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'yellow', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], [], [], []], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'purple', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'green', 'red', 'blue'], [], [], []], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [],[],[]], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'red'],[], ['blue', 'green', 'yellow', 'orange'], [], [], ['cyan', 'red', 'blue', 'green']], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['orange', 'orange', 'pink', 'pink'], ['red', 'blue', 'green', 'yellow'], [], [], []], colors: 5, difficulty: 'Easy' },
-            { tubes: [['red', 'blue', 'green', 'yellow'],[], ['purple', 'orange', 'cyan', 'pink'], [], ['pink', 'cyan', 'orange', 'purple'],[], ['yellow', 'green', 'blue', 'red'],[], []], colors: 5, difficulty: 'Easy' },
-
-            // Levels 21-30: 5-6 Colors (Medium)
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'red', 'yellow', 'blue'], ['red', 'blue', 'green', 'yellow'], ['purple', 'pink', 'green', 'pink'], [], [], []], colors: 6, difficulty: 'Medium' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['pink', 'cyan', 'orange', 'purple'],[],[], ['red', 'green', 'blue', 'yellow'], ['brown', 'brown', 'red'], [], []], colors: 6, difficulty: 'Medium' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'red', 'blue', 'green'], ['yellow', 'brown', 'orange', 'cyan'], ['pink', 'green', 'red', 'blue'], [],[],[], []], colors: 6, difficulty: 'Medium' },
-           // Level 24
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['cyan', 'purple', 'orange', 'pink'], [], ['orange', 'green', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['red', 'pink', 'blue', 'yellow'], [], []], colors: 6, difficulty: 'Medium' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], [],['cyan', 'teal', 'cyan', 'pink'],[], ['brown', 'teal', 'red', 'blue'], ['green', 'brown', 'cyan', 'yellow'], ['purple', 'pink', 'brown', 'teal'], ['red', 'blue', 'green', 'yellow'], []], colors: 6, difficulty: 'Medium' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], [],['brown', 'teal', 'red', 'blue'], ['green', 'yellow', 'orange', 'orange'],[], ['cyan', 'pink', 'brown', 'teal'],[], ['red', 'blue', 'green', 'yellow'],[]], colors: 6, difficulty: 'Medium' },
-            // Level 27
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'brown'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], [],[],[],[],[]], colors: 6, difficulty: 'Medium' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple','cyan', 'orange', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'yellow'], ['cyan', 'orange', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'],[],[], ['green', 'yellow', 'orange'],[],[]], colors: 6, difficulty: 'Medium' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['blue', 'green', 'yellow', 'purple'], ['brown', 'teal', 'lime', 'red'], [], ['cyan', 'orange', 'brown'], [],['teal', 'lime', 'red', 'blue'],[], ['green', 'yellow', 'orange', 'purple'], ['purple', 'teal']], colors: 6, difficulty: 'Medium' },
-            { tubes: [['blue', 'blue', 'yellow', 'yellow'], ['green', 'green', 'blue', 'blue'], ['green', 'yellow',  'green'], ['red', 'yellow', 'red'], ['red', 'red']], colors: 6, difficulty: 'Medium' },
-
-            // Levels 31-40: 6-7 Colors (Hard)
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['pink', 'orange', 'teal', 'purple'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['brown', 'lime', 'orange', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow'], [], [], []], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], [], ['yellow', 'green', 'blue', 'red'], ['orange', 'cyan', 'pink', 'blue'], [], ['green', 'yellow', 'red', 'orange'], ['cyan', 'pink', 'blue', 'teal'], [], ['yellow', 'purple', 'orange', 'cyan']], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], [], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], [], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], []], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['pink',  'orange', 'purple'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], [], [], ['green', 'yellow', 'purple', 'orange'], ['cyan',  'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'brown'], []], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], []], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow']], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], []], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink']], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], []], colors: 7, difficulty: 'Hard' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red']], colors: 7, difficulty: 'Hard' },
-
-            // Levels 41-50: 7-8 Colors (Expert)
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], []], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple']], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], []], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown']], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], []], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue']], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], []], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange']], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], []], colors: 8, difficulty: 'Expert' },
-            { tubes: [['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal'], ['lime', 'red', 'blue', 'green'], ['yellow', 'purple', 'orange', 'cyan'], ['pink', 'brown', 'teal', 'lime'], ['red', 'blue', 'green', 'yellow'], ['purple', 'orange', 'cyan', 'pink'], ['brown', 'teal', 'lime', 'red'], ['blue', 'green', 'yellow', 'purple'], ['orange', 'cyan', 'pink', 'brown'], ['teal', 'lime', 'red', 'blue'], ['green', 'yellow', 'purple', 'orange'], ['cyan', 'pink', 'brown', 'teal']], colors: 8, difficulty: 'Expert' }
-        ];
-
-        // Game state
-        let currentLevel = 0;
-        let moves = 0;
-        let selectedTube = null;
-        let gameState = [];
-        let tubeCapacity = 4;
-        let completedLevels = new Set();
-        let bestMoves = Array(50).fill(null);
-        let currentPage = 0;
-        const levelsPerPage = 10;
-
-        // DOM elements
-        const gameBoard = document.getElementById('game-board');
-        const levelDisplay = document.getElementById('level');
-        const totalLevelsDisplay = document.getElementById('total-levels');
-        const moveCountDisplay = document.getElementById('move-count');
-        const levelProgressBar = document.getElementById('level-progress-bar');
-        const levelPages = document.getElementById('level-pages');
-        const difficultyDisplay = document.getElementById('difficulty');
-        const restartBtn = document.getElementById('restart-btn');
-        const prevLevelBtn = document.getElementById('prev-level');
-        const nextLevelBtn = document.getElementById('next-level');
-        const resetProgressBtn = document.getElementById('reset-progress-btn');
-        const winMessage = document.getElementById('win-message');
-        const winTitle = document.getElementById('win-title');
-        const winLevel = document.getElementById('win-level');
-        const winMovesElement = document.getElementById('win-moves');
-        const newBest = document.getElementById('new-best');
-        const nextLevelWinBtn = document.getElementById('next-level-btn');
-        const replayBtn = document.getElementById('replay-btn');
-        const saveIndicator = document.getElementById('save-indicator');
-        const showAllLevelsBtn = document.getElementById('show-all-levels');
-        const levelsModal = document.getElementById('levels-modal');
-        const closeLevelsBtn = document.getElementById('close-levels');
-        const levelsGrid = document.getElementById('levels-grid');
-        const completedCount = document.getElementById('completed-count');
-        const totalCount = document.getElementById('total-count');
-        const progressPercent = document.getElementById('progress-percent');
-
-        // Color mapping
-        const colorMap = {
-            'red': '#FF5252', 'blue': '#2196F3', 'green': '#4CAF50', 'yellow': '#FFEB3B',
-            'purple': '#9C27B0', 'orange': '#FF9800', 'cyan': '#00BCD4', 'pink': '#E91E63',
-            'brown': '#795548', 'teal': '#009688', 'lime': '#CDDC39'
-        };
-
-        // Storage keys
-        const STORAGE_KEYS = {
-            COMPLETED_LEVELS: 'ballSort_completedLevels',
-            BEST_MOVES: 'ballSort_bestMoves',
-            CURRENT_LEVEL: 'ballSort_currentLevel'
-        };
-
+        }
+        
+        // ============================================
+        // PAGE NAVIGATION
+        // ============================================
+        
+        // Navigate to game page
+        function navigateToGame() {
+            playSound('button');
+            
+            // Show loading effect
+            playButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            playButton.style.pointerEvents = 'none';
+            
+            // Simulate loading and show game page
+            setTimeout(() => {
+                homepage.style.display = 'none';
+                gamepage.style.display = 'flex';
+                
+                // Initialize game
+                initGame();
+                
+                // Reset play button
+                playButton.innerHTML = '<i class="fas fa-play"></i><div class="play-button-text">PLAY NOW</div>';
+                playButton.style.pointerEvents = 'auto';
+            }, 500);
+        }
+        
+        // Navigate to homepage
+        function navigateToHome() {
+            playSound('button');
+            
+            // Save progress before leaving
+            saveProgress();
+            
+            // Show homepage, hide game page
+            gamepage.style.display = 'none';
+            homepage.style.display = 'flex';
+            
+            // Update homepage display
+            updateHomeDisplay();
+            createHomeLevelButtons();
+        }
+        
+        // ============================================
+        // PROGRESS MANAGEMENT
+        // ============================================
+        
         // Load progress from localStorage
         function loadProgress() {
             try {
@@ -1193,11 +1697,24 @@
                         currentLevel = 0;
                     }
                 }
+                
+                // Load sound setting
+                const savedSound = localStorage.getItem(STORAGE_KEYS.SOUND_ENABLED);
+                if (savedSound !== null) {
+                    soundEnabled = savedSound === 'true';
+                    soundControl.innerHTML = soundEnabled ? 
+                        '<i class="fas fa-volume-up"></i>' : 
+                        '<i class="fas fa-volume-mute"></i>';
+                    soundControlGame.innerHTML = soundEnabled ? 
+                        '<i class="fas fa-volume-up"></i>' : 
+                        '<i class="fas fa-volume-mute"></i>';
+                }
 
                 console.log('Progress loaded:', {
                     completedLevels: Array.from(completedLevels),
                     bestMoves: bestMoves,
-                    currentLevel: currentLevel
+                    currentLevel: currentLevel,
+                    soundEnabled: soundEnabled
                 });
             } catch (error) {
                 console.error('Error loading progress:', error);
@@ -1205,6 +1722,7 @@
                 completedLevels = new Set();
                 bestMoves = Array(50).fill(null);
                 currentLevel = 0;
+                soundEnabled = true;
             }
         }
 
@@ -1221,11 +1739,16 @@
                     currentLevel: currentLevel
                 });
                 
-                // Show save indicator
-                showSaveIndicator();
+                // Show save indicator on game page
+                if (gamepage.style.display === 'flex') {
+                    showSaveIndicator();
+                }
                 
                 // Update stats in levels modal
                 updateLevelStats();
+                
+                // Update homepage display
+                updateHomeDisplay();
             } catch (error) {
                 console.error('Error saving progress:', error);
             }
@@ -1248,98 +1771,111 @@
                 saveProgress();
                 initGame();
                 updateAllLevelsGrid();
-                showSaveIndicator();
+                createHomeLevelButtons();
+                if (gamepage.style.display === 'flex') {
+                    showSaveIndicator();
+                }
                 playSound('button');
             }
         }
-
-        // Show all levels modal
-        function showAllLevels() {
-            levelsModal.classList.add('show');
-            updateAllLevelsGrid();
-            playSound('button');
-        }
-
-        // Hide all levels modal
-        function hideAllLevels() {
-            levelsModal.classList.remove('show');
-            playSound('button');
-        }
-
-        // Update level statistics
-        function updateLevelStats() {
+        
+        // ============================================
+        // HOME PAGE FUNCTIONS
+        // ============================================
+        
+        // Update homepage display
+        function updateHomeDisplay() {
+            const totalLevels = 50;
             const completed = completedLevels.size;
-            const total = levels.length;
-            const percent = Math.round((completed / total) * 100);
+            const progress = Math.round((completed / totalLevels) * 100);
             
-            completedCount.textContent = completed;
-            totalCount.textContent = total;
-            progressPercent.textContent = `${percent}%`;
+            completedLevelsDisplay.textContent = completed;
+            totalLevelsDisplay.textContent = totalLevels;
+            progressPercentDisplay.textContent = `${progress}%`;
         }
-
-        // Create level button for the grid
-        function createLevelButton(levelIndex) {
-            const levelBtn = document.createElement('div');
-            levelBtn.className = 'level-btn';
-            
-            if (levelIndex === currentLevel) {
-                levelBtn.classList.add('current');
-            } else if (completedLevels.has(levelIndex)) {
-                levelBtn.classList.add('completed');
-            } else if (!isLevelUnlocked(levelIndex)) {
-                levelBtn.classList.add('locked');
-            }
-            
-            levelBtn.textContent = levelIndex + 1;
-            
-            // Show best moves if completed
-            if (completedLevels.has(levelIndex) && bestMoves[levelIndex] !== null) {
-                const movesSpan = document.createElement('span');
-                movesSpan.style.fontSize = '0.6rem';
-                movesSpan.style.position = 'absolute';
-                movesSpan.style.bottom = '-15px';
-                movesSpan.style.left = '0';
-                movesSpan.style.right = '0';
-                movesSpan.style.textAlign = 'center';
-                movesSpan.style.color = '#FFD700';
-                movesSpan.textContent = `★${bestMoves[levelIndex]}`;
-                levelBtn.style.position = 'relative';
-                levelBtn.appendChild(movesSpan);
-            }
-            
-            if (isLevelUnlocked(levelIndex)) {
-                levelBtn.addEventListener('click', () => {
-                    if (levelIndex !== currentLevel) {
-                        currentLevel = levelIndex;
-                        saveProgress();
-                        initGame();
-                        hideAllLevels();
-                        playSound('button');
-                    }
-                });
-            }
-            
-            return levelBtn;
-        }
-
-        // Update all levels grid in modal
-        function updateAllLevelsGrid() {
-            levelsGrid.innerHTML = '';
-            
-            for (let i = 0; i < levels.length; i++) {
-                const levelBtn = createLevelButton(i);
-                levelsGrid.appendChild(levelBtn);
-            }
-            
-            updateLevelStats();
-        }
-
-        // Check if a level is unlocked
+        
+        // Check if level is unlocked
         function isLevelUnlocked(levelIndex) {
             if (levelIndex === 0) return true;
             return completedLevels.has(levelIndex - 1);
         }
-
+        
+        // Create level buttons for homepage
+        function createHomeLevelButtons() {
+            levelNavigation.innerHTML = '';
+            
+            // Show current level and nearby levels
+            const startLevel = Math.max(0, currentLevel - 2);
+            const endLevel = Math.min(49, currentLevel + 2);
+            
+            for (let i = startLevel; i <= endLevel; i++) {
+                const levelBtn = document.createElement('div');
+                levelBtn.className = 'level-btn';
+                
+                if (i === currentLevel) {
+                    levelBtn.classList.add('current');
+                } else if (completedLevels.has(i)) {
+                    levelBtn.classList.add('completed');
+                } else if (!isLevelUnlocked(i)) {
+                    levelBtn.classList.add('locked');
+                    levelBtn.innerHTML = '<i class="fas fa-lock"></i>';
+                }
+                
+                if (!levelBtn.classList.contains('locked')) {
+                    levelBtn.textContent = i + 1;
+                    
+                    // Add best moves indicator for completed levels
+                    if (completedLevels.has(i) && bestMoves[i] !== null) {
+                        const bestMovesSpan = document.createElement('span');
+                        bestMovesSpan.className = 'best-moves';
+                        bestMovesSpan.textContent = `★${bestMoves[i]}`;
+                        levelBtn.appendChild(bestMovesSpan);
+                    }
+                }
+                
+                // Add click event for unlocked levels
+                if (isLevelUnlocked(i)) {
+                    levelBtn.addEventListener('click', () => {
+                        if (i !== currentLevel) {
+                            currentLevel = i;
+                            saveProgress();
+                            createHomeLevelButtons();
+                            playSound('select');
+                        }
+                    });
+                }
+                
+                levelNavigation.appendChild(levelBtn);
+            }
+        }
+        
+        // Show all levels modal from homepage
+        function showAllLevelsHome() {
+            // In a full implementation, you might want a modal here too
+            // For now, just navigate to game page with modal
+            navigateToGame();
+            setTimeout(() => {
+                showAllLevels();
+            }, 100);
+        }
+        
+        // Toggle instructions
+        function toggleInstructions() {
+            if (instructions.style.display === 'none') {
+                instructions.style.display = 'block';
+                helpBtn.innerHTML = '<i class="fas fa-times"></i> Close Help';
+                playSound('button');
+            } else {
+                instructions.style.display = 'none';
+                helpBtn.innerHTML = '<i class="fas fa-question-circle"></i> How to Play';
+                playSound('button');
+            }
+        }
+        
+        // ============================================
+        // GAME PAGE FUNCTIONS
+        // ============================================
+        
         // Calculate required tubes based on colors
         function calculateRequiredTubes(colorCount) {
             return colorCount + 1;
@@ -1380,7 +1916,7 @@
             difficultyDisplay.innerHTML = `<i class="fas fa-signal"></i> <span>${levels[currentLevel].difficulty}</span>`;
             
             renderGame();
-            updateDisplay();
+            updateGameDisplay();
             updateLevelPages();
         }
 
@@ -1537,7 +2073,7 @@
             toTube.push(ball);
             
             moves++;
-            updateDisplay();
+            updateGameDisplay();
             renderGame();
             playSound('move');
             
@@ -1593,7 +2129,7 @@
             } else {
                 newBest.style.display = 'none';
             }
-            updateDisplay();
+            updateGameDisplay();
         }
 
         // Create confetti effect
@@ -1644,10 +2180,10 @@
             winMessage.classList.add('show');
         }
 
-        // Update display
-        function updateDisplay() {
+        // Update game display
+        function updateGameDisplay() {
             levelDisplay.textContent = currentLevel + 1;
-            totalLevelsDisplay.textContent = levels.length;
+            totalLevelsGameDisplay.textContent = levels.length;
             moveCountDisplay.textContent = moves;
             
             const progress = ((currentLevel + 1) / levels.length) * 100;
@@ -1659,6 +2195,8 @@
 
         // Update level pages (pagination)
         function updateLevelPages() {
+            if (!levelPages) return;
+            
             levelPages.innerHTML = '';
             const totalPages = Math.ceil(levels.length / levelsPerPage);
             
@@ -1688,78 +2226,240 @@
             const endLevel = Math.min(startLevel + levelsPerPage, levels.length);
             
             for (let i = startLevel; i < endLevel; i++) {
-                const levelBtn = createLevelButton(i);
+                const levelBtn = createLevelButtonGame(i);
                 levelContainer.appendChild(levelBtn);
             }
             
             levelPages.appendChild(levelContainer);
         }
+        
+        // Create level button for game page pagination
+        function createLevelButtonGame(levelIndex) {
+            const levelBtn = document.createElement('div');
+            levelBtn.className = 'level-btn-game';
+            
+            if (levelIndex === currentLevel) {
+                levelBtn.classList.add('current');
+            } else if (completedLevels.has(levelIndex)) {
+                levelBtn.classList.add('completed');
+            } else if (!isLevelUnlocked(levelIndex)) {
+                levelBtn.classList.add('locked');
+            }
+            
+            levelBtn.textContent = levelIndex + 1;
+            
+            // Show best moves if completed
+            if (completedLevels.has(levelIndex) && bestMoves[levelIndex] !== null) {
+                const movesSpan = document.createElement('span');
+                movesSpan.style.fontSize = '0.6rem';
+                movesSpan.style.position = 'absolute';
+                movesSpan.style.bottom = '-15px';
+                movesSpan.style.left = '0';
+                movesSpan.style.right = '0';
+                movesSpan.style.textAlign = 'center';
+                movesSpan.style.color = '#FFD700';
+                movesSpan.textContent = `★${bestMoves[levelIndex]}`;
+                levelBtn.style.position = 'relative';
+                levelBtn.appendChild(movesSpan);
+            }
+            
+            if (isLevelUnlocked(levelIndex)) {
+                levelBtn.addEventListener('click', () => {
+                    if (levelIndex !== currentLevel) {
+                        currentLevel = levelIndex;
+                        saveProgress();
+                        initGame();
+                        playSound('button');
+                    }
+                });
+            }
+            
+            return levelBtn;
+        }
 
-        // Event listeners
-        restartBtn.addEventListener('click', () => {
-            initGame();
-            saveProgress();
+        // Show all levels modal
+        function showAllLevels() {
+            levelsModal.classList.add('show');
+            updateAllLevelsGrid();
             playSound('button');
-        });
-        
-        prevLevelBtn.addEventListener('click', () => {
-            if (currentLevel > 0) {
-                currentLevel--;
-                saveProgress();
-                initGame();
-                playSound('button');
-            }
-        });
-        
-        nextLevelBtn.addEventListener('click', () => {
-            if (currentLevel < levels.length - 1 && isLevelUnlocked(currentLevel + 1)) {
-                currentLevel++;
-                saveProgress();
-                initGame();
-                playSound('button');
-            }
-        });
-        
-        resetProgressBtn.addEventListener('click', resetProgress);
-        
-        nextLevelWinBtn.addEventListener('click', () => {
-            winMessage.classList.remove('show');
-            if (currentLevel < levels.length - 1) {
-                currentLevel++;
-                saveProgress();
-                initGame();
-                playSound('button');
-            } else {
-                currentLevel = 0;
-                saveProgress();
-                initGame();
-                playSound('button');
-            }
-        });
-        
-        replayBtn.addEventListener('click', () => {
-            winMessage.classList.remove('show');
-            initGame();
+        }
+
+        // Hide all levels modal
+        function hideAllLevels() {
+            levelsModal.classList.remove('show');
             playSound('button');
-        });
-        
-        showAllLevelsBtn.addEventListener('click', showAllLevels);
-        closeLevelsBtn.addEventListener('click', hideAllLevels);
-        
-        // Close modal when clicking outside
-        levelsModal.addEventListener('click', (e) => {
-            if (e.target === levelsModal) {
-                hideAllLevels();
+        }
+
+        // Update level statistics
+        function updateLevelStats() {
+            const completed = completedLevels.size;
+            const total = levels.length;
+            const percent = Math.round((completed / total) * 100);
+            
+            completedCount.textContent = completed;
+            totalCount.textContent = total;
+            progressPercentGame.textContent = `${percent}%`;
+        }
+
+        // Create level button for the grid
+        function createLevelButton(levelIndex) {
+            const levelBtn = document.createElement('div');
+            levelBtn.className = 'level-btn-game';
+            
+            if (levelIndex === currentLevel) {
+                levelBtn.classList.add('current');
+            } else if (completedLevels.has(levelIndex)) {
+                levelBtn.classList.add('completed');
+            } else if (!isLevelUnlocked(levelIndex)) {
+                levelBtn.classList.add('locked');
             }
-        });
+            
+            levelBtn.textContent = levelIndex + 1;
+            
+            // Show best moves if completed
+            if (completedLevels.has(levelIndex) && bestMoves[levelIndex] !== null) {
+                const movesSpan = document.createElement('span');
+                movesSpan.style.fontSize = '0.6rem';
+                movesSpan.style.position = 'absolute';
+                movesSpan.style.bottom = '-15px';
+                movesSpan.style.left = '0';
+                movesSpan.style.right = '0';
+                movesSpan.style.textAlign = 'center';
+                movesSpan.style.color = '#FFD700';
+                movesSpan.textContent = `★${bestMoves[levelIndex]}`;
+                levelBtn.style.position = 'relative';
+                levelBtn.appendChild(movesSpan);
+            }
+            
+            if (isLevelUnlocked(levelIndex)) {
+                levelBtn.addEventListener('click', () => {
+                    if (levelIndex !== currentLevel) {
+                        currentLevel = levelIndex;
+                        saveProgress();
+                        initGame();
+                        hideAllLevels();
+                        playSound('button');
+                    }
+                });
+            }
+            
+            return levelBtn;
+        }
 
-        // Auto-save when changing levels or completing levels
-        window.addEventListener('beforeunload', saveProgress);
+        // Update all levels grid in modal
+        function updateAllLevelsGrid() {
+            levelsGrid.innerHTML = '';
+            
+            for (let i = 0; i < levels.length; i++) {
+                const levelBtn = createLevelButton(i);
+                levelsGrid.appendChild(levelBtn);
+            }
+            
+            updateLevelStats();
+        }
+        
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        
+        // Initialize App
+        function initApp() {
+            // Load saved progress
+            loadProgress();
+            
+            // Create homepage level buttons
+            createHomeLevelButtons();
+            updateHomeDisplay();
+            
+            // Initialize audio on first user interaction
+            document.addEventListener('click', function initAudioOnInteraction() {
+                initAudio();
+                document.removeEventListener('click', initAudioOnInteraction);
+            }, { once: true });
+            
+            // ============================================
+            // HOMEPAGE EVENT LISTENERS
+            // ============================================
+            playButton.addEventListener('click', navigateToGame);
+            allLevelsBtn.addEventListener('click', showAllLevelsHome);
+            resetBtn.addEventListener('click', resetProgress);
+            helpBtn.addEventListener('click', toggleInstructions);
+            soundControl.addEventListener('click', toggleSound);
+            
+            // ============================================
+            // GAME PAGE EVENT LISTENERS
+            // ============================================
+            restartBtn.addEventListener('click', () => {
+                initGame();
+                saveProgress();
+                playSound('button');
+            });
+            
+            prevLevelBtn.addEventListener('click', () => {
+                if (currentLevel > 0) {
+                    currentLevel--;
+                    saveProgress();
+                    initGame();
+                    playSound('button');
+                }
+            });
+            
+            nextLevelBtn.addEventListener('click', () => {
+                if (currentLevel < levels.length - 1 && isLevelUnlocked(currentLevel + 1)) {
+                    currentLevel++;
+                    saveProgress();
+                    initGame();
+                    playSound('button');
+                }
+            });
+            
+            resetProgressBtn.addEventListener('click', resetProgress);
+            
+            nextLevelWinBtn.addEventListener('click', () => {
+                winMessage.classList.remove('show');
+                if (currentLevel < levels.length - 1) {
+                    currentLevel++;
+                    saveProgress();
+                    initGame();
+                    playSound('button');
+                } else {
+                    currentLevel = 0;
+                    saveProgress();
+                    initGame();
+                    playSound('button');
+                }
+            });
+            
+            replayBtn.addEventListener('click', () => {
+                winMessage.classList.remove('show');
+                initGame();
+                playSound('button');
+            });
+            
+            showAllLevelsBtn.addEventListener('click', showAllLevels);
+            closeLevelsBtn.addEventListener('click', hideAllLevels);
+            
+            // Close modal when clicking outside
+            levelsModal.addEventListener('click', (e) => {
+                if (e.target === levelsModal) {
+                    hideAllLevels();
+                }
+            });
+            
+            soundControlGame.addEventListener('click', toggleSound);
+            backButtonGame.addEventListener('click', navigateToHome);
 
-        // Initialize the game
-        loadProgress(); // Load saved progress first
-        initGame(); // Then initialize the game
-        updateAllLevelsGrid(); // Prepare the levels grid
+            // Auto-save when changing levels or completing levels
+            window.addEventListener('beforeunload', saveProgress);
+            
+            // Initialize audio if already interacted
+            if (document.readyState === 'complete') {
+                initAudio();
+            }
+        }
+        
+        // Initialize when page loads
+        window.addEventListener('DOMContentLoaded', initApp);
     </script>
 </body>
 </html>
