@@ -238,6 +238,14 @@
             color: #888;
         }
 
+        .level-time {
+            font-size: 0.7rem;
+            color: #FFD166;
+            margin-bottom: 3px;
+            position: relative;
+            z-index: 1;
+        }
+
         .level-status {
             font-size: 0.8rem;
             color: #aaa;
@@ -360,6 +368,45 @@
         
         .level-info span, .timer span, .found-words span {
             color: #00dbde;
+        }
+        
+        .timer.warning {
+            color: #FFD166;
+        }
+        
+        .timer.danger {
+            color: #FF6B6B;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+        
+        .time-progress-container {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        
+        .time-progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #06D6A0, #00dbde);
+            border-radius: 2px;
+            transition: width 1s linear;
+        }
+        
+        .time-progress-bar.warning {
+            background: linear-gradient(to right, #FFD166, #FF9E00);
+        }
+        
+        .time-progress-bar.danger {
+            background: linear-gradient(to right, #EF476F, #FF006E);
         }
         
         .game-area {
@@ -722,6 +769,44 @@
             border: none;
         }
         
+        /* Time Over Dialog */
+        .time-over-dialog {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            padding: 15px;
+        }
+        
+        .time-over-dialog.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .time-over-dialog .dialog-content {
+            border: 2px solid #FF6B6B;
+        }
+        
+        .time-over-dialog h2 {
+            background: linear-gradient(45deg, #FF6B6B, #EF476F);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .time-over-dialog .stat-value {
+            color: #FF6B6B;
+        }
+        
         .back-button {
             position: absolute;
             top: 20px;
@@ -825,11 +910,15 @@
                 <div class="progress-bar" id="progress-bar"></div>
             </div>
             
+            <div class="time-progress-container">
+                <div class="time-progress-bar" id="time-progress-bar"></div>
+            </div>
+            
             <div class="level-progress" id="level-progress"></div>
             
             <div class="game-info">
                 <div class="level-info">Level: <span id="level">1</span>/20</div>
-                <div class="timer">Time: <span id="time">00:00</span></div>
+                <div class="timer" id="timer">Time: <span id="time">00:00</span></div>
                 <div class="found-words">Found: <span id="found">0</span>/<span id="total">3</span></div>
             </div>
             
@@ -888,6 +977,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- Time Over Dialog -->
+        <div class="time-over-dialog" id="time-over-dialog">
+            <div class="dialog-content">
+                <h2>Time's Up! ⏰</h2>
+                <p>You ran out of time! Try again to complete the level.</p>
+                
+                <div class="dialog-stats">
+                    <div class="stat">
+                        <div class="stat-value" id="time-over-stat-time">00:00</div>
+                        <div class="stat-label">Time</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="time-over-stat-words">0/0</div>
+                        <div class="stat-label">Words Found</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="time-over-stat-level">1/20</div>
+                        <div class="stat-label">Level</div>
+                    </div>
+                </div>
+                
+                <div class="dialog-buttons">
+                    <button class="dialog-button" id="time-over-try-again">Try Again</button>
+                    <button class="dialog-button primary" id="time-over-select-level">Select Level</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -902,107 +1019,128 @@
         ];
 
         // Game levels with progressive difficulty - ALL USING 10x10 GRIDS
+        // Added timeLimit (in seconds) for each level
         const gameLevels = [
             {
-                size: 5,
-                words: ["CAT", "DOG", "SUN"],
-                description: "Level 1: Easy Start"
+                size: 10,
+                words: ["LAAND", "DOG", "SUN"],
+                description: "Level 1: Easy Start",
+                timeLimit: 60// 2 minutes
             },
             {
                 size: 10,
-                words: ["MOON", "STAR", "FISH", "BIRD"],
-                description: "Level 2: Getting Warmer"
+                words: ["MOON", "PUSSY", "FISH", "BIRD"],
+                description: "Level 2: Getting Warmer",
+                timeLimit: 120 // 2.5 minutes
             },
             {
                 size: 10,
-                words: ["APPLE", "GRAPE", "LEMON", "PEACH", "MANGO"],
-                description: "Level 3: Fruit Basket"
+                words: ["APPLE", "GRAPE", "ASSHOLE", "PEACH", "MANGO"],
+                description: "Level 3: Fruit Basket",
+                timeLimit: 180 // 3 minutes
             },
             {
                 size: 10,
-                words: ["COMPUTER", "KEYBOARD", "MONITOR", "MOUSE", "LAPTOP"],
-                description: "Level 4: Tech World"
+                words: ["COMPUTER", "KEYBOARD", "BENCHOO", "MOUSE", "LAPTOP"],
+                description: "Level 4: Tech World",
+                timeLimit: 210 // 3.5 minutes
             },
             {
                 size: 10,
                 words: ["ELEPHANT", "GIRAFFE", "KANGAROO", "LEOPARD", "DOLPHIN", "PENGUIN"],
-                description: "Level 5: Animal Kingdom"
+                description: "Level 5: Animal Kingdom",
+                timeLimit: 240 // 4 minutes
             },
             {
                 size: 10,
-                words: ["MOUNTAIN", "VOLCANO", "GLACIER", "CANYON", "PLATEAU", "WATERFALL"],
-                description: "Level 6: Earth's Wonders"
+                words: ["MOUNTAIN", "VOLCANO", "GLACIER", "SUCKYOU", "PLATEAU", "WATERFALL"],
+                description: "Level 6: Earth's Wonders",
+                timeLimit: 270 // 4.5 minutes
             },
             {
                 size: 10,
                 words: ["ASTRONAUT", "SPACESHIP", "PLANET", "GALAXY", "TELESCOPE", "SATELLITE"],
-                description: "Level 7: Space Adventure"
+                description: "Level 7: Space Adventure",
+                timeLimit: 300 // 5 minutes
             },
             {
                 size: 10,
                 words: ["INSTRUMENT", "SAXOPHONE", "TRUMPET", "GUITAR", "VIOLIN", "DRUMS"],
-                description: "Level 8: Music Melody"
+                description: "Level 8: Music Melody",
+                timeLimit: 330 // 5.5 minutes
             },
             {
                 size: 10,
-                words: ["MARVEL", "FOUNDATION", "STRUCTURE", "BUILDING", "COLUMN", "FACADE"],
-                description: "Level 9: Architectural Marvels"
+                words: ["MARVEL", "FOUNDATION", "STRUCTURE", "BULLY", "COLUMN", "FACADE"],
+                description: "Level 9: Architectural Marvels",
+                timeLimit: 360 // 6 minutes
             },
             {
                 size: 10,
-                words: ["BIODIVERSITY", "ECOSYSTEM", "HABITAT", "SPECIES", "CONSERVATION", "WILDLIFE"],
-                description: "Level 10: Nature's Balance"
+                words: ["SUNNY", "ECOSYSTEM", "HABITAT", "SPECIES", "LEONNY", "WILDLIFE"],
+                description: "Level 10: Nature's Balance",
+                timeLimit: 390 // 6.5 minutes
             },
             // NEW LEVELS 11-20
             {
                 size: 10,
                 words: ["PYTHON", "JAVASCRIPT", "HTML", "CSS", "REACT", "NODEJS"],
-                description: "Level 11: Programming Languages"
+                description: "Level 11: Programming Languages",
+                timeLimit: 240 // 7 minutes
             },
             {
                 size: 10,
                 words: ["FOOTBALL", "BASKETBALL", "TENNIS", "CRICKET", "HOCKEY", "BASEBALL"],
-                description: "Level 12: Sports World"
+                description: "Level 12: Sports World",
+                timeLimit: 450 // 7.5 minutes
             },
             {
                 size: 10,
-                words: ["CHOCOLATE", "VANILLA", "STRAWBERRY", "CARAMEL", "PISTACHIO", "COFFEE"],
-                description: "Level 13: Ice Cream Flavors"
+                words: ["CHOCO", "VANILLA", "STRAWBERRY", "CARAMEL", "CONDOM", "COFFEE"],
+                description: "Level 13: Ice Cream Flavors",
+                timeLimit: 480 // 8 minutes
             },
             {
                 size: 10,
-                words: ["EINSTEIN", "NEWTON", "CURIE", "TESLA", "EDISON", "GALILEO"],
-                description: "Level 14: Famous Scientists"
+                words: ["EINSTEIN", "NEWTON", "CURIE", "TESLA", "EDISON", "GADBULLY"],
+                description: "Level 14: Famous Scientists",
+                timeLimit: 180 // 3 MINUTE
             },
             {
                 size: 10,
-                words: ["LONDON", "PARIS", "TOKYO", "NEWYORK", "DUBAI", "SYDNEY"],
-                description: "Level 15: World Cities"
+                words: ["LONDON", "PARIS", "THOKO", "NEWCHOCO", "DABAI", "SYDNEY"],
+                description: "Level 15: World Cities",
+                timeLimit: 300 // 9 minutes
             },
             {
                 size: 10,
-                words: ["PHOTOGRAPHY", "PAINTING", "SCULPTURE", "MUSIC", "DANCE", "THEATER"],
-                description: "Level 16: Art Forms"
+                words: ["PHOTO", "PAINTING", "SCULPTURE", "MUSIC", "DANCE", "THEATER"],
+                description: "Level 16: Art Forms",
+                timeLimit: 570 // 9.5 minutes
             },
             {
                 size: 10,
-                words: ["EVEREST", "KILIMANJARO", "FUJI", "ALPS", "ANDES", "ROCKIES"],
-                description: "Level 17: Mountain Ranges"
+                words: ["EVEREST", "VINOD", "FUJI", "ALPS", "ANDES", "ROCKIES"],
+                description: "Level 17: Mountain Ranges",
+                timeLimit: 500 // 10 minutes
             },
             {
                 size: 10,
-                words: ["AMAZON", "NILE", "YANGTZE", "MISSISSIPPI", "DANUBE", "GANGES"],
-                description: "Level 18: World Rivers"
+                words: ["CHODU", "CID", "PAKAD", "MADHARCHOD", "DANUBE", "GANGES"],
+                description: "Level 18: World Rivers",
+                timeLimit: 600 // 10.5 minutes
             },
             {
                 size: 10,
                 words: ["SUPERMAN", "BATMAN", "WONDERWOMAN", "SPIDERMAN", "IRONMAN", "HULK"],
-                description: "Level 19: Superheroes"
+                description: "Level 19: Superheroes",
+                timeLimit: 500 // 11 minutes
             },
             {
                 size: 10,
                 words: ["CHESS", "MONOPOLY", "SCRABBLE", "SUDOKU", "PUZZLE", "CARDS"],
-                description: "Level 20: Games & Puzzles"
+                description: "Level 20: Games & Puzzles",
+                timeLimit: 400 // 12 minutes (final level challenge)
             }
         ];
 
@@ -1020,6 +1158,8 @@
         let soundEnabled = true;
         let levelCompleteTime = 0;
         let hasShownTip = false;
+        let timeLimit = 0;
+        let remainingTime = 0;
 
         // DOM Elements
         const homePage = document.getElementById('home-page');
@@ -1038,6 +1178,7 @@
         const wordListElement = document.getElementById('word-list');
         const levelElement = document.getElementById('level');
         const timeElement = document.getElementById('time');
+        const timerElement = document.getElementById('timer');
         const foundElement = document.getElementById('found');
         const totalElement = document.getElementById('total');
         const levelDescription = document.getElementById('level-description');
@@ -1046,6 +1187,13 @@
         const resetButton = document.getElementById('reset');
         const dialogReplayButton = document.getElementById('dialog-replay');
         const dialogNextButton = document.getElementById('dialog-next');
+        const timeProgressBar = document.getElementById('time-progress-bar');
+        const timeOverDialog = document.getElementById('time-over-dialog');
+        const timeOverTryAgain = document.getElementById('time-over-try-again');
+        const timeOverSelectLevel = document.getElementById('time-over-select-level');
+        const timeOverStatTime = document.getElementById('time-over-stat-time');
+        const timeOverStatWords = document.getElementById('time-over-stat-words');
+        const timeOverStatLevel = document.getElementById('time-over-stat-level');
 
         // Audio context for sound effects
         let audioContext;
@@ -1110,6 +1258,17 @@
             playSound(440, 0.1, 'sine'); // A4
         };
 
+        const playTimeWarningSound = () => {
+            playSound(330, 0.2, 'sine'); // E4
+            setTimeout(() => playSound(311.13, 0.2, 'sine'), 300); // D#4
+        };
+
+        const playTimeUpSound = () => {
+            playSound(220, 0.3, 'sawtooth'); // A3
+            setTimeout(() => playSound(196.00, 0.3, 'sawtooth'), 300); // G3
+            setTimeout(() => playSound(174.61, 0.5, 'sawtooth'), 600); // F3
+        };
+
         // Check if a level is unlocked
         function isLevelUnlocked(levelIndex) {
             // Level 1 is always unlocked
@@ -1117,6 +1276,13 @@
             
             // Other levels are unlocked only if previous level is completed
             return completedLevels.includes(levelIndex - 1);
+        }
+
+        // Format time display
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
         // Show quick tip
@@ -1226,10 +1392,30 @@
             }, 500);
         }
 
-        // Hide winning dialog
+        // Show time over dialog
+        function showTimeOverDialog() {
+            const timeElement = timeOverStatTime;
+            const wordsElement = timeOverStatWords;
+            const levelElement = timeOverStatLevel;
+            
+            timeElement.textContent = formatTime(timeLimit);
+            wordsElement.textContent = `${foundWords.length}/${gameLevels[currentLevel].words.length}`;
+            levelElement.textContent = `${currentLevel + 1}/${gameLevels.length}`;
+            
+            setTimeout(() => {
+                timeOverDialog.classList.add('active');
+                if (soundEnabled) playTimeUpSound();
+            }, 500);
+        }
+
+        // Hide dialogs
         function hideWinningDialog() {
             const dialog = document.getElementById('winning-dialog');
             dialog.classList.remove('active');
+        }
+
+        function hideTimeOverDialog() {
+            timeOverDialog.classList.remove('active');
         }
 
         // Show level selection
@@ -1266,8 +1452,11 @@
                     levelCard.classList.add('current');
                 }
                 
+                const timeText = formatTime(level.timeLimit);
+                
                 levelCard.innerHTML = `
                     <div class="level-number">${index + 1}</div>
+                    <div class="level-time">${timeText}</div>
                     <div class="level-status">${level.words.length} words</div>
                     <div class="level-progress-bar">
                         <div class="level-progress-fill" style="width: ${isCompleted ? '100%' : '0%'}"></div>
@@ -1310,6 +1499,7 @@
             gamePage.classList.remove('active');
             homePage.style.display = 'flex';
             hideWinningDialog();
+            hideTimeOverDialog();
             if (soundEnabled) playMenuClickSound();
         }
 
@@ -1333,11 +1523,21 @@
             currentLevel = levelIndex;
             const level = gameLevels[levelIndex];
             
+            // Set time limit for this level
+            timeLimit = level.timeLimit;
+            remainingTime = timeLimit;
+            
             // Update UI
             levelElement.textContent = levelIndex + 1;
             totalElement.textContent = level.words.length;
             foundElement.textContent = '0';
             levelDescription.textContent = level.description;
+            timeElement.textContent = formatTime(remainingTime);
+            
+            // Reset timer styling
+            timerElement.classList.remove('warning', 'danger');
+            timeProgressBar.classList.remove('warning', 'danger');
+            timeProgressBar.style.width = '100%';
             
             // Reset game state
             selectedCells = [];
@@ -1738,11 +1938,46 @@
             timerInterval = setInterval(() => {
                 const currentTime = new Date();
                 const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+                remainingTime = timeLimit - elapsedTime;
                 
-                const minutes = Math.floor(elapsedTime / 60).toString().padStart(2, '0');
-                const seconds = (elapsedTime % 60).toString().padStart(2, '0');
+                if (remainingTime <= 0) {
+                    clearInterval(timerInterval);
+                    timeElement.textContent = '00:00';
+                    timeProgressBar.style.width = '0%';
+                    showTimeOverDialog();
+                    return;
+                }
                 
-                timeElement.textContent = `${minutes}:${seconds}`;
+                // Update time display
+                timeElement.textContent = formatTime(remainingTime);
+                
+                // Update progress bar
+                const progressPercent = (remainingTime / timeLimit) * 100;
+                timeProgressBar.style.width = `${progressPercent}%`;
+                
+                // Update styling based on remaining time
+                if (remainingTime <= 30) {
+                    // Last 30 seconds - danger zone
+                    timerElement.classList.add('danger');
+                    timeProgressBar.classList.add('danger');
+                    timerElement.classList.remove('warning');
+                    timeProgressBar.classList.remove('warning');
+                    
+                    // Play warning sound every 5 seconds in last 30 seconds
+                    if (remainingTime <= 30 && remainingTime % 5 === 0 && soundEnabled) {
+                        playTimeWarningSound();
+                    }
+                } else if (remainingTime <= 60) {
+                    // Last minute - warning zone
+                    timerElement.classList.add('warning');
+                    timeProgressBar.classList.add('warning');
+                    timerElement.classList.remove('danger');
+                    timeProgressBar.classList.remove('danger');
+                } else {
+                    // Normal time
+                    timerElement.classList.remove('warning', 'danger');
+                    timeProgressBar.classList.remove('warning', 'danger');
+                }
             }, 1000);
         }
 
@@ -1773,6 +2008,7 @@
             // Game control buttons
             prevLevelButton.addEventListener('click', () => {
                 hideWinningDialog();
+                hideTimeOverDialog();
                 loadLevel(currentLevel - 1);
                 startTimer();
                 if (soundEnabled) playMenuClickSound();
@@ -1780,6 +2016,7 @@
             
             nextLevelButton.addEventListener('click', () => {
                 hideWinningDialog();
+                hideTimeOverDialog();
                 if (currentLevel < gameLevels.length - 1) {
                     loadLevel(currentLevel + 1);
                 } else {
@@ -1791,6 +2028,7 @@
             
             resetButton.addEventListener('click', () => {
                 hideWinningDialog();
+                hideTimeOverDialog();
                 loadLevel(currentLevel);
                 startTimer();
                 if (soundEnabled) playMenuClickSound();
@@ -1811,6 +2049,22 @@
                     loadLevel(0);
                 }
                 startTimer();
+                if (soundEnabled) playMenuClickSound();
+            });
+            
+            // Time over dialog buttons
+            timeOverTryAgain.addEventListener('click', () => {
+                hideTimeOverDialog();
+                loadLevel(currentLevel);
+                startTimer();
+                if (soundEnabled) playMenuClickSound();
+            });
+            
+            timeOverSelectLevel.addEventListener('click', () => {
+                hideTimeOverDialog();
+                gamePage.classList.remove('active');
+                homePage.style.display = 'flex';
+                showLevelSelection();
                 if (soundEnabled) playMenuClickSound();
             });
             
