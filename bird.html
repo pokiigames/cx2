@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Flappy Bird Mobile</title>
+    <title>Flappy Bird - More Space Edition</title>
     <style>
         * {
             margin: 0;
@@ -92,6 +92,13 @@
             text-shadow: 2px 2px 0 #000;
         }
         
+        #high-score {
+            color: #f0c419;
+            font-size: 24px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 0 #000;
+        }
+        
         #restart-btn {
             background-color: #f0c419;
             color: #8a6d0f;
@@ -171,6 +178,17 @@
             padding: 0 20px;
         }
         
+        #difficulty-indicator {
+            position: absolute;
+            top: 100px;
+            width: 100%;
+            text-align: center;
+            color: white;
+            font-size: 16px;
+            text-shadow: 1px 1px 0 #000;
+            opacity: 0.8;
+        }
+        
         @media (max-height: 650px) {
             #game-container {
                 height: 100vh;
@@ -198,16 +216,18 @@
         
         <div id="ui-overlay">
             <div id="score-display">0</div>
+            <div id="difficulty-indicator">Distance: WIDE</div>
             
             <div id="game-over">
                 <h2>GAME OVER</h2>
                 <div id="final-score">0</div>
+                <div id="high-score">High Score: 0</div>
                 <button id="restart-btn">PLAY AGAIN</button>
             </div>
             
             <div id="start-screen">
                 <h1>FLAPPY BIRD</h1>
-                <p>Tap the screen to keep the bird flying and avoid the pipes!</p>
+                <p>More space between pipes! Tap to fly through wider gaps.</p>
                 <button id="start-btn">START</button>
                 <div id="instructions">Tap anywhere to fly</div>
             </div>
@@ -219,8 +239,10 @@
         const canvas = document.getElementById('game-canvas');
         const ctx = canvas.getContext('2d');
         const scoreDisplay = document.getElementById('score-display');
+        const difficultyIndicator = document.getElementById('difficulty-indicator');
         const gameOverScreen = document.getElementById('game-over');
         const finalScoreDisplay = document.getElementById('final-score');
+        const highScoreDisplay = document.getElementById('high-score');
         const restartBtn = document.getElementById('restart-btn');
         const startScreen = document.getElementById('start-screen');
         const startBtn = document.getElementById('start-btn');
@@ -238,7 +260,11 @@
             score: 0,
             highScore: localStorage.getItem('flappyHighScore') || 0,
             gravity: 0.5,
-            speed: 3
+            speed: 3,
+            pipeGap: 200, // Wider initial gap (increased from 160)
+            pipeFrequency: 180, // Reduced frequency (more space between pipes)
+            minGap: 180, // Minimum gap size
+            maxGap: 250  // Maximum gap size for variety
         };
         
         // Bird properties
@@ -314,8 +340,6 @@
         // Pipe properties
         let pipes = [];
         const pipeWidth = 60;
-        const pipeGap = 160;
-        const pipeFrequency = 120; // frames
         let pipeCounter = 0;
         
         // Ground properties
@@ -340,7 +364,7 @@
         
         // Cloud properties
         let clouds = [];
-        const cloudCount = 4;
+        const cloudCount = 5; // Increased cloud count for more visual interest
         
         // Initialize clouds
         function initClouds() {
@@ -348,10 +372,10 @@
             for (let i = 0; i < cloudCount; i++) {
                 clouds.push({
                     x: Math.random() * canvas.width,
-                    y: Math.random() * (canvas.height / 3),
-                    width: 60 + Math.random() * 40,
-                    height: 30 + Math.random() * 20,
-                    speed: 0.5 + Math.random() * 0.5
+                    y: Math.random() * (canvas.height / 2),
+                    width: 60 + Math.random() * 50,
+                    height: 30 + Math.random() * 30,
+                    speed: 0.3 + Math.random() * 0.7
                 });
             }
         }
@@ -381,19 +405,26 @@
                 cloud.x -= cloud.speed;
                 if (cloud.x + cloud.width < 0) {
                     cloud.x = canvas.width + cloud.width;
-                    cloud.y = Math.random() * (canvas.height / 3);
+                    cloud.y = Math.random() * (canvas.height / 2);
                 }
             });
         }
         
-        // Create a new pipe
+        // Create a new pipe with variable gap size
         function createPipe() {
-            const pipeHeight = Math.floor(Math.random() * (canvas.height - pipeGap - ground.height - 100)) + 50;
+            // Random gap size between min and max
+            const currentGap = game.minGap + Math.random() * (game.maxGap - game.minGap);
+            
+            // Random pipe height with more space at top and bottom
+            const minPipeHeight = 80;
+            const maxPipeHeight = canvas.height - currentGap - ground.height - minPipeHeight;
+            const pipeHeight = Math.floor(Math.random() * (maxPipeHeight - minPipeHeight)) + minPipeHeight;
             
             pipes.push({
                 x: canvas.width,
                 topHeight: pipeHeight,
-                bottomY: pipeHeight + pipeGap,
+                bottomY: pipeHeight + currentGap,
+                gapSize: currentGap,
                 passed: false,
                 width: pipeWidth,
                 draw: function() {
@@ -412,6 +443,10 @@
                     // Draw pipe cap
                     ctx.fillStyle = '#5a9a0a';
                     ctx.fillRect(this.x - 5, this.bottomY, this.width + 10, 20);
+                    
+                    // Draw gap indicator (visual aid)
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+                    ctx.fillRect(this.x, this.topHeight, this.width, currentGap);
                 },
                 update: function() {
                     this.x -= game.speed;
@@ -421,6 +456,9 @@
                         this.passed = true;
                         game.score++;
                         scoreDisplay.textContent = game.score;
+                        
+                        // Update difficulty indicator based on gap size
+                        updateDifficultyIndicator(currentGap);
                     }
                     
                     // Check collision with bird
@@ -438,6 +476,25 @@
             });
         }
         
+        // Update difficulty indicator
+        function updateDifficultyIndicator(gapSize) {
+            let difficultyText = "Distance: ";
+            if (gapSize >= 230) {
+                difficultyText += "VERY WIDE";
+                difficultyIndicator.style.color = "#4CAF50"; // Green
+            } else if (gapSize >= 210) {
+                difficultyText += "WIDE";
+                difficultyIndicator.style.color = "#8BC34A"; // Light green
+            } else if (gapSize >= 190) {
+                difficultyText += "MEDIUM";
+                difficultyIndicator.style.color = "#FFC107"; // Amber
+            } else {
+                difficultyText += "NARROW";
+                difficultyIndicator.style.color = "#FF9800"; // Orange
+            }
+            difficultyIndicator.textContent = difficultyText;
+        }
+        
         // Draw all pipes
         function drawPipes() {
             pipes.forEach(pipe => pipe.draw());
@@ -450,14 +507,22 @@
             // Remove pipes that are off screen
             pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
             
-            // Create new pipes
+            // Create new pipes with variable frequency
             pipeCounter++;
-            if (pipeCounter > pipeFrequency) {
+            if (pipeCounter > game.pipeFrequency) {
                 createPipe();
                 pipeCounter = 0;
                 
-                // Increase speed slightly with each new pipe
-                game.speed += 0.05;
+                // Gradually increase speed but not too fast
+                if (game.speed < 6) {
+                    game.speed += 0.03;
+                }
+                
+                // Gradually reduce gap size as score increases, but keep it reasonable
+                if (game.score > 10 && game.minGap > 150) {
+                    game.minGap -= 0.5;
+                    game.maxGap -= 0.5;
+                }
             }
         }
         
@@ -472,6 +537,18 @@
             
             // Draw clouds
             drawClouds();
+            
+            // Draw distant mountains for visual interest
+            ctx.fillStyle = 'rgba(100, 130, 100, 0.3)';
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height * 0.6);
+            ctx.lineTo(canvas.width * 0.3, canvas.height * 0.4);
+            ctx.lineTo(canvas.width * 0.6, canvas.height * 0.5);
+            ctx.lineTo(canvas.width, canvas.height * 0.55);
+            ctx.lineTo(canvas.width, canvas.height);
+            ctx.lineTo(0, canvas.height);
+            ctx.closePath();
+            ctx.fill();
         }
         
         // Game loop
@@ -507,7 +584,12 @@
             game.running = true;
             game.score = 0;
             game.speed = 3;
+            game.pipeGap = 200; // Reset to wider gap
+            game.minGap = 180;
+            game.maxGap = 250;
+            game.pipeFrequency = 180; // More space between pipes
             scoreDisplay.textContent = '0';
+            updateDifficultyIndicator(200);
             
             // Reset game objects
             bird.reset();
@@ -516,7 +598,7 @@
             
             // Hide start screen
             startScreen.style.display = 'none';
-            instructions.textContent = "Tap to fly!";
+            instructions.textContent = "Tap to fly through the gaps!";
         }
         
         // End game
@@ -531,6 +613,7 @@
             
             // Show game over screen
             finalScoreDisplay.textContent = game.score;
+            highScoreDisplay.textContent = `High Score: ${game.highScore}`;
             gameOverScreen.style.display = 'flex';
         }
         
@@ -576,11 +659,12 @@
         resizeCanvas();
         initClouds();
         gameLoop();
+        highScoreDisplay.textContent = `High Score: ${game.highScore}`;
         
         // Instructions update
         document.addEventListener('touchstart', function() {
             if (game.running) {
-                instructions.textContent = "Keep tapping!";
+                instructions.textContent = "Keep tapping! Watch the gap size";
             }
         }, { once: true });
     </script>
