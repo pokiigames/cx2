@@ -420,21 +420,12 @@
             background: #1a2533;
             transform: scale(1.02);
         }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #ff6b35 !important;
-            color: #ff6b35;
-        }
-        .btn-outline:hover {
-            background: #ff6b35;
-            color: white;
-        }
 
-        /* ===== FEATURES SECTION ===== */
+        /* ===== FEATURES SECTION - PRODUCTS KE NICHE ===== */
         .features {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
             padding: 40px 5%;
             background: white;
             margin: 0 5% 40px;
@@ -443,20 +434,32 @@
         }
         .feature-item {
             text-align: center;
-            padding: 20px;
+            padding: 20px 15px;
+            border-radius: 12px;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+        .feature-item:hover {
+            border-color: #ff6b35;
+            background: #fff8f5;
+            transform: translateY(-5px);
         }
         .feature-item i {
-            font-size: 40px;
+            font-size: 42px;
             color: #ff6b35;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            display: block;
         }
         .feature-item h4 {
             font-size: 16px;
-            margin-bottom: 5px;
+            font-weight: 700;
+            color: #232f3e;
+            margin-bottom: 4px;
         }
         .feature-item p {
             color: #888;
             font-size: 13px;
+            margin: 0;
         }
 
         /* ===== ORDER MODAL ===== */
@@ -557,8 +560,7 @@
             color: #dc3545;
         }
         .modal .form-group input,
-        .modal .form-group textarea,
-        .modal .form-group select {
+        .modal .form-group textarea {
             width: 100%;
             padding: 12px 16px;
             border: 2px solid #e8e8e8;
@@ -672,7 +674,7 @@
             background: #232f3e;
             color: #ccc;
             padding: 50px 5% 30px;
-            margin-top: 40px;
+            margin-top: 0;
         }
         .footer-grid {
             display: grid;
@@ -706,6 +708,12 @@
         }
 
         /* ===== RESPONSIVE ===== */
+        @media (max-width: 992px) {
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .top-bar {
                 font-size: 11px;
@@ -756,8 +764,21 @@
             }
             .features {
                 grid-template-columns: repeat(2, 1fr);
-                padding: 20px;
+                padding: 25px 15px;
                 margin: 0 3% 30px;
+                gap: 15px;
+            }
+            .feature-item {
+                padding: 15px 10px;
+            }
+            .feature-item i {
+                font-size: 32px;
+            }
+            .feature-item h4 {
+                font-size: 14px;
+            }
+            .feature-item p {
+                font-size: 12px;
             }
             .modal {
                 padding: 25px 20px;
@@ -805,6 +826,23 @@
                 padding: 3px 10px;
                 top: 10px;
                 left: 10px;
+            }
+            .features {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+                padding: 20px 12px;
+            }
+            .feature-item {
+                padding: 12px 8px;
+            }
+            .feature-item i {
+                font-size: 28px;
+            }
+            .feature-item h4 {
+                font-size: 13px;
+            }
+            .feature-item p {
+                font-size: 11px;
             }
         }
     </style>
@@ -855,14 +893,14 @@
 <!-- ===== CATEGORIES ===== -->
 <div class="categories-bar">
     <a href="#" class="active">🔥 All</a>
-    <a href="#"></a>
+    <a href="#">👗 Fashion</a>
     <a href="#">📱 Electronics</a>
-    <a href="#"></a>
-    <a href="#"></a>
-    <a href="#"></a>
+    <a href="#">📚 Books</a>
+    <a href="#">🏠 Home & Living</a>
+    <a href="#">💄 Beauty</a>
     <a href="#">🎮 Gaming</a>
     <a href="#">⚽ Sports</a>
-    <a href="#"></a>
+    <a href="#">🚗 Auto</a>
 </div>
 
 <!-- ===== HERO BANNER ===== -->
@@ -879,7 +917,17 @@
     </div>
 </section>
 
-<!-- ===== FEATURES ===== -->
+<!-- ===== PRODUCTS SECTION ===== -->
+<div class="section-title" id="productsSection">
+    <h2><i class="fas fa-fire"></i> Trending Products</h2>
+    <a href="#">View All →</a>
+</div>
+
+<div class="product-grid" id="productGrid">
+    <!-- Products will be injected here by JavaScript -->
+</div>
+
+<!-- ===== FEATURES SECTION - PRODUCTS KE NICHE ===== -->
 <section class="features">
     <div class="feature-item">
         <i class="fas fa-shipping-fast"></i>
@@ -902,16 +950,6 @@
         <p>Dedicated customer care</p>
     </div>
 </section>
-
-<!-- ===== PRODUCTS SECTION ===== -->
-<div class="section-title" id="productsSection">
-    <h2><i class="fas fa-fire"></i> Trending Products</h2>
-    <a href="#">View All →</a>
-</div>
-
-<div class="product-grid" id="productGrid">
-    <!-- Products will be injected here by JavaScript -->
-</div>
 
 <!-- ===== ORDER MODAL ===== -->
 <div class="modal-overlay" id="orderModal">
@@ -966,12 +1004,12 @@
         <div>
             <h4>ShopVibe</h4>
             <a href="#">About Us</a>
-            <a href="#">Blog</a>
+            <a href="#">Contact</a>
         </div>
         <div>
             <h4>Customer Service</h4>
-             <a href="#">Careers</a>
-            <a href="#">Contact</a>
+            <a href="#">Returns Policy</a>
+            <a href="#">Shipping Info</a>
         </div>
     </div>
     <div class="footer-bottom">
@@ -983,7 +1021,6 @@
     // =============================================
     // 🔥 FIREBASE CONFIG - APNA YAHAN DAALEIN
     // =============================================
- // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAX-Serk-2O95woq2cgcD02PKGyxO6EIJY",
   authDomain: "ecommerce-a504f.firebaseapp.com",
@@ -993,12 +1030,11 @@ const firebaseConfig = {
   appId: "1:537384330941:web:da26205cfe94ec2796b9d4",
   measurementId: "G-MYWNKF3CHT"
 };
-
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     // =============================================
-    // 📦 PRODUCT DATA
+    // 📦 PRODUCT DATA WITH REAL IMAGES
     // =============================================
     const products = [
         {
@@ -1009,7 +1045,7 @@ const firebaseConfig = {
             originalPrice: 599,
             rating: 4.5,
             reviews: 24,
-            image: "https://via.placeholder.com/400x400/ff6b35/fff?text=Night+Dress",
+            image: "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=400&h=400&fit=crop",
             badge: "Hot",
             badgeType: "hot",
             sizes: ["S", "M", "L", "XL"],
@@ -1023,7 +1059,7 @@ const firebaseConfig = {
             originalPrice: 1999,
             rating: 4.8,
             reviews: 156,
-            image: "https://via.placeholder.com/400x400/232f3e/fff?text=Headphones",
+            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=400&h=400&fit=crop",
             badge: "Sale",
             badgeType: "new",
             sizes: ["One Size"],
@@ -1037,7 +1073,7 @@ const firebaseConfig = {
             originalPrice: 3999,
             rating: 4.6,
             reviews: 89,
-            image: "https://via.placeholder.com/400x400/28a745/fff?text=Smart+Watch",
+            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop",
             badge: "New",
             badgeType: "new",
             sizes: ["One Size"],
@@ -1051,7 +1087,7 @@ const firebaseConfig = {
             originalPrice: 799,
             rating: 4.3,
             reviews: 312,
-            image: "https://via.placeholder.com/400x400/007bff/fff?text=T-Shirt",
+            image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop",
             badge: "Trending",
             badgeType: "hot",
             sizes: ["S", "M", "L", "XL", "XXL"],
@@ -1065,7 +1101,7 @@ const firebaseConfig = {
             originalPrice: 4999,
             rating: 4.7,
             reviews: 67,
-            image: "https://via.placeholder.com/400x400/ffc107/333?text=Blender",
+            image: "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=400&h=400&fit=crop",
             badge: "Sale",
             badgeType: "hot",
             sizes: ["One Size"],
@@ -1073,13 +1109,13 @@ const firebaseConfig = {
         },
         {
             id: 6,
-            name: "Yoga Mat - Non Slip Premium",
+            name: "Premium Yoga Mat - Non Slip",
             category: "Sports",
             price: 899,
             originalPrice: 1299,
             rating: 4.4,
             reviews: 45,
-            image: "https://via.placeholder.com/400x400/6f42c1/fff?text=Yoga+Mat",
+            image: "https://images.unsplash.com/photo-1592432678016-e910b452f9a2?w=400&h=400&fit=crop",
             badge: "Popular",
             badgeType: "new",
             sizes: ["One Size"],
@@ -1093,7 +1129,7 @@ const firebaseConfig = {
             originalPrice: 2499,
             rating: 4.9,
             reviews: 203,
-            image: "https://ibb.co/bg8QXzx2",
+            image: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=400&h=400&fit=crop",
             badge: "Best Seller",
             badgeType: "hot",
             sizes: ["One Size"],
@@ -1107,7 +1143,7 @@ const firebaseConfig = {
             originalPrice: 1999,
             rating: 4.2,
             reviews: 78,
-            image: "https://unsplash.com/photos/photo-of-mountain-ruWkmt3nU58",
+            image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=400&h=400&fit=crop",
             badge: "Limited",
             badgeType: "new",
             sizes: ["One Size"],
@@ -1142,7 +1178,7 @@ const firebaseConfig = {
             card.innerHTML = `
                 <div class="product-badge ${badgeClass}">${product.badge}</div>
                 <div class="product-image">
-                    <img src="${product.image}" alt="${product.name}" loading="lazy" />
+                    <img src="${product.image}" alt="${product.name}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x400/ff6b35/fff?text=${encodeURIComponent(product.name)}'" />
                     <button class="wishlist" onclick="event.stopPropagation(); showToast('❤️ Added to wishlist!')">
                         <i class="far fa-heart"></i>
                     </button>
@@ -1162,7 +1198,6 @@ const firebaseConfig = {
                     </div>
                 </div>
             `;
-            // Click on card = view details
             card.addEventListener('click', () => buyNow(product.id));
             grid.appendChild(card);
         });
@@ -1177,18 +1212,13 @@ const firebaseConfig = {
 
         state.cartCount++;
         document.getElementById('cartCount').textContent = state.cartCount;
-
-        // Save cart to localStorage
         localStorage.setItem('cartCount', state.cartCount);
-
         showToast(`✅ ${product.name} added to cart!`);
-        
-        // Haptic feedback
         if (navigator.vibrate) navigator.vibrate(30);
     }
 
     // =============================================
-    // 💳 BUY NOW - Open Modal
+    // 💳 BUY NOW
     // =============================================
     function buyNow(productId) {
         const product = products.find(p => p.id === productId);
@@ -1199,18 +1229,15 @@ const firebaseConfig = {
         state.selectedColor = product.colors[0] || "Red";
         state.quantity = 1;
 
-        // Update modal
         document.getElementById('modalProductName').textContent = product.name;
         document.getElementById('modalVariant').textContent = `${state.selectedSize} / ${state.selectedColor}`;
         document.getElementById('modalQty').textContent = state.quantity;
         document.getElementById('modalTotal').textContent = `Rs. ${(product.price * state.quantity).toFixed(2)}`;
 
-        // Reset form
         document.getElementById('orderForm').reset();
         document.getElementById('modalStatus').className = '';
         document.getElementById('modalStatus').style.display = 'none';
 
-        // Show modal
         document.getElementById('orderModal').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
@@ -1229,13 +1256,9 @@ const firebaseConfig = {
     });
 
     // =============================================
-    // 🔄 QUANTITY UPDATE IN MODAL (Simple)
+    // 🔄 QUANTITY UPDATE
     // =============================================
-    // We'll use a simple +/- in the modal for quantity
-    // Add quantity controls to modal
     document.addEventListener('DOMContentLoaded', function() {
-        // Add quantity controls to modal summary
-        const summary = document.getElementById('orderSummary');
         const qtyRow = document.querySelector('.row:has(#modalQty)');
         if (qtyRow) {
             qtyRow.innerHTML = `
@@ -1256,7 +1279,6 @@ const firebaseConfig = {
         document.getElementById('modalQty').textContent = newQty;
         state.quantity = newQty;
 
-        // Update total
         if (state.selectedProduct) {
             const total = state.selectedProduct.price * newQty;
             document.getElementById('modalTotal').textContent = `Rs. ${total.toFixed(2)}`;
@@ -1276,7 +1298,6 @@ const firebaseConfig = {
         const statusDiv = document.getElementById('modalStatus');
         const submitBtn = document.getElementById('submitOrderBtn');
 
-        // Validation
         if (!name || !phone || !address) {
             showModalStatus('⚠️ Please fill all required fields!', 'error');
             return;
@@ -1316,19 +1337,15 @@ const firebaseConfig = {
                 paymentMethod: 'COD (Cash on Delivery)'
             };
 
-            // Save to Firebase
             const docRef = await db.collection('orders').add(orderData);
 
-            // Success
             showModalStatus(`✅ Order Placed Successfully! 🎉\nOrder ID: ${docRef.id.substring(0,8)}`, 'success');
             submitBtn.innerHTML = '✅ Order Confirmed!';
 
-            // Update cart count
             state.cartCount++;
             document.getElementById('cartCount').textContent = state.cartCount;
             localStorage.setItem('cartCount', state.cartCount);
 
-            // Close after 3 seconds
             setTimeout(() => {
                 closeModal();
                 submitBtn.disabled = false;
@@ -1352,7 +1369,7 @@ const firebaseConfig = {
     }
 
     // =============================================
-    // 🔔 TOAST NOTIFICATION
+    // 🔔 TOAST
     // =============================================
     let toastTimeout;
 
@@ -1371,7 +1388,7 @@ const firebaseConfig = {
     }
 
     // =============================================
-    // 🔍 SEARCH FUNCTIONALITY
+    // 🔍 SEARCH
     // =============================================
     document.getElementById('searchBtn').addEventListener('click', searchProducts);
     document.getElementById('searchInput').addEventListener('keyup', function(e) {
@@ -1401,14 +1418,14 @@ const firebaseConfig = {
     }
 
     // =============================================
-    // 📜 SCROLL TO PRODUCTS
+    // 📜 SCROLL
     // =============================================
     function scrollToProducts() {
         document.getElementById('productsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     // =============================================
-    // 💾 RESTORE CART COUNT FROM LOCALSTORAGE
+    // 💾 RESTORE CART
     // =============================================
     function restoreCartCount() {
         const saved = localStorage.getItem('cartCount');
@@ -1430,7 +1447,7 @@ const firebaseConfig = {
     });
 
     // =============================================
-    // 🏷️ CATEGORY FILTER (Simple)
+    // 🏷️ CATEGORY FILTER
     // =============================================
     document.querySelectorAll('.categories-bar a').forEach(link => {
         link.addEventListener('click', function(e) {
@@ -1451,7 +1468,7 @@ const firebaseConfig = {
     });
 
     // =============================================
-    // 🎯 KEYBOARD SHORTCUT: Escape to close modal
+    // ⌨️ ESCAPE KEY
     // =============================================
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') closeModal();
