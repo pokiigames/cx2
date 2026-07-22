@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0">
+
+    <!-- ===== HOMEPAGE ===== -->
+    <url>
+        <loc>https://www.cromx.shop/</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+
+    <!-- ===== PRODUCT PAGES ===== -->
+    <url>
+        <loc>https://www.cromx.shop/product/1</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500&h=500&fit=crop</image:loc>
+            <image:title>Fancy Vegetable Chopper</image:title>
+            <image:caption>Premium quality vegetable chopper with stainless steel blades</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/product/2</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop</image:loc>
+            <image:title>Premium Wireless Headphones</image:title>
+            <image:caption>High-quality wireless headphones with noise cancellation</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/product/3</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop</image:loc>
+            <image:title>Smart Watch with Heart Rate Monitor</image:title>
+            <image:caption>Advanced smart watch with heart rate monitor and GPS</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/product/4</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=500&h=500&fit=crop</image:loc>
+            <image:title>Men's Casual Cotton T-Shirt</image:title>
+            <image:caption>Premium quality 100% cotton t-shirt with comfortable fit</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/product/5</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500&h=500&fit=crop</image:loc>
+            <image:title>Kitchen Blender 1000W</image:title>
+            <image:caption>Powerful 1000W kitchen blender with 6 stainless steel blades</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/product/6</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1592432678016-e910b452f9a2?w=500&h=500&fit=crop</image:loc>
+            <image:title>Premium Yoga Mat</image:title>
+            <image:caption>Premium non-slip yoga mat with extra cushioning</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/product/7</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&h=500&fit=crop</image:loc>
+            <image:title>Gaming Mouse RGB Wireless</image:title>
+            <image:caption>Professional gaming mouse with RGB lighting and 16000 DPI</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/product/8</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <image:image>
+            <image:loc>https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=500&h=500&fit=crop</image:loc>
+            <image:title>Women's Designer Handbag</image:title>
+            <image:caption>Stylish designer handbag made with premium leather</image:caption>
+        </image:image>
+    </url>
+
+    <!-- ===== OTHER PAGES ===== -->
+    <url>
+        <loc>https://www.cromx.shop/catalog</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/contact</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <url>
+        <loc>https://www.cromx.shop/about</loc>
+        <lastmod>2026-07-22</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+</urlset>
