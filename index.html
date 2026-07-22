@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ShopVibe - Premium Store</title>
+    <title>CromX.Shop - Premium Store</title>
     
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
@@ -1211,17 +1211,7 @@
 </head>
 <body>
 
-<!-- ===== TOP BAR ===== -->
-<div class="top-bar">
-    <div>
-        <i class="fas fa-truck"></i> Free Shipping on orders above Rs.499
-    </div>
-    <div>
-        <a href="#"><i class="fas fa-phone"></i> +91 98765 43210</a>
-        <a href="#"><i class="fas fa-envelope"></i> support@shopvibe.com</a>
-        <a href="#"><i class="fas fa-user"></i> Guest</a>
-    </div>
-</div>
+
 
 <!-- ===== HEADER ===== -->
 <header class="header">
@@ -1236,14 +1226,6 @@
     </div>
 
     <div class="header-actions">
-        <div class="action" onclick="scrollToProducts()">
-            <i class="fas fa-th-large"></i>
-            <span>Catalog</span>
-        </div>
-        <div class="action" onclick="showToast('❤️ Wishlist feature coming soon!')">
-            <i class="fas fa-heart"></i>
-            <span>Wishlist</span>
-        </div>
         <div class="action" id="cartAction">
             <i class="fas fa-shopping-cart"></i>
             <span>Cart</span>
@@ -1255,14 +1237,9 @@
 <!-- ===== CATEGORIES ===== -->
 <div class="categories-bar">
     <a href="#" class="active">🔥 All</a>
-    <a href="#">👗 Fashion</a>
     <a href="#">📱 Electronics</a>
-    <a href="#">📚 Books</a>
-    <a href="#">🏠 Home & Living</a>
-    <a href="#">💄 Beauty</a>
     <a href="#">🎮 Gaming</a>
     <a href="#">⚽ Sports</a>
-    <a href="#">🚗 Auto</a>
 </div>
 
 <!-- ===== HERO BANNER ===== -->
@@ -1477,32 +1454,17 @@
             <a href="#">About Us</a>
             <a href="#">Careers</a>
             <a href="#">Contact</a>
-            <a href="#">Blog</a>
         </div>
         <div>
             <h4>Customer Service</h4>
             <a href="#">Help Center</a>
             <a href="#">Returns Policy</a>
-            <a href="#">Shipping Info</a>
-            <a href="#">FAQs</a>
+           
         </div>
-        <div>
-            <h4>Quick Links</h4>
-            <a href="#" onclick="scrollToProducts()">Products</a>
-            <a href="#">New Arrivals</a>
-            <a href="#">Best Sellers</a>
-            <a href="#">Sale</a>
-        </div>
-        <div>
-            <h4>Follow Us</h4>
-            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-            <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
-            <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
-        </div>
+        
     </div>
     <div class="footer-bottom">
-        © 2026 <span>ShopVibe</span>. All rights reserved. Made with ❤️ in India
+        © 2026 <span>CromX.Shop</span>. All rights reserved.
     </div>
 </footer>
 
@@ -1510,14 +1472,15 @@
     // =============================================
     // 🔥 FIREBASE CONFIG
     // =============================================
-    const firebaseConfig = {
-        apiKey: "AIzaSyABC123XYZ...",
-        authDomain: "your-project.firebaseapp.com",
-        projectId: "your-project-id",
-        storageBucket: "your-project.appspot.com",
-        messagingSenderId: "123456789",
-        appId: "1:123456789:web:abcdef123456"
-    };
+  const firebaseConfig = {
+  apiKey: "AIzaSyAX-Serk-2O95woq2cgcD02PKGyxO6EIJY",
+  authDomain: "ecommerce-a504f.firebaseapp.com",
+  projectId: "ecommerce-a504f",
+  storageBucket: "ecommerce-a504f.firebasestorage.app",
+  messagingSenderId: "537384330941",
+  appId: "1:537384330941:web:da26205cfe94ec2796b9d4",
+  measurementId: "G-MYWNKF3CHT"
+};
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
@@ -1528,11 +1491,11 @@
     const products = [
         {
             id: 1,
-            name: "Fancy Night Dress For Women",
-            category: "Fashion",
-            price: 399,
+            name: "Fancy Vegitable chopper",
+            category: "Electronic",
+            price: 499,
             originalPrice: 599,
-            rating: 4.5,
+            rating: 4.1,
             reviews: 24,
             images: [
                 "https://images.unsplash.com/photo-1566174053879-31528523f8ae?w=500&h=500&fit=crop",
@@ -1543,8 +1506,8 @@
             badge: "Hot",
             badgeType: "hot",
             description: "Premium quality night dress made from soft cotton fabric. Perfect for comfortable sleep and lounging.",
-            sizes: ["S", "M", "L", "XL"],
-            colors: ["Red", "Black", "Blue", "Gold"]
+            sizes: ["Small"],
+            colors: ["White"]
         },
         {
             id: 2,
