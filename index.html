@@ -522,7 +522,6 @@
             flex-wrap: wrap;
         }
 
-        /* Left - Images */
         .detail-images {
             flex: 1 1 350px;
         }
@@ -578,7 +577,6 @@
             object-fit: contain;
         }
 
-        /* Right - Info */
         .detail-info {
             flex: 1 1 300px;
         }
@@ -719,7 +717,9 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
 
-        /* ===== ORDER MODAL (Checkout) ===== */
+        /* ============================================= */
+        /* ===== CHECKOUT MODAL - UPDATED ADDRESS ===== */
+        /* ============================================= */
         .checkout-overlay {
             display: none;
             position: fixed;
@@ -740,7 +740,7 @@
 
         .checkout-modal {
             background: white;
-            max-width: 550px;
+            max-width: 580px;
             width: 100%;
             padding: 35px;
             border-radius: 25px;
@@ -798,38 +798,108 @@
             margin-top: 5px;
         }
 
+        /* ===== ADDRESS FIELDS ===== */
+        .address-section {
+            background: #f8f9fa;
+            padding: 18px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 2px dashed #ddd;
+        }
+        .address-section .section-title-small {
+            font-size: 14px;
+            font-weight: 700;
+            color: #232f3e;
+            margin-bottom: 12px;
+        }
+        .address-section .section-title-small i {
+            color: #ff6b35;
+            margin-right: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
         .checkout-modal .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
         .checkout-modal .form-group label {
             display: block;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             color: #444;
-            font-size: 14px;
+            font-size: 13px;
         }
         .checkout-modal .form-group label .required {
             color: #dc3545;
         }
         .checkout-modal .form-group input,
-        .checkout-modal .form-group textarea {
+        .checkout-modal .form-group textarea,
+        .checkout-modal .form-group select {
             width: 100%;
-            padding: 12px 16px;
+            padding: 11px 14px;
             border: 2px solid #e8e8e8;
-            border-radius: 12px;
+            border-radius: 10px;
             font-size: 14px;
             transition: 0.3s;
             font-family: inherit;
+            background: white;
         }
         .checkout-modal .form-group input:focus,
-        .checkout-modal .form-group textarea:focus {
+        .checkout-modal .form-group textarea:focus,
+        .checkout-modal .form-group select:focus {
             outline: none;
             border-color: #ff6b35;
             box-shadow: 0 0 0 4px rgba(255, 107, 53, 0.1);
         }
         .checkout-modal .form-group textarea {
             resize: vertical;
-            min-height: 70px;
+            min-height: 50px;
+        }
+
+        /* ===== PAYMENT SECTION ===== */
+        .payment-section {
+            background: #fff8f5;
+            padding: 18px;
+            border-radius: 15px;
+            margin: 15px 0;
+            border: 2px solid #ff6b35;
+        }
+        .payment-section .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #ff6b35;
+        }
+        .payment-section .payment-option i {
+            font-size: 24px;
+            color: #ff6b35;
+        }
+        .payment-section .payment-option .pay-details {
+            flex: 1;
+        }
+        .payment-section .payment-option .pay-details strong {
+            display: block;
+            font-size: 15px;
+            color: #232f3e;
+        }
+        .payment-section .payment-option .pay-details span {
+            font-size: 12px;
+            color: #888;
+        }
+        .payment-section .payment-option .cod-badge {
+            background: #28a745;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
         }
 
         .checkout-modal .btn-submit {
@@ -973,6 +1043,9 @@
             .detail-thumbnails .thumb {
                 height: 60px;
             }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1072,6 +1145,9 @@
             .checkout-modal {
                 padding: 25px 20px;
             }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1135,7 +1211,17 @@
 </head>
 <body>
 
-<!-- ===== TOP BAR ===== --
+<!-- ===== TOP BAR ===== -->
+<div class="top-bar">
+    <div>
+        <i class="fas fa-truck"></i> Free Shipping on orders above Rs.499
+    </div>
+    <div>
+        <a href="#"><i class="fas fa-phone"></i> +91 98765 43210</a>
+        <a href="#"><i class="fas fa-envelope"></i> support@shopvibe.com</a>
+        <a href="#"><i class="fas fa-user"></i> Guest</a>
+    </div>
+</div>
 
 <!-- ===== HEADER ===== -->
 <header class="header">
@@ -1153,6 +1239,10 @@
         <div class="action" onclick="scrollToProducts()">
             <i class="fas fa-th-large"></i>
             <span>Catalog</span>
+        </div>
+        <div class="action" onclick="showToast('❤️ Wishlist feature coming soon!')">
+            <i class="fas fa-heart"></i>
+            <span>Wishlist</span>
         </div>
         <div class="action" id="cartAction">
             <i class="fas fa-shopping-cart"></i>
@@ -1196,7 +1286,7 @@
 </div>
 
 <div class="product-grid" id="productGrid">
-    <!-- Products will be injected here by JavaScript -->
+    <!-- Products injected by JavaScript -->
 </div>
 
 <!-- ===== FEATURES SECTION ===== -->
@@ -1237,7 +1327,7 @@
                     <img id="detailMainImage" src="" alt="Product" />
                 </div>
                 <div class="detail-thumbnails" id="detailThumbnails">
-                    <!-- 4 thumbnails will be injected here -->
+                    <!-- 4 thumbnails injected -->
                 </div>
             </div>
 
@@ -1251,16 +1341,12 @@
 
                 <div class="options">
                     <label>📐 Size:</label>
-                    <div class="option-group" id="detailSizes">
-                        <!-- Sizes injected -->
-                    </div>
+                    <div class="option-group" id="detailSizes"></div>
                 </div>
 
                 <div class="options">
                     <label>🎨 Color:</label>
-                    <div class="option-group" id="detailColors">
-                        <!-- Colors injected -->
-                    </div>
+                    <div class="option-group" id="detailColors"></div>
                 </div>
 
                 <div class="qty-selector">
@@ -1282,7 +1368,9 @@
     </div>
 </div>
 
-<!-- ===== CHECKOUT MODAL ===== -->
+<!-- ============================================= -->
+<!-- ===== CHECKOUT MODAL - UPDATED ===== -->
+<!-- ============================================= -->
 <div class="checkout-overlay" id="checkoutOverlay">
     <div class="checkout-modal">
         <button class="close-btn" id="closeCheckoutBtn">&times;</button>
@@ -1297,6 +1385,7 @@
         </div>
 
         <form id="checkoutForm">
+            <!-- Customer Info -->
             <div class="form-group">
                 <label>👤 Full Name <span class="required">*</span></label>
                 <input type="text" id="checkoutName" placeholder="e.g. Rahul Sharma" required />
@@ -1305,13 +1394,64 @@
                 <label>📱 Mobile Number <span class="required">*</span></label>
                 <input type="tel" id="checkoutPhone" placeholder="9876543210" required />
             </div>
-            <div class="form-group">
-                <label>📍 Delivery Address <span class="required">*</span></label>
-                <textarea id="checkoutAddress" placeholder="House no., Street, Landmark, City, State, Pincode" required></textarea>
+
+            <!-- Address Section -->
+            <div class="address-section">
+                <div class="section-title-small">
+                    <i class="fas fa-map-marker-alt"></i> Delivery Address
+                </div>
+
+                <div class="form-group">
+                    <label>🏠 House No. / Flat No. <span class="required">*</span></label>
+                    <input type="text" id="checkoutHouse" placeholder="e.g. 123, A-101, B-2" required />
+                </div>
+
+                <div class="form-group">
+                    <label>🏘️ Society / Area / Street <span class="required">*</span></label>
+                    <input type="text" id="checkoutSociety" placeholder="e.g. Green Valley Society, MG Road" required />
+                </div>
+
+                <div class="form-group">
+                    <label>📍 Nearby Landmark (Optional)</label>
+                    <input type="text" id="checkoutLandmark" placeholder="e.g. Near City Mall, Opposite Park" />
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>🏙️ City <span class="required">*</span></label>
+                        <input type="text" id="checkoutCity" placeholder="e.g. Mumbai" required />
+                    </div>
+                    <div class="form-group">
+                        <label>📌 State <span class="required">*</span></label>
+                        <input type="text" id="checkoutState" placeholder="e.g. Maharashtra" required />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>📮 Pincode <span class="required">*</span></label>
+                    <input type="text" id="checkoutPincode" placeholder="400001" required maxlength="6" />
+                </div>
             </div>
+
+            <!-- Payment Section - COD Only -->
+            <div class="payment-section">
+                <div class="section-title-small" style="margin-bottom:10px;">
+                    <i class="fas fa-wallet"></i> Payment Method
+                </div>
+                <div class="payment-option">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <div class="pay-details">
+                        <strong>Cash on Delivery (COD)</strong>
+                        <span>Pay when you receive the order</span>
+                    </div>
+                    <span class="cod-badge">✓ Available</span>
+                </div>
+                <input type="hidden" id="checkoutPayment" value="COD" />
+            </div>
+
             <div class="form-group">
-                <label>💬 Special Instructions</label>
-                <textarea id="checkoutNotes" placeholder="Any special request?"></textarea>
+                <label>💬 Special Instructions (Optional)</label>
+                <textarea id="checkoutNotes" placeholder="Any special request or delivery instructions?"></textarea>
             </div>
 
             <button type="submit" class="btn-submit" id="checkoutSubmitBtn">
@@ -1370,21 +1510,20 @@
     // =============================================
     // 🔥 FIREBASE CONFIG
     // =============================================
-const firebaseConfig = {
-  apiKey: "AIzaSyAX-Serk-2O95woq2cgcD02PKGyxO6EIJY",
-  authDomain: "ecommerce-a504f.firebaseapp.com",
-  projectId: "ecommerce-a504f",
-  storageBucket: "ecommerce-a504f.firebasestorage.app",
-  messagingSenderId: "537384330941",
-  appId: "1:537384330941:web:da26205cfe94ec2796b9d4",
-  measurementId: "G-MYWNKF3CHT"
-};
+    const firebaseConfig = {
+        apiKey: "AIzaSyABC123XYZ...",
+        authDomain: "your-project.firebaseapp.com",
+        projectId: "your-project-id",
+        storageBucket: "your-project.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "1:123456789:web:abcdef123456"
+    };
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
     // =============================================
-    // 📦 PRODUCT DATA (with 4 images each)
+    // 📦 PRODUCT DATA
     // =============================================
     const products = [
         {
@@ -1403,7 +1542,7 @@ const firebaseConfig = {
             ],
             badge: "Hot",
             badgeType: "hot",
-            description: "Premium quality night dress made from soft cotton fabric. Perfect for comfortable sleep and lounging. Available in multiple sizes and colors.",
+            description: "Premium quality night dress made from soft cotton fabric. Perfect for comfortable sleep and lounging.",
             sizes: ["S", "M", "L", "XL"],
             colors: ["Red", "Black", "Blue", "Gold"]
         },
@@ -1423,7 +1562,7 @@ const firebaseConfig = {
             ],
             badge: "Sale",
             badgeType: "new",
-            description: "High-quality wireless headphones with noise cancellation, 40 hours battery life, and premium sound quality. Perfect for music lovers.",
+            description: "High-quality wireless headphones with noise cancellation, 40 hours battery life, and premium sound.",
             sizes: ["One Size"],
             colors: ["Black", "White", "Blue"]
         },
@@ -1443,7 +1582,7 @@ const firebaseConfig = {
             ],
             badge: "New",
             badgeType: "new",
-            description: "Advanced smart watch with heart rate monitor, GPS, sleep tracking, and 7 days battery life. Compatible with iOS and Android.",
+            description: "Advanced smart watch with heart rate monitor, GPS, sleep tracking, and 7 days battery life.",
             sizes: ["One Size"],
             colors: ["Black", "Silver", "Gold"]
         },
@@ -1463,7 +1602,7 @@ const firebaseConfig = {
             ],
             badge: "Trending",
             badgeType: "hot",
-            description: "Premium quality 100% cotton t-shirt with comfortable fit. Perfect for casual wear. Available in multiple colors and sizes.",
+            description: "Premium quality 100% cotton t-shirt with comfortable fit. Perfect for casual wear.",
             sizes: ["S", "M", "L", "XL", "XXL"],
             colors: ["Red", "Blue", "Black", "White", "Green"]
         },
@@ -1483,7 +1622,7 @@ const firebaseConfig = {
             ],
             badge: "Sale",
             badgeType: "hot",
-            description: "Powerful 1000W kitchen blender with 6 stainless steel blades. Perfect for smoothies, soups, and juices. Easy to clean.",
+            description: "Powerful 1000W kitchen blender with 6 stainless steel blades. Perfect for smoothies and juices.",
             sizes: ["One Size"],
             colors: ["Silver", "Black"]
         },
@@ -1503,7 +1642,7 @@ const firebaseConfig = {
             ],
             badge: "Popular",
             badgeType: "new",
-            description: "Premium non-slip yoga mat with extra cushioning. Perfect for yoga, pilates, and floor exercises. Eco-friendly material.",
+            description: "Premium non-slip yoga mat with extra cushioning. Perfect for yoga, pilates, and floor exercises.",
             sizes: ["One Size"],
             colors: ["Purple", "Blue", "Green"]
         },
@@ -1523,7 +1662,7 @@ const firebaseConfig = {
             ],
             badge: "Best Seller",
             badgeType: "hot",
-            description: "Professional gaming mouse with RGB lighting, 16000 DPI, wireless connectivity, and 50 hours battery life. Ergonomic design.",
+            description: "Professional gaming mouse with RGB lighting, 16000 DPI, and 50 hours battery life.",
             sizes: ["One Size"],
             colors: ["Black", "White"]
         },
@@ -1543,7 +1682,7 @@ const firebaseConfig = {
             ],
             badge: "Limited",
             badgeType: "new",
-            description: "Stylish designer handbag made with premium leather. Spacious interior with multiple compartments. Perfect for daily use.",
+            description: "Stylish designer handbag made with premium leather. Spacious interior with multiple compartments.",
             sizes: ["One Size"],
             colors: ["Red", "Brown", "Black"]
         }
@@ -1600,14 +1739,13 @@ const firebaseConfig = {
                     </div>
                 </div>
             `;
-            // Click on card = open detail modal
             card.addEventListener('click', () => openDetail(product.id));
             grid.appendChild(card);
         });
     }
 
     // =============================================
-    // 🔍 OPEN DETAIL MODAL (4 IMAGES)
+    // 🔍 OPEN DETAIL MODAL
     // =============================================
     function openDetail(productId) {
         const product = products.find(p => p.id === productId);
@@ -1618,35 +1756,26 @@ const firebaseConfig = {
         state.detailSize = product.sizes && product.sizes.length > 0 ? product.sizes[0] : "M";
         state.detailColor = product.colors && product.colors.length > 0 ? product.colors[0] : "Red";
 
-        // Set main image
         const mainImage = product.images && product.images.length > 0 ? product.images[0] : 'https://via.placeholder.com/400x400/ff6b35/fff?text=Product';
         document.getElementById('detailMainImage').src = mainImage;
 
-        // Set thumbnails (4 images)
         const thumbContainer = document.getElementById('detailThumbnails');
         thumbContainer.innerHTML = '';
         const images = product.images && product.images.length > 0 ? product.images : [mainImage, mainImage, mainImage, mainImage];
-        
-        // Ensure we have at least 4 images (repeat if needed)
-        while (images.length < 4) {
-            images.push(mainImage);
-        }
+        while (images.length < 4) images.push(mainImage);
         
         images.slice(0, 4).forEach((img, index) => {
             const thumb = document.createElement('div');
             thumb.className = 'thumb' + (index === 0 ? ' active' : '');
             thumb.innerHTML = `<img src="${img}" alt="Thumb ${index + 1}" onerror="this.src='https://via.placeholder.com/100x100/ff6b35/fff?text=Image'" />`;
             thumb.addEventListener('click', function() {
-                // Update main image
                 document.getElementById('detailMainImage').src = img;
-                // Update active class
                 document.querySelectorAll('.detail-thumbnails .thumb').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
             });
             thumbContainer.appendChild(thumb);
         });
 
-        // Set info
         document.getElementById('detailCategory').textContent = product.category.toUpperCase();
         document.getElementById('detailTitle').textContent = product.name;
         const stars = '★'.repeat(Math.floor(product.rating)) + '☆'.repeat(5 - Math.floor(product.rating));
@@ -1654,7 +1783,7 @@ const firebaseConfig = {
         document.getElementById('detailPrice').innerHTML = `Rs.${product.price}.00 <small>Rs.${product.originalPrice}.00</small>`;
         document.getElementById('detailDesc').textContent = product.description || 'Premium quality product.';
 
-        // Set sizes
+        // Sizes
         const sizeContainer = document.getElementById('detailSizes');
         sizeContainer.innerHTML = '';
         if (product.sizes && product.sizes.length > 0) {
@@ -1673,7 +1802,7 @@ const firebaseConfig = {
             sizeContainer.innerHTML = '<span style="color:#888;font-size:14px;">One Size</span>';
         }
 
-        // Set colors
+        // Colors
         const colorContainer = document.getElementById('detailColors');
         colorContainer.innerHTML = '';
         if (product.colors && product.colors.length > 0) {
@@ -1692,16 +1821,13 @@ const firebaseConfig = {
             colorContainer.innerHTML = '<span style="color:#888;font-size:14px;">Standard</span>';
         }
 
-        // Set quantity
         document.getElementById('detailQtyValue').textContent = state.detailQty;
-
-        // Show modal
         document.getElementById('detailOverlay').classList.add('active');
         document.body.style.overflow = 'hidden';
     }
 
     // =============================================
-    // ❌ CLOSE DETAIL MODAL
+    // ❌ CLOSE DETAIL
     // =============================================
     function closeDetail() {
         document.getElementById('detailOverlay').classList.remove('active');
@@ -1714,24 +1840,16 @@ const firebaseConfig = {
     });
 
     // =============================================
-    // 🔄 DETAIL QUANTITY CONTROLS
+    // 🔄 DETAIL QUANTITY
     // =============================================
     document.getElementById('detailQtyMinus').addEventListener('click', function() {
         let qty = parseInt(document.getElementById('detailQtyValue').textContent);
-        if (qty > 1) {
-            qty--;
-            document.getElementById('detailQtyValue').textContent = qty;
-            state.detailQty = qty;
-        }
+        if (qty > 1) { qty--; document.getElementById('detailQtyValue').textContent = qty; state.detailQty = qty; }
     });
 
     document.getElementById('detailQtyPlus').addEventListener('click', function() {
         let qty = parseInt(document.getElementById('detailQtyValue').textContent);
-        if (qty < 10) {
-            qty++;
-            document.getElementById('detailQtyValue').textContent = qty;
-            state.detailQty = qty;
-        }
+        if (qty < 10) { qty++; document.getElementById('detailQtyValue').textContent = qty; state.detailQty = qty; }
     });
 
     // =============================================
@@ -1748,14 +1866,12 @@ const firebaseConfig = {
     });
 
     // =============================================
-    // 💳 DETAIL - BUY NOW (Open Checkout)
+    // 💳 DETAIL - BUY NOW
     // =============================================
     document.getElementById('detailBuyNow').addEventListener('click', function() {
         if (!state.selectedProduct) return;
         closeDetail();
-        setTimeout(() => {
-            openCheckout(state.selectedProduct);
-        }, 300);
+        setTimeout(() => { openCheckout(state.selectedProduct); }, 300);
     });
 
     // =============================================
@@ -1799,14 +1915,23 @@ const firebaseConfig = {
     document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
         e.preventDefault();
 
+        // Get all form values
         const name = document.getElementById('checkoutName').value.trim();
         const phone = document.getElementById('checkoutPhone').value.trim();
-        const address = document.getElementById('checkoutAddress').value.trim();
+        const house = document.getElementById('checkoutHouse').value.trim();
+        const society = document.getElementById('checkoutSociety').value.trim();
+        const landmark = document.getElementById('checkoutLandmark').value.trim();
+        const city = document.getElementById('checkoutCity').value.trim();
+        const stateField = document.getElementById('checkoutState').value.trim();
+        const pincode = document.getElementById('checkoutPincode').value.trim();
         const notes = document.getElementById('checkoutNotes').value.trim();
+        const payment = document.getElementById('checkoutPayment').value;
+
         const statusDiv = document.getElementById('checkoutStatus');
         const submitBtn = document.getElementById('checkoutSubmitBtn');
 
-        if (!name || !phone || !address) {
+        // Validations
+        if (!name || !phone || !house || !society || !city || !stateField || !pincode) {
             showCheckoutStatus('⚠️ Please fill all required fields!', 'error');
             return;
         }
@@ -1816,10 +1941,18 @@ const firebaseConfig = {
             return;
         }
 
+        if (!/^[0-9]{5,6}$/.test(pincode)) {
+            showCheckoutStatus('⚠️ Please enter a valid pincode (5-6 digits)!', 'error');
+            return;
+        }
+
         if (!state.selectedProduct) {
             showCheckoutStatus('⚠️ No product selected!', 'error');
             return;
         }
+
+        // Build full address
+        const fullAddress = `${house}, ${society}${landmark ? ', ' + landmark : ''}, ${city}, ${stateField} - ${pincode}`;
 
         const qty = state.detailQty || 1;
         const size = state.detailSize || 'N/A';
@@ -1841,12 +1974,19 @@ const firebaseConfig = {
                 total: state.selectedProduct.price * qty,
                 customerName: name,
                 phone: phone,
-                address: address,
+                // Address fields (separate)
+                houseNo: house,
+                society: society,
+                landmark: landmark || '',
+                city: city,
+                state: stateField,
+                pincode: pincode,
+                fullAddress: fullAddress,
                 notes: notes || '',
+                paymentMethod: payment,
                 orderDate: firebase.firestore.FieldValue.serverTimestamp(),
                 status: 'pending',
-                orderType: 'guest',
-                paymentMethod: 'COD (Cash on Delivery)'
+                orderType: 'guest'
             };
 
             const docRef = await db.collection('orders').add(orderData);
@@ -1895,14 +2035,11 @@ const firebaseConfig = {
     }
 
     // =============================================
-    // 💳 BUY NOW (from grid - opens detail)
+    // 💳 BUY NOW (from grid)
     // =============================================
     function buyNow(productId) {
         openDetail(productId);
-        // Auto-click buy now in detail after 500ms
-        setTimeout(() => {
-            document.getElementById('detailBuyNow').click();
-        }, 500);
+        setTimeout(() => { document.getElementById('detailBuyNow').click(); }, 500);
     }
 
     // =============================================
@@ -1915,9 +2052,7 @@ const firebaseConfig = {
         document.getElementById('toastMessage').textContent = message;
         toast.classList.add('show');
         clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
+        toastTimeout = setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 
     function closeToast() {
@@ -1934,10 +2069,7 @@ const firebaseConfig = {
 
     function searchProducts() {
         const query = document.getElementById('searchInput').value.toLowerCase().trim();
-        if (!query) {
-            renderProducts(products);
-            return;
-        }
+        if (!query) { renderProducts(products); return; }
         const filtered = products.filter(p => 
             p.name.toLowerCase().includes(query) || 
             p.category.toLowerCase().includes(query)
@@ -2009,12 +2141,8 @@ const firebaseConfig = {
     // =============================================
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            if (document.getElementById('detailOverlay').classList.contains('active')) {
-                closeDetail();
-            }
-            if (document.getElementById('checkoutOverlay').classList.contains('active')) {
-                closeCheckout();
-            }
+            if (document.getElementById('detailOverlay').classList.contains('active')) closeDetail();
+            if (document.getElementById('checkoutOverlay').classList.contains('active')) closeCheckout();
         }
     });
 
