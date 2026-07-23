@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help Center - CromX Customer Support | Get Help</title>
+    <meta name="description" content="CromX Help Center - Find answers to your questions about orders, shipping, returns, and more. 24/7 customer support available." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.cromx.shop/help.html" />
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.cromx.shop/help.html" />
+    <meta property="og:title" content="Help Center - CromX Customer Support" />
+    <meta property="og:description" content="Find answers to your questions about orders, shipping, returns, and more." />
+    <meta property="og:image" content="https://www.cromx.shop/og-image.jpg" />
+    
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f2f5; color: #333; }
+        
+        /* ===== HEADER ===== */
+        .header {
+            background: white;
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #ff6b35, #ff4500);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+        .logo-icon i { font-size: 26px; color: white; }
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            right: -3px;
+            width: 12px;
+            height: 12px;
+            background: #28a745;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        .logo-icon { position: relative; }
+        .logo-text .brand {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, #232f3e, #ff6b35);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .logo-text .tagline {
+            font-size: 10px;
+            color: #888;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            -webkit-text-fill-color: #888;
+        }
+        .logo-text .tagline span { color: #ff6b35; -webkit-text-fill-color: #ff6b35; }
+        
+        .nav-links { display: flex; gap: 25px; list-style: none; flex-wrap: wrap; }
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+            transition: 0.3s;
+            font-size: 14px;
+        }
+        .nav-links a:hover, .nav-links a.active { color: #ff6b35; }
+        
+        /* ===== HERO ===== */
+        .help-hero {
+            background: linear-gradient(135deg, #232f3e, #1a2533);
+            color: white;
+            padding: 60px 5%;
+            text-align: center;
+        }
+        .help-hero h1 { font-size: 42px; font-weight: 900; }
+        .help-hero h1 span { color: #ff6b35; }
+        .help-hero p { color: #ccc; margin-top: 15px; font-size: 18px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .help-hero .search-box {
+            max-width: 500px;
+            margin: 30px auto 0;
+            display: flex;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        .help-hero .search-box input {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            outline: none;
+            font-size: 15px;
+        }
+        .help-hero .search-box button {
+            padding: 14px 30px;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .help-hero .search-box button:hover { background: #e55a2b; }
+        
+        /* ===== FAQ SECTION ===== */
+        .faq-section {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        .faq-section h2 {
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .faq-section .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 40px;
+        }
+        
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+        .faq-item .question {
+            padding: 18px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .faq-item .question:hover { background: #fff5f0; }
+        .faq-item .question i { color: #ff6b35; transition: 0.3s; }
+        .faq-item .question.active i { transform: rotate(180deg); }
+        .faq-item .answer {
+            padding: 0 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: 0.4s ease;
+            color: #666;
+            line-height: 1.7;
+        }
+        .faq-item .answer.open { padding: 0 25px 20px; max-height: 300px; }
+        .faq-item .answer a { color: #ff6b35; text-decoration: none; }
+        .faq-item .answer a:hover { text-decoration: underline; }
+        
+        /* ===== CONTACT SECTION ===== */
+        .contact-section {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        .contact-section h2 {
+            font-size: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+        }
+        .contact-card {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            transition: 0.3s;
+        }
+        .contact-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .contact-card i { font-size: 40px; color: #ff6b35; margin-bottom: 15px; }
+        .contact-card h4 { font-size: 18px; margin-bottom: 8px; }
+        .contact-card p { color: #888; font-size: 14px; }
+        .contact-card a { color: #ff6b35; text-decoration: none; font-weight: 600; }
+        .contact-card a:hover { text-decoration: underline; }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            background: #232f3e;
+            color: #ccc;
+            padding: 40px 5% 25px;
+            margin-top: 40px;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .footer-grid h4 { color: white; margin-bottom: 15px; }
+        .footer-grid a {
+            color: #ccc;
+            text-decoration: none;
+            display: block;
+            margin: 8px 0;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .footer-grid a:hover { color: #ff6b35; }
+        .footer-bottom {
+            border-top: 1px solid #3a4a5a;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer-bottom span { color: #ff6b35; }
+        
+        @media (max-width: 768px) {
+            .header { flex-direction: column; gap: 15px; }
+            .nav-links { justify-content: center; gap: 15px; }
+            .help-hero h1 { font-size: 28px; }
+            .faq-item .question { font-size: 14px; padding: 15px 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header class="header">
+    <a href="index.html" class="logo">
+        <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+        <div class="logo-text">
+            <span class="brand">CromX</span>
+            <span class="tagline">Shop <span>•</span> Premium <span>•</span> Quality</span>
+        </div>
+    </a>
+    <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="help.html" class="active">Help Center</a></li>
+        <li><a href="returns.html">Returns</a></li>
+        <li><a href="about.html">About Us</a></li>
+    </ul>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="help-hero">
+    <h1>How Can We <span>Help</span> You?</h1>
+    <p>Find answers to your questions about orders, shipping, returns, and more.</p>
+    <div class="search-box">
+        <input type="text" placeholder="Search for help..." id="faqSearch" />
+        <button onclick="searchFAQ()"><i class="fas fa-search"></i></button>
+    </div>
+</section>
+
+<!-- ===== FAQ SECTION ===== -->
+<section class="faq-section">
+    <h2>Frequently Asked Questions</h2>
+    <p class="subtitle">Quick answers to common questions</p>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            How do I place an order?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            Placing an order is easy! Simply browse our products, select the item you want, choose size/color, and click "Buy Now" or "Add to Cart". Then fill in your delivery details and confirm your order. No account required!
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            Do I need to create an account?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            No, you don't! We offer <strong>Guest Checkout</strong>. You can place your order without creating an account. Just enter your name, phone number, and delivery address.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            What payment methods do you accept?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            We currently accept <strong>Cash on Delivery (COD)</strong>. You pay when you receive your order. No online payment required!
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            How long does delivery take?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            We deliver within <strong>3-7 business days</strong> depending on your location. You'll receive a confirmation message once your order is shipped.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            Is delivery free?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            Yes! We offer <strong>free delivery</strong> on all orders above Rs.499. For orders below Rs.499, a small delivery fee of Rs.49 applies.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            What is your return policy?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            We offer a <strong>7-day easy return policy</strong>. If you're not satisfied with your purchase, you can return it within 7 days of delivery. Visit our <a href="returns.html">Returns Policy</a> page for more details.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            How can I track my order?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            You'll receive an order confirmation with an <strong>Order ID</strong>. You can use this ID to track your order status. We'll also send you updates via message.
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <div class="question" onclick="toggleFAQ(this)">
+            What if I receive a damaged product?
+            <i class="fas fa-chevron-down"></i>
+        </div>
+        <div class="answer">
+            Don't worry! If you receive a damaged or defective product, contact us immediately. We'll arrange for a replacement or refund. Please take photos of the damaged item for faster resolution.
+        </div>
+    </div>
+</section>
+
+<!-- ===== CONTACT SECTION ===== -->
+<section class="contact-section">
+    <h2>📞 Contact Us</h2>
+    <div class="contact-grid">
+        <div class="contact-card">
+            <i class="fas fa-phone-alt"></i>
+            <h4>Call Us</h4>
+            <p>+91 98765 43210</p>
+            <p style="font-size:12px;color:#aaa;">Mon-Sat, 10 AM - 6 PM</p>
+        </div>
+        <div class="contact-card">
+            <i class="fas fa-envelope"></i>
+            <h4>Email Us</h4>
+            <p><a href="mailto:support@cromx.shop">support@cromx.shop</a></p>
+            <p style="font-size:12px;color:#aaa;">We reply within 24 hours</p>
+        </div>
+        <div class="contact-card">
+            <i class="fab fa-whatsapp"></i>
+            <h4>WhatsApp</h4>
+            <p><a href="https://wa.me/919876543210">Chat with us</a></p>
+            <p style="font-size:12px;color:#aaa;">Quick response</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <div class="footer-grid">
+        <div>
+            <h4>CromX</h4>
+            <a href="about.html">About Us</a>
+            <a href="help.html">Help Center</a>
+            <a href="returns.html">Returns Policy</a>
+            <a href="#">Contact</a>
+        </div>
+        <div>
+            <h4>Quick Links</h4>
+            <a href="index.html">Home</a>
+            <a href="#">Products</a>
+            <a href="#">New Arrivals</a>
+            <a href="#">Best Sellers</a>
+        </div>
+        <div>
+            <h4>Follow Us</h4>
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+            <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="#"><i class="fab fa-youtube"></i> YouTube</a>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 <span>CromX</span>. All rights reserved. Made with ⚡ in India</div>
+</footer>
+
+<script>
+    // Toggle FAQ
+    function toggleFAQ(el) {
+        const answer = el.nextElementSibling;
+        const icon = el.querySelector('i');
+        const isOpen = answer.classList.contains('open');
+        
+        // Close all answers
+        document.querySelectorAll('.faq-item .answer').forEach(a => a.classList.remove('open'));
+        document.querySelectorAll('.faq-item .question i').forEach(i => i.classList.remove('active'));
+        
+        if (!isOpen) {
+            answer.classList.add('open');
+            icon.classList.add('active');
+            el.classList.add('active');
+        }
+    }
+
+    // Search FAQ
+    function searchFAQ() {
+        const query = document.getElementById('faqSearch').value.toLowerCase().trim();
+        const items = document.querySelectorAll('.faq-item');
+        
+        items.forEach(item => {
+            const question = item.querySelector('.question').textContent.toLowerCase();
+            const answer = item.querySelector('.answer').textContent.toLowerCase();
+            const match = question.includes(query) || answer.includes(query);
+            item.style.display = match || query === '' ? 'block' : 'none';
+        });
+    }
+
+    // Auto-open first FAQ
+    document.addEventListener('DOMContentLoaded', function() {
+        const firstFaq = document.querySelector('.faq-item .question');
+        if (firstFaq) firstFaq.click();
+    });
+</script>
+
+</body>
+</html>
