@@ -60,7 +60,6 @@
             margin-right: 5px;
         }
 
-        /* ===== NOTIFICATION BELL ===== */
         .notification-bell {
             position: relative;
             cursor: pointer;
@@ -881,6 +880,7 @@
     <div>
         <a href="#" onclick="switchTab('store')"><i class="fas fa-store"></i> Go to Store</a>
         <a href="#" onclick="loadOrders()"><i class="fas fa-sync"></i> Refresh</a>
+        <a href="#" onclick="testWhatsApp()"><i class="fab fa-whatsapp"></i> Test WhatsApp</a>
     </div>
 </div>
 
@@ -1122,13 +1122,12 @@
 <!-- ===== AUDIO NOTIFICATION ===== -->
 <audio id="notificationSound" preload="auto">
     <source src="https://www.cromx.shop/notification.mp3" type="audio/mpeg">
-    <!-- Fallback: Base64 beep sound -->
-    <source src="data:audio/wav;base64,U3R1ZmZUdXJyAAAAAAD//w==" type="audio/wav">
 </audio>
 
 <!-- ===== FOOTER ===== -->
 <footer class="footer">
-    © 2026 <span>ShopVibe</span> Admin Panel. All rights reserved. <span id="liveStatusText">🟢 Live Notifications ON</span>
+    © 2026 <span>ShopVibe</span> Admin Panel. All rights reserved. 
+    <span id="liveStatusText">🟢 Live Notifications ON</span>
 </footer>
 
 <script>
@@ -1149,6 +1148,67 @@
     const db = firebase.firestore();
 
     // =============================================
+    // 📱 WHATSAPP CONFIG - YOUR API KEY
+    // =============================================
+    const WHATSAPP_API_KEY = "EPTYQLMFhkGF";
+    const WHATSAPP_PHONE = "9825652458";
+
+    // =============================================
+    // 📱 SEND WHATSAPP NOTIFICATION
+    // =============================================
+    async function sendWhatsAppNotification(order) {
+        try {
+            // Build message
+            const message = `🛍️ *NEW ORDER RECEIVED!*
+
+👤 Customer: ${order.customerName || 'N/A'}
+📱 Phone: ${order.phone || 'N/A'}
+🛒 Product: ${order.productName || 'N/A'}
+💰 Amount: Rs.${order.total || order.price || 0}
+📦 Order ID: #${order.id.substring(0,8)}
+📍 Address: ${order.fullAddress || order.address || 'N/A'}
+
+📅 Time: ${new Date().toLocaleString('en-IN')}`;
+
+            // TextMeBot API URL
+            const url = `https://api.textmebot.com/send.php?apikey=${WHATSAPP_API_KEY}&text=${encodeURIComponent(message)}`;
+
+            console.log('📤 Sending WhatsApp notification...');
+            
+            const response = await fetch(url);
+            const result = await response.text();
+            
+            if (response.ok) {
+                console.log('✅ WhatsApp notification sent!', result);
+                showToast('📱 WhatsApp notification sent!');
+            } else {
+                console.error('❌ WhatsApp error:', result);
+                showToast('❌ WhatsApp error: ' + result);
+            }
+        } catch (error) {
+            console.error('❌ WhatsApp send error:', error);
+            showToast('❌ WhatsApp error: ' + error.message);
+        }
+    }
+
+    // =============================================
+    // 📱 TEST WHATSAPP FUNCTION
+    // =============================================
+    async function testWhatsApp() {
+        const testOrder = {
+            id: "TEST123",
+            customerName: "Test Customer",
+            phone: "9876543210",
+            productName: "Test Product",
+            total: 499,
+            address: "Test Address, Mumbai"
+        };
+        
+        showToast('📤 Sending test WhatsApp message...');
+        await sendWhatsAppNotification(testOrder);
+    }
+
+    // =============================================
     // 📦 STATE
     // =============================================
     let allOrders = [];
@@ -1158,7 +1218,6 @@
     let isRefreshing = false;
     let notifiedOrderIds = new Set();
     let notificationCount = 0;
-    let lastOrderCount = 0;
     let isPopupOpen = false;
 
     // =============================================
@@ -1182,7 +1241,7 @@
             if (audio) {
                 audio.volume = 0.5;
                 audio.play().catch(() => {
-                    // Fallback: Create beep using Web Audio API
+                    // Fallback beep
                     try {
                         const ctx = new (window.AudioContext || window.webkitAudioContext)();
                         const oscillator = ctx.createOscillator();
@@ -1195,14 +1254,10 @@
                         gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
                         oscillator.start(ctx.currentTime);
                         oscillator.stop(ctx.currentTime + 0.3);
-                    } catch (e) {
-                        // Silent fail
-                    }
+                    } catch (e) {}
                 });
             }
-        } catch (e) {
-            // Silent fail
-        }
+        } catch (e) {}
     }
 
     // =============================================
@@ -1216,7 +1271,6 @@
                     icon: 'https://www.cromx.shop/logo.png',
                     tag: order.id,
                     requireInteraction: true,
-                    silent: false,
                     vibrate: [200, 100, 200]
                 });
 
@@ -1238,7 +1292,6 @@
     // =============================================
     function showPopupNotification(order) {
         if (isPopupOpen) {
-            // If popup already open, just update content
             updatePopupContent(order);
             return;
         }
@@ -1251,13 +1304,11 @@
         popup.classList.add('show');
         isPopupOpen = true;
 
-        // Auto hide after 8 seconds
         clearTimeout(window.popupTimeout);
         window.popupTimeout = setTimeout(() => {
             closeNotificationPopup();
         }, 8000);
 
-        // Update bell badge
         updateBellBadge();
     }
 
@@ -1290,7 +1341,6 @@
         if (notificationCount > 0) {
             notificationCount = 0;
             updateBellBadge();
-            // Show toast
             showToast('🔔 All notifications cleared');
         } else {
             showToast('🔔 No new notifications');
@@ -1298,7 +1348,7 @@
     }
 
     // =============================================
-    // 📥 LOAD ORDERS FROM FIREBASE
+    // 📥 LOAD ORDERS
     // =============================================
     async function loadOrders() {
         const refreshBtn = document.getElementById('refreshBtn');
@@ -1322,20 +1372,23 @@
                 });
             });
 
-            // Check for new orders
             const oldIds = new Set(allOrders.map(o => o.id));
             const newOrderIds = newOrders.filter(o => !oldIds.has(o.id));
 
-            // Process new orders
             if (newOrderIds.length > 0) {
-                newOrderIds.forEach(order => {
+                newOrderIds.forEach(async (order) => {
                     if (!notifiedOrderIds.has(order.id)) {
                         notifiedOrderIds.add(order.id);
                         notificationCount++;
+                        
+                        // ===== ALL NOTIFICATIONS =====
                         showPopupNotification(order);
                         showBrowserNotification(order);
                         playNotificationSound();
-                        showToast(`🛍️ New Order: ${order.customerName || 'Customer'} - Rs.${order.total || order.price || 0}`);
+                        showToast(`🛍️ New Order: ${order.customerName || 'Customer'}`);
+                        
+                        // ===== WHATSAPP NOTIFICATION =====
+                        await sendWhatsAppNotification(order);
                     }
                 });
                 updateBellBadge();
@@ -1356,7 +1409,7 @@
     }
 
     // =============================================
-    // 🔄 REAL-TIME LISTENER (LIVE UPDATES)
+    // 🔄 REAL-TIME LISTENER
     // =============================================
     function setupRealtimeListener() {
         let isFirstLoad = true;
@@ -1364,7 +1417,7 @@
         db.collection('orders')
             .orderBy('orderDate', 'desc')
             .limit(100)
-            .onSnapshot((snapshot) => {
+            .onSnapshot(async (snapshot) => {
                 const newOrders = [];
                 snapshot.forEach(doc => {
                     const data = doc.data();
@@ -1374,59 +1427,57 @@
                     });
                 });
 
-                // Check for new orders
                 const oldIds = new Set(allOrders.map(o => o.id));
                 const newOrderIds = newOrders.filter(o => !oldIds.has(o.id));
 
                 if (newOrderIds.length > 0 && !isFirstLoad) {
-                    newOrderIds.forEach(order => {
+                    for (const order of newOrderIds) {
                         if (!notifiedOrderIds.has(order.id)) {
                             notifiedOrderIds.add(order.id);
                             notificationCount++;
+                            
+                            // ===== ALL NOTIFICATIONS =====
                             showPopupNotification(order);
                             showBrowserNotification(order);
                             playNotificationSound();
-                            showToast(`🛍️ New Order: ${order.customerName || 'Customer'} - Rs.${order.total || order.price || 0}`);
-                        }
-                    });
-                    updateBellBadge();
+                            showToast(`🛍️ New Order: ${order.customerName || 'Customer'}`);
+                            
+                            // ===== WHATSAPP NOTIFICATION =====
+                            await sendWhatsAppNotification(order);
 
-                    // Highlight new rows
-                    setTimeout(() => {
-                        const rows = document.querySelectorAll('#ordersTableBody tr');
-                        rows.forEach(row => {
-                            const idCell = row.querySelector('td:nth-child(2)');
-                            if (idCell) {
-                                const orderId = idCell.textContent.replace('#', '').trim();
-                                if (newOrderIds.some(o => o.id.startsWith(orderId))) {
-                                    row.classList.add('new-order');
-                                    setTimeout(() => row.classList.remove('new-order'), 3000);
-                                }
-                            }
-                        });
-                    }, 500);
+                            // Highlight new row
+                            setTimeout(() => {
+                                const rows = document.querySelectorAll('#ordersTableBody tr');
+                                rows.forEach(row => {
+                                    const idCell = row.querySelector('td:nth-child(2)');
+                                    if (idCell) {
+                                        const orderId = idCell.textContent.replace('#', '').trim();
+                                        if (newOrderIds.some(o => o.id.startsWith(orderId))) {
+                                            row.classList.add('new-order');
+                                            setTimeout(() => row.classList.remove('new-order'), 3000);
+                                        }
+                                    }
+                                });
+                            }, 500);
+                        }
+                    }
+                    updateBellBadge();
                 }
 
                 allOrders = newOrders;
-                if (isFirstLoad) {
-                    isFirstLoad = false;
-                }
+                if (isFirstLoad) isFirstLoad = false;
                 updateStats();
                 applyFilters();
 
                 document.getElementById('liveStatus').textContent = '🟢 Live';
                 document.getElementById('liveStatus').style.color = '#28a745';
-                document.getElementById('liveStatusText').textContent = '🟢 Live Notifications ON';
+                document.getElementById('liveStatusText').textContent = '🟢 Live Notifications ON (WhatsApp + Browser)';
             }, (error) => {
                 console.error('Realtime listener error:', error);
                 document.getElementById('liveStatus').textContent = '🔴 Offline';
                 document.getElementById('liveStatus').style.color = '#dc3545';
                 document.getElementById('liveStatusText').textContent = '🔴 Notifications OFF - Reconnecting...';
-                
-                // Try to reconnect after 5 seconds
-                setTimeout(() => {
-                    setupRealtimeListener();
-                }, 5000);
+                setTimeout(() => setupRealtimeListener(), 5000);
             });
     }
 
@@ -1547,7 +1598,7 @@
             const statusLabel = statusClass.charAt(0).toUpperCase() + statusClass.slice(1);
 
             return `
-                <tr ${notifiedOrderIds.has(order.id) ? 'class="new-order"' : ''}>
+                <tr>
                     <td>${index + 1}</td>
                     <td><strong>#${order.id.substring(0, 8)}</strong></td>
                     <td>${order.customerName || 'N/A'}<br /><small style="color:#888;">${order.phone || ''}</small></td>
@@ -1730,13 +1781,9 @@
             localStorage.removeItem('viewMode');
         }
 
-        // Load orders
         loadOrders();
-
-        // Setup real-time listener
         setupRealtimeListener();
 
-        // Request notification permission again
         setTimeout(() => {
             if ('Notification' in window && Notification.permission === 'default') {
                 Notification.requestPermission();
@@ -1745,8 +1792,9 @@
 
         console.log('🛍️ ShopVibe Admin Panel Loaded!');
         console.log('🔥 Firebase Connected!');
+        console.log('📱 WhatsApp API Key:', EPTYQLMFhkGF);
+        console.log('📱 WhatsApp Phone:', 9825652458);
         console.log('🔔 Real-time notifications ENABLED!');
-        console.log('📌 New orders will show popup + sound + browser notification!');
     });
 
     // =============================================
@@ -1754,12 +1802,8 @@
     // =============================================
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            if (document.getElementById('detailOverlay').classList.contains('active')) {
-                closeDetail();
-            }
-            if (isPopupOpen) {
-                closeNotificationPopup();
-            }
+            if (document.getElementById('detailOverlay').classList.contains('active')) closeDetail();
+            if (isPopupOpen) closeNotificationPopup();
         }
         if (e.key === 'r' && e.ctrlKey) {
             e.preventDefault();
@@ -1771,17 +1815,9 @@
         }
     });
 
-    // =============================================
-    // 📱 MOBILE - Prevent duplicate notifications
-    // =============================================
-    // Service worker registration for push notifications (optional)
-    if ('serviceWorker' in navigator) {
-        // Register service worker if available
-        // navigator.serviceWorker.register('/sw.js');
-    }
-
     console.log('✅ Admin Panel Ready!');
     console.log('📌 Shortcuts: Ctrl+R=Refresh, Ctrl+N=Notifications, ESC=Close popup');
+    console.log('📱 WhatsApp notification will be sent on every new order!');
 </script>
 
 </body>
