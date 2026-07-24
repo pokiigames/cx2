@@ -1147,19 +1147,19 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
-    // =============================================
-    // 📱 WHATSAPP CONFIG - YOUR API KEY
-    // =============================================
-    const WHATSAPP_API_KEY = "EPTYQLMFhkGF";
-    const WHATSAPP_PHONE = "9825652458";
+   // =============================================
+// 📱 WHATSAPP CONFIG
+// =============================================
+const WHATSAPP_API_KEY = "EPTYQLMFhkGF";
+const WHATSAPP_PHONE = "9825652458"; // Aapka number
 
-    // =============================================
-    // 📱 SEND WHATSAPP NOTIFICATION
-    // =============================================
-    async function sendWhatsAppNotification(order) {
-        try {
-            // Build message
-            const message = `🛍️ *NEW ORDER RECEIVED!*
+// =============================================
+// 📱 SEND WHATSAPP NOTIFICATION - FIXED
+// =============================================
+async function sendWhatsAppNotification(order) {
+    try {
+        // Message build karein
+        const message = `🛍️ *NEW ORDER RECEIVED!*
 
 👤 Customer: ${order.customerName || 'N/A'}
 📱 Phone: ${order.phone || 'N/A'}
@@ -1170,43 +1170,43 @@
 
 📅 Time: ${new Date().toLocaleString('en-IN')}`;
 
-            // TextMeBot API URL
-            const url = `https://api.textmebot.com/send.php?apikey=${WHATSAPP_API_KEY}&text=${encodeURIComponent(message)}`;
+        // ✅ SAHI URL - send.php
+        const url = `https://api.textmebot.com/send.php?apikey=${WHATSAPP_API_KEY}&text=${encodeURIComponent(message)}`;
 
-            console.log('📤 Sending WhatsApp notification...');
-            
-            const response = await fetch(url);
-            const result = await response.text();
-            
-            if (response.ok) {
-                console.log('✅ WhatsApp notification sent!', result);
-                showToast('📱 WhatsApp notification sent!');
-            } else {
-                console.error('❌ WhatsApp error:', result);
-                showToast('❌ WhatsApp error: ' + result);
-            }
-        } catch (error) {
-            console.error('❌ WhatsApp send error:', error);
-            showToast('❌ WhatsApp error: ' + error.message);
-        }
-    }
-
-    // =============================================
-    // 📱 TEST WHATSAPP FUNCTION
-    // =============================================
-    async function testWhatsApp() {
-        const testOrder = {
-            id: "TEST123",
-            customerName: "Test Customer",
-            phone: "9876543210",
-            productName: "Test Product",
-            total: 499,
-            address: "Test Address, Mumbai"
-        };
+        console.log('📤 Sending WhatsApp notification...');
         
-        showToast('📤 Sending test WhatsApp message...');
-        await sendWhatsAppNotification(testOrder);
+        const response = await fetch(url);
+        const result = await response.text();
+        
+        if (response.ok) {
+            console.log('✅ WhatsApp notification sent!', result);
+            showToast('📱 WhatsApp notification sent!');
+        } else {
+            console.error('❌ WhatsApp error:', result);
+            showToast('❌ WhatsApp error: ' + result);
+        }
+    } catch (error) {
+        console.error('❌ WhatsApp send error:', error);
+        showToast('❌ WhatsApp error: ' + error.message);
     }
+}
+
+// =============================================
+// 📱 TEST WHATSAPP FUNCTION
+// =============================================
+async function testWhatsApp() {
+    const testOrder = {
+        id: "TEST123",
+        customerName: "Test Customer",
+        phone: "9876543210",
+        productName: "Test Product",
+        total: 499,
+        address: "Test Address, Mumbai"
+    };
+    
+    showToast('📤 Sending test WhatsApp message...');
+    await sendWhatsAppNotification(testOrder);
+}
 
     // =============================================
     // 📦 STATE
